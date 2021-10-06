@@ -1,0 +1,98 @@
+.navbar-light .navbar-nav .nav-link {
+      padding-left: 20px;
+    padding-right: 0;
+  }
+  .inline-links .flag {
+    margin-left: 7px;
+}
+i.la.la-user.d-inline-block.nav-box-icon{
+	font-size: 32px;
+    width: 32px;
+    line-height: 32px;
+    color: #777;
+}
+span.nav-box-text.d-none.d-xl-inline-block {
+	color: #333;
+}
+.lang-change::after {display: none;}
+.lang-change::before {
+    display: inline-block;
+    margin-right: .255em;
+    vertical-align: .255em;
+    content: "";
+    border-top: .3em solid;
+    border-right: .3em solid transparent;
+    border-bottom: 0;
+    border-left: .3em solid transparent;
+}
+  ul.inline-links > li > a > i, ul.inline-links > li > i {
+    margin-left: 4px;
+}
+  .logo-bar-area .navbar-brand {
+    padding-left: 80px;
+    padding-right: 0;
+  }
+  .navbar-nav {
+  	padding-right: 0;
+  	padding-left: 49px;
+  	}
+  	.d-inline-block.cart_mobile{
+  		    margin-left: 10px;
+  	}
+  	i.la.la-shopping-cart.d-inline-block.nav-box-icon{
+  		font-size: 32px;
+    width: 32px;
+    line-height: 32px;
+    color: #777;
+  	}
+  	span#show_cart{
+  		 /*   position: absolute;
+    top: 0;
+    left: 36px;
+    min-width: 25px;
+    height: 16px;
+    line-height: 16px;
+    text-align: center;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 12px;
+    background: #c19450;*/
+  	}
+  	.navbar-nav .dropdown-menu .dropdown-item {
+    text-align: right;
+    padding: 0.875rem 0rem;
+}
+.search-box button {   
+    border-radius: 3px 0 0 3px;    
+}
+.search-box input[type="text"] {
+    width: auto;
+    overflow: hidden;
+    height: 40px;
+    padding: 0 0 0 15px;
+    border: 1px solid #cbcbcb;
+    border-left: 0 none;
+    border-radius: 0 3px 3px 0;
+    padding-right: 10px;
+    font-size: 13px;
+}
+.row.rtl {
+    margin-right: -7px;
+}
+  @media (max-width: 576px){
+  	span.nav-box-number{top: 0px !important;
+    left: 12px !important;
+}
+.wishlist_mobile .nav-box-number {
+    top: 50px !important;
+    left: 8% !important;
+}
+.lang-change::after {display: block !important;    margin-left: 6em;
+    margin-top: -7px;}
+.lang-change::before {display: none;}
+.hamburger-icon {
+    top: 0;
+    right: 0;
+    left: 200px;
+}
+}

@@ -1,0 +1,1 @@
+[26-Jan-2021 12:40:16 Asia/Dubai] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 24576 bytes) in /home/s4dwa0ya3cm3/public_html/zahi-om.com/demo/admin/system/libraries/Image_lib.php on line 1466
