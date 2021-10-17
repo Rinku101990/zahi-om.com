@@ -689,12 +689,12 @@
     //   });
     
     
-        $(document).on('click', '.pagination li a', function(event){
-        event.preventDefault();
-        var cpage = $(this).data('ci-pagination-page');
-       // alert(cpage);
-        filter_data(1,cpage);
-    });
+    //     $(document).on('click', '.pagination li a', function(event){
+    //     event.preventDefault();
+    //     var cpage = $(this).data('ci-pagination-page');
+    //   // alert(cpage);
+    //     filter_data(1,cpage);
+    // });
        
    $( "#slider-range" ).slider({
          range: true,

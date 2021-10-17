@@ -1,13 +1,20 @@
 <?php 
 class Orders_model extends MY_Model{
 	
-	public function get_all_orders($ordid,$table)
+	public function get_all_orders($page,$start,$ordid,$table)
 	{
 		$this->db->select('cust.cust_fname,cust.cust_lname,ord.*,orp.ord_vendors,orp.pro_name,orp.pro_qty,orp.pro_selling_price,orp.pro_special_price,orp.pro_size,orp.pro_color,orp.pro_serialize');
 		$this->db->join('tbl_customer cust','ord.cust_id=cust.cust_id','LEFT');
 		$this->db->join('tbl_orders_product orp','ord.ord_id=orp.ord_id','LEFT');
 		$this->db->order_by('ord.'.$ordid, 'DESC');
 		$this->db->where('ord.status', '2');	
+		if(!empty($page))
+  		{
+			$this->db->limit($page, $start);
+		}else{
+			$limit = 10;
+			$this->db->limit($page, $limit);
+		}
 		$query = $this->db->get($table.' ord');
 		//echo $this->db->last_query();
 		if($query->num_rows() > 0)
@@ -20,8 +27,61 @@ class Orders_model extends MY_Model{
 		}
 	}
 
+	public function countAllOrdersList($ordid,$table)
+	{
+		$this->db->select('cust.cust_fname,cust.cust_lname,ord.*,orp.ord_vendors,orp.pro_name,orp.pro_qty,orp.pro_selling_price,orp.pro_special_price,orp.pro_size,orp.pro_color,orp.pro_serialize');
+		$this->db->join('tbl_customer cust','ord.cust_id=cust.cust_id','LEFT');
+		$this->db->join('tbl_orders_product orp','ord.ord_id=orp.ord_id','LEFT');
+		$this->db->order_by('ord.'.$ordid, 'DESC');
+		$this->db->where('ord.status', '2');	
+		$query = $this->db->get($table.' ord');
+		if($query->num_rows() > 0)
+		{
+			return $query->num_rows();
+		}
+		else
+		{
+			return false;
+		}
+	}
 
-	public function get_all_orders_where($ordid,$seller,$status,$from,$to,$table)
+
+	public function get_all_orders_where($page,$start,$ordid,$seller,$status,$from,$to,$table)
+	{
+		$this->db->select('cust.cust_fname,cust.cust_lname,ord.*,orp.ord_vendors,orp.pro_name,orp.pro_qty,orp.pro_selling_price,orp.pro_special_price,orp.pro_size,orp.pro_color,orp.pro_serialize');
+		$this->db->join('tbl_customer cust','ord.cust_id=cust.cust_id','LEFT');
+		$this->db->join('tbl_orders_product orp','ord.ord_id=orp.ord_id','LEFT');
+		if(!empty($status)){
+		    $this->db->where('ord.order_status', $status);
+		}
+		if(!empty($seller)){
+		    $this->db->where('orp.ord_vendors', $seller);
+		}
+		if(!empty($from) && !empty($to)){
+    		$this->db->where('ord.ord_created_date >=', $from);
+    		$this->db->where('ord.ord_created_date <=', $to);
+	    }
+		$this->db->where('ord.status', '2');
+		if(!empty($page))
+  		{
+			$this->db->limit($page, $start);
+		}else{
+			$limit = 10;
+			$this->db->limit($page, $limit);
+		}
+		$query = $this->db->get($table.' ord');
+		//echo $this->db->last_query();
+		if($query->num_rows() > 0)
+		{
+			return $query->result();
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	public function countAllOrdersWhereList()
 	{
 		$this->db->select('cust.cust_fname,cust.cust_lname,ord.*,orp.ord_vendors,orp.pro_name,orp.pro_qty,orp.pro_selling_price,orp.pro_special_price,orp.pro_size,orp.pro_color,orp.pro_serialize');
 		$this->db->join('tbl_customer cust','ord.cust_id=cust.cust_id','LEFT');
@@ -38,11 +98,9 @@ class Orders_model extends MY_Model{
 	    }
 		$this->db->where('ord.status', '2');	
 		$query = $this->db->get($table.' ord');
-		// echo $this->db->last_query();
-		// die;
 		if($query->num_rows() > 0)
 		{
-			return $query->result();
+			return $query->num_rows();
 		}
 		else
 		{
@@ -105,6 +163,69 @@ class Orders_model extends MY_Model{
 		}
 	}
 
+	public function getCancelExchangeInfo($incvid)
+	{
+		$this->db->select('c_id,c_order_id,c_pro_id,return_type,c_status,c_response');
+		$this->db->where('c_order_id', $incvid);
+		$query = $this->db->get('tbl_cancel_item');
+		if($query->num_rows() > 0)
+		{
+			return $query->result();
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	function getCancelReseanList($table){		
+		
+		$this->db->from($table);
+		$this->db->order_by('ocr_id','desc');
+		$this->db->where('ocr_status','1');
+		$this->db->where('ocr_type','1');
+		$query=$this->db->get();
+		if($query->num_rows() ==''){
+			  return '';
+		}else{
+			  return $query->result();
+		}
+	}
+
+	function checkCancellationRequest($cust_id,$ordid,$pid,$tabel)
+	{
+        $this->db->where('c_cust_id',$cust_id);		
+		$this->db->where('c_order_id',$ordid);
+		$this->db->where('c_pro_id',$pid);
+        $this->db->limit(1);		
+		$query=$this->db->get($tabel);	 
+		if($query->num_rows()== 1)
+	    {
+		 return $query->row();
+	    }
+	    else
+	    {
+		 return false;
+	    }	  	
+	}
+
+	public function getCancelItem($returnid)
+	{
+		$this->db->select('itm.*,res.ocr_id,res.ocr_title');
+		$this->db->join('tbl_order_cancel_reasons res','res.ocr_id=itm.c_reason_id','LEFT');
+		$this->db->where('itm.c_id', $returnid);
+		$query = $this->db->get('tbl_cancel_item itm');
+		//echo $this->db->last_query();
+		if($query->num_rows() > 0)
+		{
+			return $query->row();
+		}
+		else
+		{
+			return false;
+		}
+	}
+
 	public function update_order_status($ordid, $uordid, $status, $table)
 	{
 		$this->db->where($ordid, $uordid);
@@ -116,8 +237,18 @@ class Orders_model extends MY_Model{
 		}
 	}
 	
-		public function update($fld_vnd,$vnd,$data,$table) {
+	public function update($fld_vnd,$vnd,$data,$table) {
         $this->db->where($fld_vnd, $vnd);
+        $query=$this->db->update($table, $data);
+        if($query){
+			return true;
+		}else{
+			return false;
+		}
+    } 
+
+	public function updateItemPolicy($cid,$data,$table){
+        $this->db->where('c_id ', $cid);
         $query=$this->db->update($table, $data);
         if($query){
 			return true;
@@ -130,7 +261,7 @@ class Orders_model extends MY_Model{
 
     public function save($data,$table)
     {
-    	print_r($table);
+    	//print_r($table);
         $this->db->insert($table , $data);
         return $this->db->insert_id();
     }
@@ -200,11 +331,9 @@ class Orders_model extends MY_Model{
 		$this->db->join('tbl_order_cancel_reasons ocr','ocr.ocr_id=ct.c_reason_id','LEFT');
 		$this->db->order_by('ct.c_id','ASC');
 		$query = $this->db->get($table. ' ct');
-		// echo $this->db->last_query();
-		// die;
 		if($query->num_rows() > 0)
 		{
-			return $query->row();
+			return $query->result();
 		}
 		else
 		{

@@ -103,6 +103,7 @@
                               <th class="text-center">Qnt</th>
                               <th class="text-right">Unit</th>
                               <th class="text-right">Amount</th>
+                              <th class="text-right">Action</th>
                            </tr>
                            <?php foreach($ordPro as $ordKeys=>$ordValue){ ?>
                            <tr>
@@ -119,22 +120,48 @@
                               <td class="text-center"><?php echo $ordValue->pro_qty;?></td>
                               <td class="text-right"><?=currency($this->website->web_currency);?><?php echo $ordValue->pro_price; /*if($ordValue->pro_special_price!=''){echo $ordValue->pro_special_price;}else{echo $ordValue->pro_selling_price;};*/ ?></td>
                               <td class="text-right"><?=currency($this->website->web_currency);?><?php echo $ordValue->pro_price;/* if($ordValue->pro_special_price!=''){echo $ordValue->pro_special_price;}else{echo $ordValue->pro_selling_price;};*/ ?></td>
+                              <td class="text-right">
+                                 <?php if(!empty($cancelExchange)){ foreach($cancelExchange as $canExc){ 
+                                    if($canExc->c_pro_id==$ordValue->pro_id){ ?>
+                                 <?php if($canExc->return_type=='1'){ ?>
+                                    <?php if($canExc->c_response!=''){ ?>
+                                       <a href="javascript:void(0);" style="color: #ca1212;" class="returnView" returnId="<?php echo $canExc->c_id;?>"  url="<?=base_url();?>"><b><?php echo $canExc->c_status; ?></b></a><br>
+                                    <?php }else{ ?>
+                                       <a href="javascript:void(0);" style="color: #ca1212;" class="returnView" returnId="<?php echo $canExc->c_id;?>"  url="<?=base_url();?>">Cancellation request</a><br>
+                                    <?php } ?>
+                                 <?php }else if($canExc->return_type=='2'){ ?>
+                                       <?php if($canExc->c_response!=''){ ?>
+                                          <a href="javascript:void(0);" style="color: #ca1212;" class="returnView" returnId="<?php echo $canExc->c_id;?>"  url="<?=base_url();?>"><b><?php echo $canExc->c_status; ?></b></a><br>
+                                       <?php }else{ ?>
+                                          <a href="javascript:void(0);" style="color: #ca1212;" class="returnView" returnId="<?php echo $canExc->c_id;?>"  url="<?=base_url();?>">Exchange request</a><br>
+                                       <?php } ?>
+                                 <?php }else if($canExc->return_type=='3'){ ?>
+                                       <?php if($canExc->c_response!=''){ ?>
+                                          <a title="cancel" class="cancel-item" href="javascript:void(0);" style="color: #ca1212;"  opid="<?=encode($ordValue->pro_id);?>" vndid="<?=encode($ordValue->ord_vendors);?>" ordid="<?=encode($ordValue->ord_id);?>"><b>Cancelled</b></a><br>
+                                       <?php }else{ ?>
+                                          <a title="cancel" class="cancel-item" href="javascript:void(0);" style="color: #ca1212;"  opid="<?=encode($ordValue->pro_id);?>" vndid="<?=encode($ordValue->ord_vendors);?>" ordid="<?=encode($ordValue->ord_id);?>">Cancelled</a><br>
+                                       <?php } ?>
+                                   
+                                 <?php } } } }else{ ?>
+                                    <center><a title="cancel" class="cancel-item CancelItemFromAdmin" href="javascript:void(0);" style="color: #ca1212;"  opid="<?=encode($ordValue->pro_id);?>" vndid="<?=encode($ordValue->ord_vendors);?>" ordid="<?=encode($ordValue->ord_id);?>"><b>Cancel</b></i></a></center>
+                                 <?php } ?>
+                              </td>
                            </tr>
                            <?php } ?>
                            <tr>
-                              <td colspan="8" class="font-w600 text-right">Coupon Code/Coupon Amount</td>
+                              <td colspan="9" class="font-w600 text-right">Coupon Code/Coupon Amount</td>
                               <td class="text-right"><?php if(!empty($ordInfo->ord_coupon_code)){echo $ordInfo->ord_coupon_code;}else{echo "--";} ?>/<?php if(!empty($ordInfo->ord_coupon_code)){echo $ordInfo->ord_coupon_amount;}else{echo "--";}?></td>
                            </tr>
                            <tr>
-                              <td colspan="8" class="font-w600 text-right">VAT</td>
+                              <td colspan="9" class="font-w600 text-right">VAT</td>
                               <td class="text-right"><?=currency($this->website->web_currency);?><?php echo $ordInfo->ord_gst_sum;?></td>
                            </tr>
                            <tr>
-                              <td colspan="8" class="font-w600 text-right">Delivery Charge</td>
+                              <td colspan="9" class="font-w600 text-right">Delivery Charge</td>
                               <td class="text-right"><?php if($ordInfo->ord_deliver_charge!=0){echo currency($this->website->web_currency).$ordInfo->ord_deliver_charge;}else{echo "Free";};?></td>
                            </tr>
                            <tr>
-                              <td colspan="8" class="font-w600 text-right">Payable Amount</td>
+                              <td colspan="9" class="font-w600 text-right">Payable Amount</td>
                               <td class="text-right"><?=currency($this->website->web_currency);?><?php echo $ordInfo->ord_total_amounts;?></td>
                            </tr>
                            <tr>
@@ -142,7 +169,7 @@
                                  <button type="button" class="btn btn-success" onclick="javascript:window.print();"><i class="si si-paper-plane"></i> Send Invoice</button>
                                  <button type="button" class="btn btn-info" onclick="javascript:window.print();"><i class="si si-printer"></i> Print Invoice</button>
                                  </td> -->
-                              <td colspan="9" class="text-right">
+                              <td colspan="10" class="text-right">
                                  <?php if($ordInfo->order_status!="Waiting"){ ?>
                                  <a href="<?php echo site_url('orders/update/'.$ordInfo->ord_id.'/'.encode("Waiting"));?>" class="btn btn-primary btn-sm"><i class="icon icon-cup"></i> Waiting</a>
                                  <?php } ?>
@@ -156,6 +183,7 @@
                                  <a href="<?php echo site_url('orders/update/'.$ordInfo->ord_id.'/'.encode("Delivered"));?>" class="btn btn-warning btn-sm"><i class="icon icon-like"></i> Delivered</a>
                                  <?php } ?>
                               </td>
+                              
                            </tr>
                         </tbody>
                      </table>
@@ -166,5 +194,126 @@
          </div>
       </div>
       <!-- row closed -->
+   </div>
+</div>
+
+<div class="modal fade show" id="returnPolicyModal" tabindex="-1" role="dialog" style="display: none; padding-right: 5px;">
+   <div class="modal-dialog" role="document" style="max-width: 700px;width: 700px;">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="item_title">Item Return</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">×</span> </button>
+         </div>
+         <div class="modal-body">
+            <div class="row">
+               <div class="col-md-12">
+               <div id="ItemReturnResponse"></div>
+                  <form id="ItemReturnForm" >
+                     <input type="hidden" id="cancel_pid" name="cancel_pid">
+                     <div class="row">
+                        <div class="col-sm-3">
+                           <label class="control-label">Reason <span class="required">*</span></label>
+                        </div>
+                        <div class="col-sm-9">
+                           <div class="form-group">
+                              <input type="text" name="reason" class="reason form-control" readonly>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="row">
+                        <div class="col-sm-3">
+                           <label class="control-label">Comments <span class="required">*</span></label>
+                        </div>
+                        <div class="col-sm-9">
+                           <div class="form-group">
+                              <input type="text" name="comments" class="comments form-control" readonly>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="row">
+                        <div class="col-sm-3">
+                           <label class="control-label">Status <span class="required">*</span></label>
+                        </div>
+                        <div class="col-sm-9">
+                           <div class="form-group">
+                              <input type="text" name="status" class="status form-control" readonly>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="row">
+                        <div class="col-sm-3">
+                           <label class="control-label">Message <span class="required">*</span></label>
+                        </div>
+                        <div class="col-sm-9">
+                           <div class="form-group">
+                              <textarea rows="6"class="form-control itemMessage" name="message" placeholder="Message"></textarea>
+                           </div>
+                        </div>
+                        <div class="col-sm-12">
+                           <span id="messageItem"></span>
+                        </div>
+                     </div>
+                     <div class="row">
+                        <div class="col-sm-3">
+                           <label class="control-label">Action</label>
+                        </div>
+                        <div class="col-sm-9">
+                           <div class="form-group">
+                           <select class="form-control" name="action" >
+                                 <option value="Approved">Approved</option>
+                                 <option value="Decline">Decline</option>
+                                 <option value="Cancel">Cancel</option>
+                           </select>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="col-md-3 pull-right">
+                        <button type="button" class="btn btn-theme-round response_submit " style="background:#029794;padding: 3px 27px;font-size: 14px;text-transform: uppercase;">Submit</button>
+                     </div>
+                  </form>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+
+<div class="CancelItemFromAdminModel modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="display: none">
+   <div class="modal-dialog modal-md add-canecl" role="document">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Cancel Item</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="padding: 2px;
+               margin-top: 0; margin-right: 0px;">
+            <span aria-hidden="true">×</span>
+            </button>
+         </div>
+         <div class="modal-body">
+            <div id="CancelItemFromAdminResponse"></div>
+            <form id="CancelItemFromAdminForm" >
+               <input type="hidden" id="cancel_custid" name="cancel_custid" value="<?php echo $ordInfo->cust_id;?>">
+               <input type="hidden" id="cancel_ordid" name="cancel_ordid" >
+               <input type="hidden" id="cancel_vndid" name="cancel_vndid" >
+               <input type="hidden" id="cancel_opid" name="cancel_opid" >
+               <input type="hidden" name="return_type" value="3">
+               <div class="row">
+                  <div class="col-sm-3">
+                     <label class="control-label">Comments <span class="required">*</span></label>
+                  </div>
+                  <div class="col-sm-9">
+                     <div class="form-group">
+                        <textarea rows="6"class="form-control" name="comments" id="reason_comment" placeholder="Comments"></textarea>
+                     </div>
+                  </div>
+                  <div class="col-sm-12">
+                     <span id="msgcomment"></span>
+                  </div>
+               </div>
+               <div class="col-md-3 pull-right">
+                  <button type="button" class="btn btn-theme-round CancelSubmitAdminForm" style="background:#029794;padding: 3px 6px;font-size: 14px;text-transform: uppercase;color:#fff">Cancel Item</button>
+               </div>
+            </form>
+         </div>
+      </div>
    </div>
 </div>

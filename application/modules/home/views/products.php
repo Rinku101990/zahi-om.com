@@ -724,11 +724,12 @@ a.scate_categorie.active i {
 }
                             </style>
                             
-                            <div class="row sm-no-gutters gutters-5 filter_data">
-                                           <div id="loading1"></div>
-                                       
-                                                            </div>
-                                                            <div id="more"></div>
+                            <!-- <div class="row sm-no-gutters gutters-5 filter_data">
+                                <div id="loading1"></div>
+                                </div>
+                                <div id="more"></div> -->
+                             <?php print_r($filterProducts);?>
+                             <?php echo $this->pagination->create_links();?>
                         </div>
                        
 

@@ -35,6 +35,8 @@ class Orders extends MY_Controller {
 		// FOR VENDOR TABLE //
 		$this->vnd_id="vnd_id";		
 		$this->vendor="tbl_vendor";
+		// Cancel Item Resean //
+		$this->resean="tbl_order_cancel_reasons";
 	}
 	
 
@@ -42,15 +44,59 @@ class Orders extends MY_Controller {
 	{
 	    $permission=unserialize($this->login->mst_permission);
 		if($this->login->mst_role=='0' || !empty($permission['orders'])){ 
-		$content['admin']=admin_profile($this->login->mst_email);
-		if(!empty($this->input->post('seller')) || !empty($this->input->post('status')) || !empty($this->input->post('from')) || !empty($this->input->post('to'))){		
-		    $content['ordlist'] = $this->Orders->get_all_orders_where($this->ordid,$this->input->post('seller'),$this->input->post('status'),$this->input->post('from'),$this->input->post('to'),$this->orders);
-		}else{
-		    $content['ordlist'] = $this->Orders->get_all_orders($this->ordid,$this->orders);
-	    }
-		$content['seller'] = $this->Orders->get_all_vendor($this->vnd_id,$this->vendor);
-		//$content['subview']="orders/orders_list";
-		$this->load->view('orders/orders_list', $content);
+			$content['admin']=admin_profile($this->login->mst_email);
+
+
+			//pagination
+			if(!empty($this->input->post('seller')) || !empty($this->input->post('status')) || !empty($this->input->post('from')) || !empty($this->input->post('to'))){		
+				$totalOrders=$this->Orders->countAllOrdersWhereList($this->ordid,$this->input->post('seller'),$this->input->post('status'),$this->input->post('from'),$this->input->post('to'),$this->orders);
+			}else{
+				$totalOrders=$this->Orders->countAllOrdersList($this->ordid,$this->orders);
+			}
+			//print_r($totalOrders);die;
+			$page=$this->uri->segment(2);
+			//echo $page;die;
+			sleep(1);
+			$this->load->library('pagination');
+			$config = array();
+			$config['base_url'] = base_url('orders');;
+			$config['total_rows'] = $totalOrders;
+			$config['per_page'] = 10;
+			$config['uri_segment'] =2;
+			$config['use_page_numbers'] = TRUE;
+			$config['first_tag_open'] = ' <li>';
+			$config['first_tag_close'] = '</li>';
+			$config['last_tag_open'] = ' <li>';
+			$config['last_tag_close'] = '</li>';
+			$config['next_link'] = '&gt;';
+			$config['next_tag_open'] = ' <li>';
+			$config['next_tag_close'] = '</li>';
+			$config['prev_link'] = '&lt;';
+			$config['prev_tag_open'] = ' <li>';
+			$config['prev_tag_close'] = '</li>';
+			$config['cur_tag_open'] = '&nbsp;<li><a class="current">';
+			$config['cur_tag_close'] = '</a></li>';
+			$config['num_tag_open'] = ' <li>';
+			$config['num_tag_close'] = '</li>';
+			$config['next_link'] = 'Next';
+			$config['prev_link'] = 'Previous';
+			$config['num_links'] = 4;
+			$this->pagination->initialize($config);
+			// $page = $this->uri->segment(4);
+			$start = ($page) * $config['per_page'];
+			//end pagination
+			//echo $pagination=$this->pagination->create_links();
+
+			if(!empty($this->input->post('seller')) || !empty($this->input->post('status')) || !empty($this->input->post('from')) || !empty($this->input->post('to'))){		
+				$content['ordlist'] = $this->Orders->get_all_orders_where($config['per_page'],$start,$this->ordid,$this->input->post('seller'),$this->input->post('status'),$this->input->post('from'),$this->input->post('to'),$this->orders);
+			}else{
+				$content['ordlist'] = $this->Orders->get_all_orders($config['per_page'],$start,$this->ordid,$this->orders);
+			}
+			$str_links = $this->pagination->create_links();
+			$content["links"] = explode('&nbsp;',$str_links );
+			//print("<pre>".print_r($content['ordlist'],true)."</pre>");die;
+			$content['seller'] = $this->Orders->get_all_vendor($this->vnd_id,$this->vendor);
+			$this->load->view('orders/orders_list', $content);
 		}else{
 			redirect('dashboard');
 		}
@@ -96,11 +142,59 @@ class Orders extends MY_Controller {
 		if(!empty($content['ordInfo'])){
 			$content['admin']=admin_profile($this->login->mst_email);
 			$content['ordPro'] = $this->Orders->get_order_product($this->ordid,$incvid,$this->ordProducts);
+			$content['cancelExchange'] = $this->Orders->getCancelExchangeInfo($incvid);
+			//$content['reasonList'] = $this->Orders->getCancelReseanList($this->resean);
+			//print("<pre>".print_r($content['ordPro'],true)."</pre>");die;
 			$content['subview']="orders/order_invoice";
 			$this->load->view('layout', $content);
 		}else{
 			redirect('orders/badrequest');
 		}
+	}
+
+	public function cancelUserItemByAdmin()
+	{
+		$RequestMethod = $this->input->server('REQUEST_METHOD');
+		if(empty($this->session->userdata('logged_in_admin')))
+		{
+			redirect('loin','refresh');
+		}else{		
+			if($RequestMethod == "POST") { 	
+				$cust_id=$this->input->post('cancel_custid');
+				$ordid=decode($this->input->post('cancel_ordid'));
+				$vndid=decode($this->input->post('cancel_vndid'));
+				$pid=decode($this->input->post('cancel_opid'));
+				$type=$this->input->post('return_type');
+				$year = date('y');
+				$month = date('hm');
+				$random = rand(1000, 9999);
+				$orderReferenceID = $year.$month.$random;
+				$check=$this->Orders->checkCancellationRequest($cust_id,$ordid,$pid,$this->cancel);
+		   		if(empty($check))
+				{
+					$data=array(
+						'c_ref'=>$orderReferenceID,
+						'c_cust_id'=>$cust_id,
+						'c_order_id'=>$ordid,
+						'c_ven_id'=>$vndid,
+						'c_pro_id'=>$pid,			  		
+						'c_response'=>$this->input->post('comments'),
+						'c_status'=>'Cancel',
+						'return_type'=>$type,
+						'c_created'=>date('Y-m-d H:i:s') 
+					); 
+					//print("<pre>".print_r($data,true)."</pre>");die;
+				$result = $this->Orders->save($data,$this->cancel);	
+				if($result){
+					echo'Success';
+				}else{
+					echo'Failed';
+				}
+		 	}else{
+				echo'Used';
+			} 
+		  }
+	    }  
 	}
 
 	public function design_invoice($incvid=null)
@@ -287,15 +381,44 @@ class Orders extends MY_Controller {
 
 	public function cancellation()
 	{
-		 $permission=unserialize($this->login->mst_permission);
+		$permission=unserialize($this->login->mst_permission);
 		if($this->login->mst_role=='0' || !empty($permission['cancellation_requests'])){  
 		$content['admin']=admin_profile($this->login->mst_email);
 		$content['cancel'] = $this->Orders->get_cancel_product($this->c_id,$this->cancel);
+		//print("<pre>".print_r($content['cancel'],true)."</pre>");die;
 		$content['subview']="orders/cancellation_requests";
 		$this->load->view('layout', $content);	
 		}else{
 			redirect('dashboard');
 		}	
+	}
+
+	public function getReturnItemInfo()
+	{
+		$returnid = $this->input->post('returnid');		
+    	$result['item'] = $this->Orders->getCancelItem($returnid);
+    	echo json_encode($result);
+	}
+
+	public function cancel_item_update()
+	{
+		$RequestMethod = $this->input->server('REQUEST_METHOD');
+		if(empty($this->session->userdata('logged_in_admin'))){
+			redirect('/');
+		}else{		
+			if($RequestMethod == "POST") { 	
+				$cid=$this->input->post('cancel_pid');
+				$message=$this->input->post('message');
+				$action=$this->input->post('action');
+				$data=array(		  
+					'c_response'=>$this->input->post('message'),		
+					'c_status'=>$this->input->post('action'),
+					'c_updated'=>date('Y-m-d H:i:s') 
+				); 
+				$result = $this->Orders->updateItemPolicy($cid,$data,$this->cancel);	
+				if($result==TRUE){echo'Success';}else{echo'Failed';}	 
+			}
+		}
 	}
 
 	public function returns()

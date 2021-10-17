@@ -177,6 +177,7 @@ if($this->website->web_lang=='en'){
                                 <?php $item_tax=$items['tax']*$items['subtotal']/100;?>
                                 <?php $item_subtotal=$this->cart->format_number($items['subtotal']+$item_tax); 
                                     $total+=$items['subtotal']+$item_tax;?>
+                            
                             <?php } } ?>
                             <table class="table-cart table-cart-review">
 

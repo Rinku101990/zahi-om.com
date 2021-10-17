@@ -45,7 +45,8 @@ class Checkout extends MY_Controller {
 		}else{
 		   	if(!empty($this->session->userdata('logged_in_customer'))){
 				$login =$this->customer;
-				$content['get_shippingAddress']=$this->Checkout->get_shippingAddress($this->cust_id,$login->cust_id ,$this->table_shipping);  
+				$content['get_shippingAddress']=$this->Checkout->get_shippingAddress($this->cust_id,$login->cust_id ,$this->table_shipping); 
+				$content['shippingAddress1']=$this->Checkout->shippingAddress($this->cust_id,$login->cust_id ,$this->table_shipping);  
 				// echo"<pre>";
 				// print_r($content['get_shippingAddress']);
 				// die;

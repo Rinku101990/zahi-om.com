@@ -119,8 +119,10 @@
              <li class="nav-item ">
                 <a class="nav-link " href="<?=base_url('brands');?>" >العلامات التجارية </a></li>
             
-     <li class="nav-item ">
-                <a class="nav-link " href="<?=base_url('eid-collection');?>" >جمع العيد </a></li>
+     <!--<li class="nav-item ">-->
+     <!--           <a class="nav-link " href="<?=base_url('eid-collection');?>" >جمع العيد </a></li>-->
+                 <li class="nav-item ">
+                <a class="nav-link " href="<?=base_url('best-selling');?>">أفضل مبيعات</a></li>
    
         </ul>
         </div>
@@ -390,8 +392,11 @@
         <ul class="navbar-nav navbar-light">
           
         
-        <li class="nav-item ">
-                <a class="nav-link " href="<?=base_url('eid-collection');?>" >جمع العيد </a></li>
+        <!--<li class="nav-item ">-->
+        <!--        <a class="nav-link " href="<?=base_url('eid-collection');?>" >جمع العيد </a></li>-->
+                   
+                    <li class="nav-item ">
+                <a class="nav-link " href="<?=base_url('best-selling');?>">أفضل مبيعات</a></li>
                     <li class="nav-item ">
                 <a class="nav-link " href="<?=base_url('brands');?>" >امات التجارية </a></li>
        

@@ -1705,3 +1705,135 @@ $(".ProductView").click(function(){
 			}
 		});
 	});
+
+	/*--- View Item Return Modal ---*/ 
+	$(".returnView").click(function(){
+		var refer_url = $(this).attr("url");
+		var returnid = $(this).attr("returnId");
+		$.ajax({
+			method:'post',
+			url:refer_url+'orders/getReturnItemInfo',
+			data:{returnid:returnid},
+			dataType:'json',
+			success:function(response){
+				if(response!=''){		
+					$("#cancel_pid").val(response.item.c_id);			
+					$("#returnPolicyModal").modal();
+					if(response.item.return_type=='1'){
+						$("#item_title").html('Cancel Item');
+					}else{
+						$("#item_title").html('Exchange Item');
+					}
+					$(".reason").val(response.item.ocr_title);
+					$(".comments").val(response.item.c_comment);
+					$(".status").val(response.item.c_status);
+				}
+			}
+		});
+	});
+
+	/* Cancel_submit  On click */
+    $(".response_submit ").click(function()
+    {
+        let url         = $('#site_url').val();   
+		let current_url = $("#current_url").val(); 
+        let pid         = $('#cancel_pid').val();           
+        let check       = true;       
+        /* Validate email Input Fields Value */
+         if($('.itemMessage').val().length == 0 || $('.itemMessage').val() == 0){ $('.itemMessage').css('border','1px solid red');
+         $('#messageItem').html('<span style="color:red;">This field is required.</span>'); check=false; }
+        else{ $('#messageItem').html(' ');$('.itemMessage').css('border',''); check = true;
+            }
+          
+			if(check){
+            $.ajax(
+            {   
+                type: "POST",
+                url: url+"orders/cancel_item_update",
+                data:$('#ItemReturnForm').serialize(),          
+                beforeSend: function ()
+                {
+                    $('.response_submit').html('Submit...');
+                    $('.response_submit').prop('disabled', true);
+                },
+                success: function(response)
+                {
+                    
+                    if(response == 'Failed'){
+                       $("#ItemReturnResponse").html('<div class="alert alert-danger alert-dismissible fade show" role="alert"> <span class="alert-inner--icon"><i class="fe fe-slash "></i></span> <span class="alert-inner--text"><strong>Oops!</strong> Unable to Account .Some error occurred..</span> <button type="button" class="close text-black" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button> </div>');
+                       $(".response_submit").html('Retry');
+                       $('.response_submit').prop('disabled', false);                      
+                    }else if(response == 'Success'){               
+						window.location.href=current_url;
+                    }
+                }
+            });
+        }
+        else
+        {
+            $(".response_submit").html('Retry');          
+            $('#ItemReturnResponse').html('<span style="color:red;">(Any of the fields are empty.)</span>');
+        }   
+        
+    });
+
+	$(".CancelItemFromAdmin").click(function()
+	{       
+		let vndid = $(this).attr('vndid');
+	   	let pid = $(this).attr('opid');
+		let ordid = $(this).attr('ordid');
+	   	$(".CancelItemFromAdminModel").modal();
+	   	$('#cancel_vndid').val(vndid);
+	   	$('#cancel_opid').val(pid);  
+		$("#cancel_ordid").val(ordid);     
+   });
+
+   /* Cancel_submit  On click */
+   $(".CancelSubmitAdminForm ").click(function()
+   {
+		let current_url = $("#current_url").val(); 
+	   let url         = $('#site_url').val();    
+	   let pid         = $('#cancel_opid').val();           
+	   let check       = true;    
+	   let pcheck       = true;     
+	   /* Validate Password Input Fields Value */
+		if($('#reason_comment').val().length == 0){ 
+		$('#msgcomment').html('<span style="color:red;">This field is required.</span>'); pcheck=false; }
+	   	else{ $('#msgcomment').html(' '); pcheck = true; }
+		 
+	   if(check && pcheck){
+		   $.ajax(
+		   {   
+			   type: "POST",
+			   url: url+"orders/cancelUserItemByAdmin",
+			   data:$('#CancelItemFromAdminForm').serialize(),
+			   beforeSend: function ()
+			   {
+				   $('.CancelSubmitAdminForm').html('Submit...');
+				   $('.CancelSubmitAdminForm').prop('disabled', true);
+			   },
+			   success: function(response)
+			   {
+				   if(response == 'Failed'){
+					  	$("#CancelItemFromAdminResponse").html('<div class="alert alert-danger alert-dismissible fade show" role="alert"> <span class="alert-inner--icon"><i class="fe fe-slash "></i></span> <span class="alert-inner--text"><strong>Oops!</strong> Unable to Account .Some error occurred..</span> <button type="button" class="close text-black" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button> </div>');
+					  	$(".CancelSubmitAdminForm").html('Retry');
+					  	$('.CancelSubmitAdminForm').prop('disabled', false);                      
+				   }else if(response == 'Used'){
+				   		$("#CancelItemFromAdminResponse").html('<div class="alert alert-danger alert-dismissible fade show" role="alert"> <span class="alert-inner--icon"><i class="fe fe-slash "></i></span> <span class="alert-inner--text"><strong>Danger!</strong> Already request submit.</span> <button type="button" class="close text-black" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button> </div>');
+				   }else{   
+					   	$("#CancelItemFromAdminResponse").html('<div class="alert alert-success alert-dismissible fade show" role="alert"> <span class="alert-inner--icon"><i class="fe fe-thumbs-up "></i></span> <span class="alert-inner--text"><strong>Success !</strong> you request has been submitted .</span> <button type="button" class="close text-black" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button> </div>');
+					   	$('.cancel'+pid).html('<p style="line-height: 14px;color: #2874f0;"><b>Cancellation Request</b></p>');
+					   	// setTimeout(function(){ 
+						//  	$(".CancelItemFromAdminModel").modal('hide'); 
+						// },1500); 
+						window.location.href=current_url;
+					}
+			   }
+		   });
+	    }
+	   else
+	   {
+		   $(".CancelSubmitAdminForm").html('Retry');          
+		   $('#CancelItemFromAdminResponse').html('<span style="color:red;">(Any of the fields are empty.)</span>');
+	   }   
+   });

@@ -79,16 +79,16 @@
                            </li>
                            <?php }else if($cate_value->mn_category_id!='13'){ ?>
                            <li class="nav-item dropdown megamenu-li dmenu">
-                              <a class="nav-link dropdown-toggle" href="<?=base_url('category/').encode($cate_value->mn_category_id).'/'.cate_slug($cate_value->mn_category_id);?>" id="dropdown01" ><?=$cate_value->mn_name;?> <i class="fa fa-angle-down"></i></a>
+                              <a class="nav-link dropdown-toggle" href="<?=base_url('category/').encode($cate_value->mn_category_id).'/'.cate_slug($cate_value->mn_category_id).'/1';;?>" id="dropdown01" ><?=$cate_value->mn_name;?> <i class="fa fa-angle-down"></i></a>
                               <?php if(sub_category($cate_value->mn_category_id)!=FALSE){ ?>
                               <div class="dropdown-menu megamenu sm-menu border-top" aria-labelledby="dropdown01" style="display: none;">
                                  <div class="row">
                                     <?php foreach (sub_category($cate_value->mn_category_id) as $smenu_list) {?>
                                     <div class="col-sm-6 col-lg-3 border-right mb-4">
-                                       <h6><a href="<?=base_url('sub-category/').encode($smenu_list->scate_id).'/'.$smenu_list->scate_slug;?>"><?=$smenu_list->scate_name;?></a></h6>
+                                       <h6><a href="<?=base_url('sub-category/').encode($smenu_list->scate_id).'/'.$smenu_list->scate_slug.'/1';?>"><?=$smenu_list->scate_name;?></a></h6>
                                        <?php if(child_category($smenu_list->scate_id)!=FALSE){
                                           foreach (child_category($smenu_list->scate_id) as $ch_menu_list) {?>
-                                       <a class="dropdown-item" href="<?=base_url('child-category/').encode($ch_menu_list->child_id).'/'.$ch_menu_list->child_slug;?>"><?=$ch_menu_list->child_name;?></a>
+                                       <a class="dropdown-item" href="<?=base_url('child-category/').encode($ch_menu_list->child_id).'/'.$ch_menu_list->child_slug.'/1';?>"><?=$ch_menu_list->child_name;?></a>
                                        <?php }}?>
                                     </div>
                                     <?php }?>
@@ -101,7 +101,7 @@
                               <a class="nav-link " href="<?=base_url('brands');?>" >Brands </a>
                            </li>
                             <li class="nav-item ">
-                               <a class="nav-link " href="<?=base_url('eid-collection');?>" >Eid Collection </a>
+                               <a class="nav-link " href="<?=base_url('best-selling');?>" >Best Selling  </a>
                             </li>
                         </ul>
                      </div>
@@ -352,7 +352,7 @@
                               </li>
                               <?php }elseif($cate_value->mn_category_id!='13'){?>
                               <li class="nav-item dropdown megamenu-li dmenu">
-                                 <a class="nav-link dropdown-toggle" href="<?=base_url('category/').encode($cate_value->mn_category_id).'/'.cate_slug($cate_value->mn_category_id);?>" id="dropdown01" ><?=$cate_value->mn_name;?> <i class="fa fa-angle-down"></i></a>
+                                 <a class="nav-link dropdown-toggle" href="<?=base_url('category/').encode($cate_value->mn_category_id).'/'.cate_slug($cate_value->mn_category_id).'/1';?>" id="dropdown01" ><?=$cate_value->mn_name;?> <i class="fa fa-angle-down"></i></a>
                                  <?php if(sub_category($cate_value->mn_category_id)!=FALSE){
                                     ?>
                                  <div class="dropdown-menu megamenu sm-menu border-top" aria-labelledby="dropdown01" style="display: none;">
@@ -363,10 +363,10 @@
                                                  $class="dropdown2";
                                              }else{$tab='col-sm-6 col-lg-3'; $class="";}?>
                                        <div class="<?=$tab;?> border-right mb-4">
-                                          <h6><a href="<?=base_url('sub-category/').encode($smenu_list->scate_id).'/'.$smenu_list->scate_slug;?>"><?=$smenu_list->scate_name;?></a></h6>
+                                          <h6><a href="<?=base_url('sub-category/').encode($smenu_list->scate_id).'/'.$smenu_list->scate_slug.'/1';?>"><?=$smenu_list->scate_name;?></a></h6>
                                           <?php if(child_category($smenu_list->scate_id)!=FALSE){
                                              foreach (child_category($smenu_list->scate_id) as $ch_menu_list) {?>
-                                          <a class="dropdown-item <?=$class;?>" href="<?=base_url('child-category/').encode($ch_menu_list->child_id).'/'.$ch_menu_list->child_slug;?>"><?=$ch_menu_list->child_name;?></a>
+                                          <a class="dropdown-item <?=$class;?>" href="<?=base_url('child-category/').encode($ch_menu_list->child_id).'/'.$ch_menu_list->child_slug.'/1';?>"><?=$ch_menu_list->child_name;?></a>
                                           <?php }}?>
                                        </div>
                                        <?php }?>
@@ -379,7 +379,7 @@
                                  <a class="nav-link " href="<?=base_url('brands');?>" >Brands </a>
                               </li>
                                <li class="nav-item ">
-                               <a class="nav-link " href="<?=base_url('eid-collection');?>" >Eid Collection </a>
+                               <a class="nav-link " href="<?=base_url('best-selling');?>" >Best Selling  </a>
                             </li>
                            </ul>
                         </div>

@@ -65,11 +65,28 @@ class Payment_Model extends MY_Model{
 		$date = new DateTime("now");
 		$curr_date = $date->format('Y-m-d');
 		
-		$query = $this->db->query("SELECT `cup_discount`,`cup_min_order` FROM `tbl_coupon` WHERE `cup_code` = '$cou_code' AND  `cup_start_date` <= '$curr_date'  AND `cup_end_date` >= '$curr_date' ");		
+		$query = $this->db->query("SELECT `vendor`,`cup_type`,`cup_discount`,`cup_min_order` FROM `tbl_coupon` WHERE `cup_code` = '$cou_code' AND  `cup_start_date` <= '$curr_date'  AND `cup_end_date` >= '$curr_date' ");		
 		$this->db->last_query();
 		if($query->num_rows() != 0) return $query->row();
 		else return 0;
 	}
 	
+
+	public function verifyCouponCode($custid,$coupon,$table)
+	{
+	    $this->db->select('ord_id,cust_id,ord_coupon_code');
+		$this->db->where('cust_id',$custid);
+		$this->db->where('ord_coupon_code',$coupon);
+		$this->db->where('order_status','InProcess');
+		$this->db->limit(1);		
+		$query=$this->db->get($table);
+		// echo $this->db->last_query($query);
+		// die;	 
+		if($query->num_rows()== 1) {
+			return $query->result();
+		} else {
+			return false;
+		}
+	}
 	
 }

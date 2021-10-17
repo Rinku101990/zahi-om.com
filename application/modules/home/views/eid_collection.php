@@ -5,16 +5,16 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
      <meta name="google-site-verification" content="hdvlk2Z0OY_6QMZj3R1vzWHynhllVTyF0RJElWQTNSg" />
       <meta name="robots" content="index, follow">
-      <meta name="keywords" content="Eid Collection Zahi">
-      <meta name="description" content="Eid Collection Zahi">
-      <meta name="author" content="Eid Collection Zahi">
+      <meta name="keywords" content="Best Selling Zahi">
+      <meta name="description" content="Best Selling Collection Zahi">
+      <meta name="author" content="Best Selling Collection Zahi">
       <meta name="author" content="Rinku Vishwakarma, Manish Kumar">
       <meta name="google-signin-client_id" content="976170906910-h4itraeqrq38eg5jfta8s9qlb79223eh.apps.googleusercontent.com"> 
      
         <link rel="canonical" href="<?php  echo (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";?>" />
       <!-- Favicon -->
       <link name="favicon" type="image/x-icon" href="<?=base_url('admin/uploads/website/favicon/').$this->website->web_favicon_icon;?>" rel="shortcut icon" />
-      <title>Eid Collection Zahi</title>
+      <title>Best Selling Collection Zahi</title>
       <?php $this->load->view('include/header');
 if($this->website->web_lang=='en'){
  $this->load->view('include/topbar');
@@ -376,7 +376,7 @@ a.scate_categorie.active i {
  </style>
  <input type="hidden" id="custid" value="<?php if(!empty($this->session->userdata('logged_in_customer'))){ echo '1';}else{echo'0';}?>">
 <div class="breadcrumb-area mt-10" style="padding: 0px !important">
-  <img src="<?=base_url('assets/img/Eid-Banner.jpg');?>" class="img-responsive" style="padding: 0px;" />
+  <img src="<?=base_url('assets/img/best-selling.jpg');?>" class="img-responsive" style="padding: 0px;" />
        
     </div>
     <section class="gry-bg py-4">

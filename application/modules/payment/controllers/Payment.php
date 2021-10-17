@@ -82,19 +82,89 @@ class Payment extends MY_Controller {
 
 	/* ==== CREATE SHIPPING ADDRESS IN SESSION FOR PAYMENT ==== */
 	public function check_coupon(){
+
+		$login = $this->session->userdata('logged_in_customer');
+		$cust_id = $login->cust_id;	
 		$cou_code = $this->input->post('cou_code');
 		$amount = $this->input->post('amount');
+		$verifyCouponCode = $this->Payment_Model->verifyCouponCode($cust_id,$cou_code,$this->table_orders);
+	        if(empty($verifyCouponCode)){
 		$check=$this->Payment_Model->check_coupon($cou_code,$this->table_coupon);
 		if($check != false){
-			if($check->cup_min_order <= $amount){
+			if(!empty($check->vendor)){
+			$getvnd=0;
+			foreach($this->cart->contents() as $items){
+				if(in_array($items['vnd'],explode(', ',$check->vendor))){
+					$getvnd+=1;
+				}else{
+				 $getvnd+=0;
+				}
+				
+			}
+			}else{
+				$getvnd=1;
+			}			
+			if(!empty($getvnd)){			
+
+			if($check->cup_min_order <= $amount && $check->cup_type == 'flat'){
+			echo $discount = $check->cup_discount;
+			}else if($check->cup_min_order <= $amount && $check->cup_type == 'Percentage'){
 			echo $discount = $check->cup_discount*$amount/100;
 			//echo $check->cup_discount;
 			}else{
 			echo'min_order';
-		   }
+		           }
+			}else{
+			echo'vendor';	
+			}
 		}else{
 			echo "False";
 		}
+	   }else{
+	   	echo "Used";
+	   }
+	}
+
+	public function check_coupon_value($cou_code,$amount){
+
+		$login = $this->session->userdata('logged_in_customer');
+		$cust_id = $login->cust_id;			
+		$verifyCouponCode = $this->Payment_Model->verifyCouponCode($cust_id,$cou_code,$this->table_orders);
+		if(empty($verifyCouponCode)){
+		$check=$this->Payment_Model->check_coupon($cou_code,$this->table_coupon);
+		if($check != false){
+			if(!empty($check->vendor)){
+			$getvnd=0;
+			foreach($this->cart->contents() as $items){
+				if(in_array($items['vnd'],explode(', ',$check->vendor))){
+					$getvnd+=1;
+				}else{
+				 $getvnd+=0;
+				}
+				
+			}
+			}else{
+				$getvnd=1;
+			}			
+			if(!empty($getvnd)){			
+
+			if($check->cup_type == 'flat'){
+			return $discount = $check->cup_discount;
+			}else if($check->cup_min_order <= $amount && $check->cup_type == 'Percentage'){
+			return $discount =  $check->cup_discount*$amount/100;
+			//echo $check->cup_discount;
+			}else{
+			return $discount =  0;
+		           }
+			}else{
+			return $discount = 0;
+			}
+		}else{
+			return $discount = 0;
+		}
+	   }else{
+	   	return $discount = 0;
+	   }
 	}
 
 	public function ccavRequestHandler()
@@ -143,9 +213,12 @@ class Payment extends MY_Controller {
 // 				}else{$dl_charges='0';}	
 		
 		$cou_code=$this->input->post('cou_code');
-		$check=$this->Payment_Model->check_coupon($cou_code,$this->table_coupon);
-	if(!empty($check->cup_discount)){$checkRs=($this->cart->total()+$dl_charges)*$check->cup_discount/100;}
-		else{$checkRs=0;}
+		$gettotal=$this->cart->total()+$dl_charges;
+		$checkRs=$this->check_coupon_value($cou_code,$gettotal);
+	// 	$check=$this->Payment_Model->check_coupon($cou_code,$this->table_coupon);
+	// if(!empty($check->cup_discount)){
+	// 	$checkRs=($this->cart->total()+$dl_charges)*$check->cup_discount/100;}
+	// 	else{$checkRs=0;}
 
 		
 		if($payMethod=='ONLINE'){

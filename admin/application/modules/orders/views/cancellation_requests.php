@@ -41,13 +41,12 @@
                                                                                </tr>
                                             </thead>
                                             <tbody>
-                                                <?php if($cancel==true){ $i=1;
-                                                    foreach ($cancel as $ctval) {?>
+                                                <?php if($cancel==true){ $i=1; foreach ($cancel as $ctval) {?>
                                                 <tr role="row">
                                                      <td class="sorting_1" align="left"><?=$i;$i++;?></td>
                                                     <td class="sorting_1" align="left">#<?=$ctval->c_ref;?></td>
                                                     <td><?=$ctval->cust_fname.' '.$ctval->cust_lname;?></td>
-                                                       <td><?=$ctval->vnd_name;?></td>
+                                                    <td><?=$ctval->vnd_name;?></td>
                                                     
                                                     <td align="center">
                                                         <strong>Order/invoice</strong>: <?=$ctval->ord_reference_no;?><br>
@@ -68,8 +67,7 @@
                                                     <td align="center"><?=date('d M Y',strtotime($ctval->c_created));?></td>
                                                     
                                                 </tr>
-                                            <?php }}?>
-                                              
+                                                <?php } } ?>
                                             </tbody>
                                         </table>
                                     </div>

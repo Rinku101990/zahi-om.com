@@ -51,7 +51,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 $route['default_controller'] = 'home';
 /* ===========Category Product Routes============= */
-
 $route['categories/(:any)'] = 'home/categories/$1';
 $route['search'] = 'home/search';
 $route['hot-products'] = 'home/hot_products';
@@ -63,9 +62,19 @@ $route['brand/(:any)']    = 'home/brand/$1';
 $route['product/(:any)/(:any)'] = 'home/product/$1/$2';
 $route['blog/(:any)/(:any)'] = 'blog/index/$1/$2';
 $route['vendor/(:any)/(:any)'] = 'vendor/index/$1/$2';
+
+/*--- New Route Url ---*/ 
+$route['category/(:any)/(:any)/(:any)'] = 'home/category/$1/$2';
+$route['sub-category/(:any)/(:any)/(:any)'] = 'home/sub_category/$1/$2';
+$route['child-category/(:any)/(:any)/(:any)'] = 'home/child_category/$1/$2';
+/*--- End New Route Url ---*/
+
+/*--- Old Route Url ---*/ 
 $route['category/(:any)/(:any)'] = 'home/category/$1/$2';
 $route['sub-category/(:any)/(:any)'] = 'home/sub_category/$1/$2';
 $route['child-category/(:any)/(:any)'] = 'home/child_category/$1/$2';
+/*--- End Old Route Url ---*/ 
+
 $route['brand/(:any)/(:any)'] = 'home/brand/$1/$2';
 $route['categories/(:any)'] = 'home/categories/$1';
 $route['hot-products'] = 'home/hot_products';
@@ -92,6 +101,7 @@ $route['tracking-order'] = 'page/tracking';
 $route['contact-us'] = 'page/contact';
 $route['brands'] = 'page/brands';
 $route['eid-collection'] = 'home/eid_collection';
+$route['best-selling'] = 'home/eid_collection';
 $route['sales-contract'] = 'page/contract';
 $route['subscribers'] = 'page/subscribers';
 $route['app'] = 'page/app';

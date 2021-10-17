@@ -108,11 +108,18 @@ $(document).ready(function(){
 					$('.ResponseCouponApply').html('<b style="color:red">Coupon Not Valid or Date Expired</b>');
                     $('.couponValueAfterMatched').val(0);
                     $('.couponChecked').val('false');
-                   
+                }else if(result == 'vendor'){
+					$('.ResponseCouponApply').html('<b style="color:red">Coupon Not Valid or Vendor Product</b>');
+                    $('.couponValueAfterMatched').val(0);
+                    $('.couponChecked').val('false'); 
                 }else if(result == 'min_order'){
                     $('.ResponseCouponApply').html('<b style="color:red">Coupon Not Valid or Order Amount Low</b>');
                     $('.couponValueAfterMatched').val(0);
-                    $('.couponChecked').val('false');                
+                    $('.couponChecked').val('false'); 
+                }else if(result == 'Used'){
+                    $('.ResponseCouponApply').html('<b style="color:red">Coupon code already used </b>');
+                    $('.couponValueAfterMatched').val(0);
+                    $('.couponChecked').val('false');   
                 }
                 else{
 					$('.ResponseCouponApply').html('<b style="color:green">Coupon Applied Successfully. Coupon Amount : '+result+'</b>');

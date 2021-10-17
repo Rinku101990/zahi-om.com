@@ -7,6 +7,7 @@
     <!-- Footer closed -->
     <!-- Back-to-top --><a href="#top" id="back-to-top"><i class="fa fa-angle-double-up"></i></a>
     <input type="hidden" id="site_url" name="site_url" value="<?=base_url();?>" />
+    <input type="hidden" id="current_url" name="current_url" value="<?php  echo (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";?>">
     <!-- Jquery-scripts -->
   
     <script src="<?=base_url();?>assets/js/vendors/jquery-3.2.1.min.js"></script>

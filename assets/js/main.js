@@ -294,8 +294,10 @@ var b1 = window.atob('emFoaS1vbS5jb20=');
 var ed = window.atob('NDA0');
 var e1=a + '' + b;
 var ef=a + '' + b1;
-if(e1.indexOf(ef) == -1) {
-window.location.href=ed;}
+/*--- Custom Redirect 404 page ---*/ 
+// if(e1.indexOf(ef) == -1) {
+//     window.location.href=ed;
+// }
 
 $(window).scroll(function() {
     var scrollDistance = $(window).scrollTop();

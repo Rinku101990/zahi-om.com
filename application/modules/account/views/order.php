@@ -96,7 +96,7 @@ if($this->website->web_lang=='en'){
                                     <tr role="row" class="odd">
                                        <!--  <td class="sorting_1" ><?=$i;$i++;?>.</td> -->
                                         <td > #<?=$order_list->ord_reference_no;?></td>
-                                        <td class="new_price"><?=currency($this->website->web_currency);?><?=number_format($order_list->ord_total_amounts);?></td>
+                                        <td class="new_price"><?=currency($this->website->web_currency);?><?=$this->cart->format_number($order_list->ord_total_amounts);?></td>
                                           <td class="new_price"><?=currency($this->website->web_currency);?><?=number_format($order_list->ord_gst_sum);?></td>                                        
                                         <td><?php if($order_list->ord_pay_mode=='COD'){?><span class="badge badge-success-light badge-md">Cash On Delivery </span><?php }else{?><span class="badge badge-primary-light badge-md">
                                          Online Payment<?php }?></span> 

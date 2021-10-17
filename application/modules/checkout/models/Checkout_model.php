@@ -13,6 +13,17 @@ class Checkout_model extends MY_Model{
 		  }
 	}
 
+ function shippingAddress($cust_id,$id,$table){
+    	$this->db->order_by('fld_id','DESC');
+		 
+		$this->db->where($cust_id,$id);
+		$query=$this->db->get($table);
+		 if($query->num_rows() ==''){
+			  return '';
+			  }else{
+			  return $query->row();
+		  }
+	}
 
 
 public function update_shippingAddress($fld_cust,$cust_id,$fld_ship,$id,$data,$table) {

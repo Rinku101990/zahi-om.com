@@ -151,6 +151,18 @@ function get_make_order_product_details($ord_id,$cust_id,$table){
 		}
     } 
 
+	public function updateReturnPolicy($ordid,$pid,$dataUpdate)
+	{
+		$this->db->where('ord_id', $ordid);
+		$this->db->where('pro_id', $pid);
+        $query=$this->db->update('tbl_orders_product', $dataUpdate);
+        if($query){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
 		/* ============For Insert Data============ */
 	public function save($data,$table)
     {
@@ -283,7 +295,6 @@ function get_make_order_product_details($ord_id,$cust_id,$table){
 		$this->db->where('ocr_status','1');
 		$this->db->where('ocr_type','1');
 		$query=$this->db->get();
-		//echo $this->db->last_query();
 		if($query->num_rows() ==''){
 			  return '';
 		}else{
@@ -291,8 +302,36 @@ function get_make_order_product_details($ord_id,$cust_id,$table){
 		}
 	}
 
+	function exchange_reason($table){		
+		
+		$this->db->from($table);
+		$this->db->order_by('ocr_id','desc');
+		$this->db->where('ocr_status','1');
+		$this->db->where('ocr_type','2');
+		$query=$this->db->get();
+		if($query->num_rows() ==''){
+			  return '';
+		}else{
+			  return $query->result();
+		}
+	}
 
-	function check_request($cust_id,$ordid,$pid,$tabel){
+	public function getReturnItemList($ordid,$table)
+	{
+		$this->db->where('c_order_id',$ordid);		
+		$query=$this->db->get($table);	
+		if($query->num_rows()== '')
+	    {
+			return '';
+	    }
+	    else
+	    {
+			return $query->result();
+	    }	
+	}
+
+	function check_request($cust_id,$ordid,$pid,$tabel)
+	{
 	  
         $this->db->where('c_cust_id',$cust_id);		
 		$this->db->where('c_order_id',$ordid);

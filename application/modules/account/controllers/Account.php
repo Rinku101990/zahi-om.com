@@ -56,10 +56,9 @@ class Account extends MY_Controller {
 
  	public function dashboard()
 	{
-	    //$content['category_list']=$this->Account->get_category_list($this->table_category);
-		//$content['subview']='account/dashboard';
 		$this->load->view('account/dashboard');
 	}
+
 	public function wishlist()
 	{
 		if(empty($this->session->userdata('logged_in_customer'))){
@@ -67,10 +66,9 @@ class Account extends MY_Controller {
 		}
 		$content['page']='8';
 		$content['wishlist'] = $this->Account->get_wishlist($this->customer->cust_id, 'tbl_wishlist');
-
-		//$content['subview']='account/wishlist';
 		$this->load->view('account/wishlist', $content);
 	}
+
 	public function wish_delete()
 	{
 		$id=$this->uri->segment(3);		
@@ -78,7 +76,7 @@ class Account extends MY_Controller {
 		redirect('account/wishlist');
 	}
 
-   public function my_profile()
+   	public function my_profile()
 	{   
 		$RequestMethod = $this->input->server('REQUEST_METHOD');
 		if(empty($this->session->userdata('logged_in_customer'))){
@@ -121,7 +119,8 @@ class Account extends MY_Controller {
 
 
 
-	function profile_image(){ 
+	function profile_image()
+	{ 
 		$RequestMethod = $this->input->server('REQUEST_METHOD');
 	    if($RequestMethod == "POST") {  		
 		  
@@ -142,6 +141,7 @@ class Account extends MY_Controller {
 		    
 		}				
 	}
+
 	public function shipping_address()
 	{  
 		if(empty($this->session->userdata('logged_in_customer'))){
@@ -168,49 +168,19 @@ class Account extends MY_Controller {
 	    }  
 	}
 
-	// public function my_wishlist()
-	// {  	
-	// 	$content['subview']='account/wishlist';
-	// 	$this->load->view('layout', $content); 
-	// }
-
-	// public function my_conversations()
-	// {  	
-	// 	$content['subview']='account/my_conversations';
-	// 	$this->load->view('layout', $content); 
-	// }
-
-	// public function my_wallet()
-	// {  	
-	// 	$content['subview']='account/my_wallet';
-	// 	$this->load->view('layout', $content); 
-	// }
-
-	// public function my_support()
-	// {  	
-	// 	$content['subview']='account/my_support';
-	// 	$this->load->view('layout', $content); 
-	// }
-
-	// public function support_info()
-	// {  	
-	// 	$content['subview']='account/support_info';
-	// 	$this->load->view('layout', $content); 
-	// }
-
-
 	public function order_details()
 	{  
 		if(empty($this->session->userdata('logged_in_customer'))){
 			redirect('/');
 		}else{
 			$ord_id=decode($this->uri->segment(3));
-		$content['page']='3';
-		$content['order']= $this->Account->get_order_details($ord_id,$this->customer->cust_id,$this->table_orders);	
-		$content['OrderDetails']= $this->Account->get_order_product_details($ord_id,$this->customer->cust_id,$this->table_orders);	
-
-		//$content['subview']='account/order-details';
-		$this->load->view('account/order-details', $content);
+			$content['page']='3';
+			$content['order']= $this->Account->get_order_details($ord_id,$this->customer->cust_id,$this->table_orders);	
+			$content['OrderDetails']= $this->Account->get_order_product_details($ord_id,$this->customer->cust_id,$this->table_orders);
+			$content['returnList'] = $this->Account->getReturnItemList($ord_id,$this->table_cancel_item);
+			$content['cancel'] = $this->Account->cancel_reason($this->table_order_cancel_reasons);
+			$content['exchange'] = $this->Account->exchange_reason($this->table_order_cancel_reasons);	
+			$this->load->view('account/order-details', $content);
 	    }  
 	}
 
@@ -775,6 +745,7 @@ public function getSize()
 			$ordid=decode($this->input->post('cancel_ordid'));
 			$vndid=decode($this->input->post('cancel_vndid'));
 			$pid=decode($this->input->post('cancel_pid'));
+			$type=$this->input->post('return_type');
 			$year = date('y');
 			$month = date('hm');
 			$random = rand(1000, 9999);
@@ -782,19 +753,19 @@ public function getSize()
 			$check=$this->Account->check_request($cust_id,$ordid,$pid,$this->table_cancel_item);
 		   if(empty($check)){
 		   	$data=array(
-		   	   'c_ref'=>$orderReferenceID,
-               'c_cust_id'=>$cust_id,
-               'c_order_id'=>$ordid,
-			   'c_ven_id'=>$vndid,
-			   'c_pro_id'=>$pid,			  
-			   'c_reason_id'=>$this->input->post('reason'),		
-			     'c_comment'=>$this->input->post('comments'),			   
+		   	   	'c_ref'=>$orderReferenceID,
+               	'c_cust_id'=>$cust_id,
+               	'c_order_id'=>$ordid,
+			   	'c_ven_id'=>$vndid,
+			   	'c_pro_id'=>$pid,			  
+			   	'c_reason_id'=>$this->input->post('reason'),		
+			    'c_comment'=>$this->input->post('comments'),
+				'return_type'=>$type,
 				'c_created'=>date('Y-m-d H:i:s') 
 		   	); 
-		  
-		  $result = $this->Account->save($data,$this->table_cancel_item);	
-		  if($result){echo'Success';}else{echo'Failed';}
-		 }else{echo'Used';}
+		  	$result = $this->Account->save($data,$this->table_cancel_item);	
+			if($result){echo'Success';}else{echo'Failed';}
+		 	}else{echo'Used';}
 		  
 		    
 		  }

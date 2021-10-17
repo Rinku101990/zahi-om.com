@@ -235,21 +235,21 @@ if($this->website->web_lang=='en'){
                             <div class="form-group">
                                 <label class="control-label">First Name <span class="required">*</span></label>
                                 <input type="hidden" name="url" id="url" value="<?php echo site_url();?>">
-                                <input class="form-control border-form-control" name="shippingFirstName" id="shipper_name" placeholder="First Name" type="text">
+                                <input class="form-control border-form-control" name="shippingFirstName" id="shipper_name" placeholder="First Name" type="text" value="<?=@$shippingAddress1->shippingFirstName;?>">
                                 <span id="msgname" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label class="control-label">Last Name <span class="required">*</span></label>
-                                <input class="form-control border-form-control" name="shippingLastName" id="shipper_lname" placeholder="Last Name" type="text">
+                                <input class="form-control border-form-control" name="shippingLastName" id="shipper_lname" placeholder="Last Name" type="text" value="<?=@$shippingAddress1->shippingLastName;?>">
                                 <span id="msglname" class="text-danger"></span>
                             </div>
                         </div>
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label class="control-label">Email Address <span class="required">*</span></label>
-                                <input class="form-control border-form-control" name="shippingEmail" id="shipper_email" placeholder="Enter email address" type="email">
+                                <input class="form-control border-form-control" name="shippingEmail" id="shipper_email" placeholder="Enter email address" type="email" value="<?=@$shippingAddress1->shippingEmail;?>">
                                 <span id="msgemail" class="text-danger"></span>
                             </div>
                         </div>
@@ -258,7 +258,7 @@ if($this->website->web_lang=='en'){
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label class="control-label">Phone <span class="required">*</span></label>
-                                <input class="form-control border-form-control" name="shippingNumber" id="shipper_phone" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');" maxlength="10" placeholder="Enter mobile no" type="text">
+                                <input class="form-control border-form-control" name="shippingNumber" id="shipper_phone" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');" maxlength="10" placeholder="Enter mobile no" type="text" value="<?=@$shippingAddress1->shippingNumber;?>">
                                 <span id="msgphone" class="text-danger"></span>
                             </div>
                         </div>
@@ -270,7 +270,7 @@ if($this->website->web_lang=='en'){
 
                                     <?php if($country==true){
                                         foreach ($country as $cnt_value) {?>
-                                      <option value="<?= $cnt_value->cnt_id;?>"><?=$cnt_value->cnt_name;?></option>
+                                      <option value="<?= $cnt_value->cnt_id;?>" <?php if(@$shippingAddress1->shippingCountry==$cnt_value->cnt_id)echo'selected';?>><?=$cnt_value->cnt_name;?></option>
                                   <?php }}?>
 
                                 </select>
@@ -281,7 +281,10 @@ if($this->website->web_lang=='en'){
                             <div class="form-group">
                                 <label class="control-label">State <span class="required">*</span></label>
                                 <select class="form-control State" name="shippingState" id="shipper_state1" url="<?php echo site_url();?>">
-                                    <option value="">Select</option>
+                                     <option value="">Select</option>
+                                     <?php if(!empty(@$shippingAddress1->shippingState)){?>
+                                    <option value="<?=@$shippingAddress1->shippingState;?>" selected><?=state(@$shippingAddress1->shippingState);?></option>
+                                <?php }?>
                                 </select>
                                 <span id="msgstate"></span>
                             </div>
@@ -293,6 +296,9 @@ if($this->website->web_lang=='en'){
                                 <label class="control-label">City <span class="required"></span></label>
                                 <select class="form-control City" name="shippingCity" id="shipper_city" url="<?php echo site_url();?>">
                                     <option value="">Select</option>
+                                     <?php if(!empty(@$shippingAddress1->shippingCity)){?>
+                                    <option value="<?=@$shippingAddress1->shippingCity;?>" selected><?=city(@$shippingAddress1->shippingCity);?></option>
+                                <?php }?>
                                 </select>
                                 <span id="citylist"></span>
                                 <span id="msgcity"></span>
@@ -304,7 +310,7 @@ if($this->website->web_lang=='en'){
                                 <!--<select class="form-control Zip" name="shippingPincode" id="shipper_pincode">-->
                                 <!--    <option value="">Select</option>-->
                                 <!--</select>-->
-                                <input type="number" class="form-control" name="shippingPincode" id="shipper_pincode" />
+                                <input type="number" class="form-control" name="shippingPincode" id="shipper_pincode" value="<?=@$shippingAddress1->shippingPincode;?>" />
 
                                 <span id="msgpincode"></span>
                             </div>
@@ -315,7 +321,7 @@ if($this->website->web_lang=='en'){
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label class="control-label">Shipping Address <span class="required"></span></label>
-                                <textarea class="form-control" name="shippingAddress" id="shipper_address" placeholder="Shipping Address"></textarea>
+                                <textarea class="form-control" name="shippingAddress" id="shipper_address" placeholder="Shipping Address"><?=@$shippingAddress1->shippingAddress;?></textarea>
                                 <span id="msgaddress"></span>
                             </div>
                         </div>

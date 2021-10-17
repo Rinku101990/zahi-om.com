@@ -75,167 +75,405 @@ class Home extends MY_Controller {
   
     public function index()
 	{ 		
-	
 	    $content['banners']=$this->Home_Model->get_banner_list($this->table_banners);
-	    //$content['category_list']=$this->Home_Model->get_category_list($this->table_category);
+	    $content['seller']=$this->Home_Model->vendor_list($this->table_vendor);
 	    $content['hot_product']=$this->Home_Model->hot_product_list($this->table_products);
 	    $content['recent_product']=$this->Home_Model->recent_product_list($this->table_products);
 	    $content['featured_product']=$this->Home_Model->featured_product_list($this->table_products);
-	    //$content['trending_product']=$this->Home_Model->trending_product_list($this->table_products);
-	    //$content['supplier']=$this->Home_Model->supplier_product_list('1',$this->table_products);
-	    //$content['manufacture']=$this->Home_Model->supplier_product_list('2',$this->table_products);
-	   // $content['wholesaler']=$this->Home_Model->supplier_product_list('3',$this->table_products);
-	    //$content['retailer']=$this->Home_Model->supplier_product_list('4',$this->table_products);
-	    //$content['brand_list']=$this->Home_Model->brand_list($this->table_brand);
-	    $content['seller']=$this->Home_Model->vendor_list($this->table_vendor);
-	   // $content['blog']=$this->Home_Model->blog_list($this->table_blogs);
-	   // $content['page'] = $this->Home_Model->get_page('8',$this->table_page);
-	//     	echo"<pre>";
-	// print_r($content['hot_product'])   ;
-	// die;
-		//$content['subview']='home/home';
+		//print("<pre>".print_r($content['featured_product'],true)."</pre>");die;
 		$this->load->view('home/home', $content);
-		
 	}
 
 	public function categories()
 	{ 	  
-       $url_slug=$this->uri->segment(2);	  
-	   $content['products']=$this->Home_Model->categories_product_list($url_slug,$this->table_products);
-	   $content['category']=$this->Home_Model->get_category_list($this->table_category);
-	   $content['brand_list']=$this->Home_Model->brand_list($this->table_brand);	
-	   $content['color']=$this->Home_Model->color_list($this->table_option);
-	   $content['size']=$this->Home_Model->size_list($this->table_option);
-	   if(empty($content['products'][0]->p_cate)){
-	   	$content['filter_categoty']='';}
+       	$url_slug=$this->uri->segment(2);	  
+	   	$content['products']=$this->Home_Model->categories_product_list($url_slug,$this->table_products);
+	   	$content['category']=$this->Home_Model->get_category_list($this->table_category);
+	   	$content['brand_list']=$this->Home_Model->brand_list($this->table_brand);	
+	   	$content['color']=$this->Home_Model->color_list($this->table_option);
+	   	$content['size']=$this->Home_Model->size_list($this->table_option);
+	   	if(empty($content['products'][0]->p_cate)){
+	   		$content['filter_categoty']='';}
 	   	else{ $content['filter_categoty']=$content['products'][0]->p_cate;}
-       if(empty($content['products'][0]->p_scate)){
-       	$content['filter_sub_categoty']='';}
+       	
+		if(empty($content['products'][0]->p_scate)){
+       		$content['filter_sub_categoty']='';}
        	else{ $content['filter_sub_categoty']=$content['products'][0]->p_scate;}
-        if(empty($content['products'][0]->p_child)){
+        
+		if(empty($content['products'][0]->p_child)){
         	$content['filter_child_categoty']='';}
-        	else{ $content['filter_child_categoty']=$content['products'][0]->p_child;}
-       $category=$this->Home_Model->signle_lable('cate_slug',$url_slug,$this->table_category);     
-       $content['p_category'] =$category->cate_id;   
-        $content['banner_img'] =cate_img($category->cate_id);
-	   $content['subview']='home/products';
-	   $this->load->view('layout', $content);
+        else{ $content['filter_child_categoty']=$content['products'][0]->p_child;}
+       	
+		$category=$this->Home_Model->signle_lable('cate_slug',$url_slug,$this->table_category);     
+       	$content['p_category'] =$category->cate_id;   
+		$content['banner_img'] =cate_img($category->cate_id);
+	   	$content['subview']='home/products';
+	   	$this->load->view('layout', $content);
 		
 	}
 	
 	
  public function eid_collection()
-	{ 	  
-       //$url_slug='6';
-     // $content['cate_name']=$this->Home_Model->cate_cate_name($url_slug,$this->table_category);  
-	   $content['products']=$this->Home_Model->get_eid_product_list($this->table_products);
-	   $content['category']=$this->Home_Model->get_category_list($this->table_category);
-	   $content['brand_list']=$this->Home_Model->brand_list($this->table_brand);	
-	   $content['color']=$this->Home_Model->color_list($this->table_option);
-	   $content['size']=$this->Home_Model->size_list($this->table_option);
-	      $content['p_eid']=1;
- 
-	   // $content['subview']='home/products';
-	   $this->load->view('home/eid_collection', $content);
+	{ 	    
+	   	$content['products']=$this->Home_Model->get_eid_product_list($this->table_products);
+	   	$content['category']=$this->Home_Model->get_category_list($this->table_category);
+	   	$content['brand_list']=$this->Home_Model->brand_list($this->table_brand);	
+	   	$content['color']=$this->Home_Model->color_list($this->table_option);
+	   	$content['size']=$this->Home_Model->size_list($this->table_option);
+	    $content['p_eid']=1;
+	   	$this->load->view('home/eid_collection', $content);
 		
 	}
 
 
+ 
+    // public function category()
+	// { 	  
+    //    	$url_slug=decode($this->uri->segment(2));
+	   	
+    //   	$content['cate_name']=$this->Home_Model->cate_cate_name($url_slug,$this->table_category);  
+	//    	$content['products']=$this->Home_Model->get_cate_product_list($url_slug,$this->table_products);
+	//    	$content['category']=$this->Home_Model->get_category_list($this->table_category);
+	//    	$content['brand_list']=$this->Home_Model->brand_list($this->table_brand);	
+	//    	$content['color']=$this->Home_Model->color_list($this->table_option);
+	//    	$content['size']=$this->Home_Model->size_list($this->table_option);
+	//     if($url_slug=='3'){
+    //    		$content['p_hot'] ='1';  
+    //    	}elseif(empty($content['products'][0]->p_cate)){
+	//    		$content['filter_categoty']=$url_slug;}
+	//    	else{  $content['p_category'] =$url_slug;  }
+       	
+	// 	if(empty($content['products'][0]->p_scate)){
+    //    		$content['filter_sub_categoty']='';}
+    //    	else{ $content['filter_sub_categoty']=$content['products'][0]->p_scate;}
+        
+	// 	if(empty($content['products'][0]->p_child)){
+    //     	$content['filter_child_categoty']='';}
+    //     else{ $content['filter_child_categoty']=$content['products'][0]->p_child;}
+       	
+	// 	$category=$this->Home_Model->signle_lable('mn_slug',$url_slug,$this->table_navigation);      
+    //    	$content['banner_img'] =category_img($url_slug); 
+	// 	   $this->load->view('home/products', $content);
+	// }
  
     public function category()
 	{ 	  
-       $url_slug=decode($this->uri->segment(2));
-      $content['cate_name']=$this->Home_Model->cate_cate_name($url_slug,$this->table_category);  
-	   $content['products']=$this->Home_Model->get_cate_product_list($url_slug,$this->table_products);
-	   $content['category']=$this->Home_Model->get_category_list($this->table_category);
-	   $content['brand_list']=$this->Home_Model->brand_list($this->table_brand);	
-	   $content['color']=$this->Home_Model->color_list($this->table_option);
-	   $content['size']=$this->Home_Model->size_list($this->table_option);
+       	$url_slug=decode($this->uri->segment(2));
+	   	
+      	$content['cate_name']=$this->Home_Model->cate_cate_name($url_slug,$this->table_category);  
+	   	$content['products']=$this->Home_Model->get_cate_product_list($url_slug,$this->table_products);
+	   	$content['category']=$this->Home_Model->get_category_list($this->table_category);
+	   	$content['brand_list']=$this->Home_Model->brand_list($this->table_brand);	
+	   	$content['color']=$this->Home_Model->color_list($this->table_option);
+	   	$content['size']=$this->Home_Model->size_list($this->table_option);
 	    if($url_slug=='3'){
-       	$content['p_hot'] ='1';  
-       }elseif(empty($content['products'][0]->p_cate)){
-	   	$content['filter_categoty']=$url_slug;}
+       		$content['p_hot'] ='1';  
+       	}elseif(empty($content['products'][0]->p_cate)){
+	   		$content['filter_categoty']=$url_slug;}
 	   	else{  $content['p_category'] =$url_slug;  }
-       if(empty($content['products'][0]->p_scate)){
-       	$content['filter_sub_categoty']='';}
+       	
+		if(empty($content['products'][0]->p_scate)){
+       		$content['filter_sub_categoty']='';}
        	else{ $content['filter_sub_categoty']=$content['products'][0]->p_scate;}
-        if(empty($content['products'][0]->p_child)){
+        
+		if(empty($content['products'][0]->p_child)){
         	$content['filter_child_categoty']='';}
-        	else{ $content['filter_child_categoty']=$content['products'][0]->p_child;}
-       $category=$this->Home_Model->signle_lable('mn_slug',$url_slug,$this->table_navigation);      
-    //   if($url_slug=='3'){
-    //   	$content['p_hot'] ='1';  
-    //   }else{      
-    //   $content['p_category'] =$url_slug;  
-    //   }        
-       $content['banner_img'] =category_img($url_slug); 
-	   // $content['subview']='home/products';
-	   $this->load->view('home/products', $content);
+        else{ $content['filter_child_categoty']=$content['products'][0]->p_child;}
+       	
+		$category=$this->Home_Model->signle_lable('mn_slug',$url_slug,$this->table_navigation);      
+       	$content['banner_img'] =category_img($url_slug); 
+	   
+	   	$page=$this->uri->segment(4);	
+		sleep(1); 
+		$brand = $this->input->post('brand');
+		$color = $this->input->post('color');
+		$size = $this->input->post('size');
+		$price =$this->input->post('price');
+		$grade = $this->input->post('grade');	
+		$condition = $this->input->post('condition');	
+		$category =$this->input->post('category');
+		$sub_category = $this->input->post('sub_category');	
+		$category2 =$this->input->post('category2');
+		$sub_category2 = $this->input->post('sub_category2');	
+		$child_category = $this->input->post('child_category');
+		$hot =$this->input->post('hot');
+		$featured = $this->input->post('featured');	
+		$trending = $this->input->post('trending');
+		$eid = $this->input->post('eid');
+		$supplier = $this->input->post('supplier');	
+		$newest_first = $this->input->post('newest_first');
+		//pagination
+		$total_product=$this->Home_Model->count_all($brand,$color,$size,$price,$grade,$condition,$category,$category2,$sub_category,$sub_category2,$child_category,$hot,$featured,$trending,$eid,$supplier,$newest_first);
+		$this->load->library('pagination');
+		$config = array();
+		$config['base_url'] = base_url('category/'.$this->uri->segment(2).'/'.$this->uri->segment(3));
+		$config['total_rows'] = $total_product;
+		$config['per_page'] = 12;
+		$config['uri_segment'] =4;
+		$config['use_page_numbers'] = TRUE;
+		$config['full_tag_open'] = '<div class="col-lg-12"><div class="aiz-pagination aiz-pagination-center mt-4" align="center"><ul class="pagination">';
+		$config['full_tag_close'] = '</ul>';
+		$config['first_tag_open'] = ' <li class="page-item">';
+		$config['first_tag_close'] = '</li>';
+		$config['last_tag_open'] = ' <li class="page-item">';
+		$config['last_tag_close'] = '</li>';
+		$config['next_link'] = '&gt;';
+		$config['next_tag_open'] = ' <li class="page-item">';
+		$config['next_tag_close'] = '</li>';
+		$config['prev_link'] = '&lt;';
+		$config['prev_tag_open'] = ' <li class="page-item">';
+		$config['prev_tag_close'] = '</li>';
+		$config['cur_tag_open'] = '<li class="page-item active" aria-current="page">';
+		$config['cur_tag_close'] = '</li>';
+		$config['num_tag_open'] = ' <li class="page-item">';
+		$config['num_tag_close'] = '</li>';
+		$config['num_links'] = 4;
+		$this->pagination->initialize($config);
+		// $page = $this->uri->segment(4);
+		$start = ($page) * $config['per_page'];
+		//echo$config['per_page'];
+		//end pagination
+		$content['filterProducts'] = $this->Home_Model->product_data($config['per_page'],$start,$brand,$color,$size,$price,$grade,$condition,$category,$category2,$sub_category,$sub_category2,$child_category,$hot,$featured,$trending,$eid,$supplier,$newest_first);
+		//print("<pre>".print_r($content['filterProducts'],true)."</pre>");die;
+		//echo $pagination=$this->pagination->create_links();
+	   	// $content['subview']='home/products';
+	   	$this->load->view('home/products', $content);
 		
 	}
+
+	// public function sub_category()
+	// { 	  
+    //    $id=decode($this->uri->segment(2));   
+    //    $content['cate_name']=$this->Home_Model->cate_sub_name($id,$this->table_scategory);      
+	//    $content['category_list']=$this->Home_Model->get_category_list($this->table_category);
+	//    $content['products']=$this->Home_Model->get_sub_cate_product_list($id,$this->table_products);
+	//    $content['category']=$this->Home_Model->get_category_list($this->table_category);
+
+	//    $content['brand_list']=$this->Home_Model->brand_list($this->table_brand);	
+	//    $content['color']=$this->Home_Model->color_list($this->table_option);
+	//    $content['size']=$this->Home_Model->size_list($this->table_option);
+	//    if(empty($content['products'][0]->p_cate)){
+	//    	$content['filter_categoty']='';}
+	//    	else{ $content['filter_categoty']=$content['products'][0]->p_cate;}
+    //    if(empty($content['products'][0]->p_scate)){
+    //    	$content['filter_sub_categoty']=$id;}
+    //    	 else{  $content['p_scategory'] =$id; }
+    //     if(empty($content['products'][0]->p_child)){
+    //     	$content['filter_child_categoty']='';}
+    //     	else{ $content['filter_child_categoty']=$content['products'][0]->p_child;}      
+    //    $content['p_category'] =cate_id($id);   
+    //     //$content['p_scategory'] =$id;   
+    //     $content['banner_img'] =scate_img($id);
+    //     // echo"<pre>";
+    //     // print_r($content);
+    //     // die; 
+	//    //$content['subview']='home/products';
+	//    $this->load->view('home/products', $content);
+		
+	// }
 
     public function sub_category()
 	{ 	  
-       $id=decode($this->uri->segment(2));   
-       $content['cate_name']=$this->Home_Model->cate_sub_name($id,$this->table_scategory);      
-	   $content['category_list']=$this->Home_Model->get_category_list($this->table_category);
-	   $content['products']=$this->Home_Model->get_sub_cate_product_list($id,$this->table_products);
-	   $content['category']=$this->Home_Model->get_category_list($this->table_category);
+       	$id=decode($this->uri->segment(2));   
+       	$content['cate_name']=$this->Home_Model->cate_sub_name($id,$this->table_scategory);      
+	   	$content['category_list']=$this->Home_Model->get_category_list($this->table_category);
+	   	$content['products']=$this->Home_Model->get_sub_cate_product_list($id,$this->table_products);
+	   	$content['category']=$this->Home_Model->get_category_list($this->table_category);
 
-	   $content['brand_list']=$this->Home_Model->brand_list($this->table_brand);	
-	   $content['color']=$this->Home_Model->color_list($this->table_option);
-	   $content['size']=$this->Home_Model->size_list($this->table_option);
-	   if(empty($content['products'][0]->p_cate)){
-	   	$content['filter_categoty']='';}
+	   	$content['brand_list']=$this->Home_Model->brand_list($this->table_brand);	
+	   	$content['color']=$this->Home_Model->color_list($this->table_option);
+	   	$content['size']=$this->Home_Model->size_list($this->table_option);
+	   	if(empty($content['products'][0]->p_cate)){
+	   		$content['filter_categoty']='';}
 	   	else{ $content['filter_categoty']=$content['products'][0]->p_cate;}
-       if(empty($content['products'][0]->p_scate)){
-       	$content['filter_sub_categoty']=$id;}
-       	 else{  $content['p_scategory'] =$id; }
-        if(empty($content['products'][0]->p_child)){
+       	
+		if(empty($content['products'][0]->p_scate)){
+       		$content['filter_sub_categoty']=$id;}
+       	else{  $content['p_scategory'] =$id; }
+        
+		if(empty($content['products'][0]->p_child)){
         	$content['filter_child_categoty']='';}
-        	else{ $content['filter_child_categoty']=$content['products'][0]->p_child;}      
-       $content['p_category'] =cate_id($id);   
+        else{ $content['filter_child_categoty']=$content['products'][0]->p_child;}      
+       	$content['p_category'] =cate_id($id);   
         //$content['p_scategory'] =$id;   
         $content['banner_img'] =scate_img($id);
-        // echo"<pre>";
-        // print_r($content);
-        // die; 
-	   //$content['subview']='home/products';
+			
+		$page=$this->uri->segment(4);	
+		sleep(1); 
+		$brand = $this->input->post('brand');
+		$color = $this->input->post('color');
+		$size = $this->input->post('size');
+		$price =$this->input->post('price');
+		$grade = $this->input->post('grade');	
+		$condition = $this->input->post('condition');	
+		$category =$this->input->post('category');
+		$sub_category = $this->input->post('sub_category');	
+		$category2 =$this->input->post('category2');
+		$sub_category2 = $this->input->post('sub_category2');	
+		$child_category = $this->input->post('child_category');
+		$hot =$this->input->post('hot');
+		$featured = $this->input->post('featured');	
+		$trending = $this->input->post('trending');
+		$eid = $this->input->post('eid');
+		$supplier = $this->input->post('supplier');	
+		$newest_first = $this->input->post('newest_first');
+		//pagination
+		$total_product=$this->Home_Model->count_all($brand,$color,$size,$price,$grade,$condition,$category,$category2,$sub_category,$sub_category2,$child_category,$hot,$featured,$trending,$eid,$supplier,$newest_first);
+		$this->load->library('pagination');
+		$config = array();
+		$config['base_url'] = base_url('sub-category/'.$this->uri->segment(2).'/'.$this->uri->segment(3));
+		$config['total_rows'] = $total_product;
+		$config['per_page'] = 12;
+		$config['uri_segment'] =4;
+		$config['use_page_numbers'] = TRUE;
+		$config['full_tag_open'] = '<div class="col-lg-12"><div class="aiz-pagination aiz-pagination-center mt-4" align="center"><ul class="pagination">';
+		$config['full_tag_close'] = '</ul>';
+		$config['first_tag_open'] = ' <li class="page-item">';
+		$config['first_tag_close'] = '</li>';
+		$config['last_tag_open'] = ' <li class="page-item">';
+		$config['last_tag_close'] = '</li>';
+		$config['next_link'] = '&gt;';
+		$config['next_tag_open'] = ' <li class="page-item">';
+		$config['next_tag_close'] = '</li>';
+		$config['prev_link'] = '&lt;';
+		$config['prev_tag_open'] = ' <li class="page-item">';
+		$config['prev_tag_close'] = '</li>';
+		$config['cur_tag_open'] = '<li class="page-item active" aria-current="page">';
+		$config['cur_tag_close'] = '</li>';
+		$config['num_tag_open'] = ' <li class="page-item">';
+		$config['num_tag_close'] = '</li>';
+		$config['num_links'] = 4;
+		$this->pagination->initialize($config);
+		// $page = $this->uri->segment(4);
+		$start = ($page) * $config['per_page'];
+		//echo$config['per_page'];
+		//end pagination
+		$content['filterProducts'] = $this->Home_Model->product_data($config['per_page'],$start,$brand,$color,$size,$price,$grade,$condition,$category,$category2,$sub_category,$sub_category2,$child_category,$hot,$featured,$trending,$eid,$supplier,$newest_first);
+
 	   $this->load->view('home/products', $content);
 		
 	}
 
+	// public function child_category()
+	// { 	  
+    //    	$id=decode($this->uri->segment(2)); 
+    //    	$content['cate_name']=$this->Home_Model->cate_child_name($id,$this->table_child_category);
+	//    	$content['category_list']=$this->Home_Model->get_category_list($this->table_category);
+	//    	$content['products']=$this->Home_Model->get_child_cate_product_list($id,$this->table_products);
+	//    	//print("<pre>".print_r($content['products'],true)."</pre>");die;
+	//    	$content['category']=$this->Home_Model->get_category_list($this->table_category);
+	//    	$content['brand_list']=$this->Home_Model->brand_list($this->table_brand);	
+	//    	$content['color']=$this->Home_Model->color_list($this->table_option);
+	//    	$content['size']=$this->Home_Model->size_list($this->table_option);	
+
+	//    	if(empty($content['products'][0]->p_cate)){
+	//    		$content['filter_categoty']='';}
+	//    	else{ $content['filter_categoty']=$content['products'][0]->p_cate;}
+       	
+	// 	if(empty($content['products'][0]->p_scate)){
+    //    		$content['filter_sub_categoty']='';}
+    //    	else{ $content['filter_sub_categoty']=$content['products'][0]->p_scate;}
+        
+	// 	if(empty($content['products'][0]->p_child)){
+    //     	$content['filter_child_categoty']='';}
+    // 	else{ $content['filter_child_categoty']=$content['products'][0]->p_child;}
+		
+	// 	if(!empty(child_img($id))){
+	// 		$img=child_img($id);
+	// 	}else{$img=scate_img(scate($id));}
+    //    	$content['p_chcategory'] =$id; 
+    //    	$content['p_category'] =child_cate_id($id);  
+    //     $content['p_scategory'] =scate($id); 	 
+    //     $content['banner_img']=$img; 
+	// 	// $content['subview']='home/products';
+	//    	$this->load->view('home/products', $content);
+	// }
+
 	public function child_category()
 	{ 	  
-       $id=decode($this->uri->segment(2)); 
-       $content['cate_name']=$this->Home_Model->cate_child_name($id,$this->table_child_category);
-       
-	   $content['category_list']=$this->Home_Model->get_category_list($this->table_category);
-	   $content['products']=$this->Home_Model->get_child_cate_product_list($id,$this->table_products);
-	   $content['category']=$this->Home_Model->get_category_list($this->table_category);
-	   $content['brand_list']=$this->Home_Model->brand_list($this->table_brand);	
-	   $content['color']=$this->Home_Model->color_list($this->table_option);
-	   $content['size']=$this->Home_Model->size_list($this->table_option);	
+       	$id=decode($this->uri->segment(2)); 
+       	$content['cate_name']=$this->Home_Model->cate_child_name($id,$this->table_child_category);
+	   	$content['category_list']=$this->Home_Model->get_category_list($this->table_category);
+	   	$content['products']=$this->Home_Model->get_child_cate_product_list($id,$this->table_products);
+	   	//print("<pre>".print_r($content['products'],true)."</pre>");die;
+	   	$content['category']=$this->Home_Model->get_category_list($this->table_category);
+	   	$content['brand_list']=$this->Home_Model->brand_list($this->table_brand);	
+	   	$content['color']=$this->Home_Model->color_list($this->table_option);
+	   	$content['size']=$this->Home_Model->size_list($this->table_option);	
 
-	   if(empty($content['products'][0]->p_cate)){
-	   	$content['filter_categoty']='';}
+	   	if(empty($content['products'][0]->p_cate)){
+	   		$content['filter_categoty']='';}
 	   	else{ $content['filter_categoty']=$content['products'][0]->p_cate;}
-       if(empty($content['products'][0]->p_scate)){
-       	$content['filter_sub_categoty']='';}
+       	
+		if(empty($content['products'][0]->p_scate)){
+       		$content['filter_sub_categoty']='';}
        	else{ $content['filter_sub_categoty']=$content['products'][0]->p_scate;}
-        if(empty($content['products'][0]->p_child)){
+        
+		if(empty($content['products'][0]->p_child)){
         	$content['filter_child_categoty']='';}
-        	else{ $content['filter_child_categoty']=$content['products'][0]->p_child;}
-        	if(!empty(child_img($id))){
-        		$img=child_img($id);
-        	}else{$img=scate_img(scate($id));}
-       $content['p_chcategory'] =$id; 
-       $content['p_category'] =child_cate_id($id);  
-        $content['p_scategory'] =scate($id); 	 
-          $content['banner_img']=$img; 
-	  // $content['subview']='home/products';
-	   $this->load->view('home/products', $content);
+    	else{ $content['filter_child_categoty']=$content['products'][0]->p_child;}
 		
+		if(!empty(child_img($id))){
+			$img=child_img($id);
+		}else{$img=scate_img(scate($id));}
+       	$content['p_chcategory'] =$id; 
+       	$content['p_category'] =child_cate_id($id);  
+        $content['p_scategory'] =scate($id); 	 
+        $content['banner_img']=$img; 
+		
+		$page=$this->uri->segment(4);	
+		sleep(1); 
+		$brand = $this->input->post('brand');
+		$color = $this->input->post('color');
+		$size = $this->input->post('size');
+		$price =$this->input->post('price');
+		$grade = $this->input->post('grade');	
+		$condition = $this->input->post('condition');	
+		$category =$this->input->post('category');
+		$sub_category = $this->input->post('sub_category');	
+		$category2 =$this->input->post('category2');
+		$sub_category2 = $this->input->post('sub_category2');	
+		$child_category = $this->input->post('child_category');
+		$hot =$this->input->post('hot');
+		$featured = $this->input->post('featured');	
+		$trending = $this->input->post('trending');
+		$eid = $this->input->post('eid');
+		$supplier = $this->input->post('supplier');	
+		$newest_first = $this->input->post('newest_first');
+		//pagination
+		$total_product=$this->Home_Model->count_all($brand,$color,$size,$price,$grade,$condition,$category,$category2,$sub_category,$sub_category2,$child_category,$hot,$featured,$trending,$eid,$supplier,$newest_first);
+		$this->load->library('pagination');
+		$config = array();
+		$config['base_url'] = base_url('child-category/'.$this->uri->segment(2).'/'.$this->uri->segment(3));
+		$config['total_rows'] = $total_product;
+		$config['per_page'] = 12;
+		$config['uri_segment'] =4;
+		$config['use_page_numbers'] = TRUE;
+		$config['full_tag_open'] = '<div class="col-lg-12"><div class="aiz-pagination aiz-pagination-center mt-4" align="center"><ul class="pagination">';
+		$config['full_tag_close'] = '</ul>';
+		$config['first_tag_open'] = ' <li class="page-item">';
+		$config['first_tag_close'] = '</li>';
+		$config['last_tag_open'] = ' <li class="page-item">';
+		$config['last_tag_close'] = '</li>';
+		$config['next_link'] = '&gt;';
+		$config['next_tag_open'] = ' <li class="page-item">';
+		$config['next_tag_close'] = '</li>';
+		$config['prev_link'] = '&lt;';
+		$config['prev_tag_open'] = ' <li class="page-item">';
+		$config['prev_tag_close'] = '</li>';
+		$config['cur_tag_open'] = '<li class="page-item active" aria-current="page">';
+		$config['cur_tag_close'] = '</li>';
+		$config['num_tag_open'] = ' <li class="page-item">';
+		$config['num_tag_close'] = '</li>';
+		$config['num_links'] = 4;
+		$this->pagination->initialize($config);
+		// $page = $this->uri->segment(4);
+		$start = ($page) * $config['per_page'];
+		//echo$config['per_page'];
+		//end pagination
+		$content['filterProducts'] = $this->Home_Model->product_data($config['per_page'],$start,$brand,$color,$size,$price,$grade,$condition,$category,$category2,$sub_category,$sub_category2,$child_category,$hot,$featured,$trending,$eid,$supplier,$newest_first);
+
+	   	$this->load->view('home/products', $content);
 	}
 
 	public function hot_products()
