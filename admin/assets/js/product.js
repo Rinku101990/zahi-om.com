@@ -1786,7 +1786,7 @@ $(".ProductView").click(function(){
 	   	$('#cancel_vndid').val(vndid);
 	   	$('#cancel_opid').val(pid);  
 		$("#cancel_ordid").val(ordid);     
-   });
+   	});
 
    /* Cancel_submit  On click */
    $(".CancelSubmitAdminForm ").click(function()
@@ -1798,7 +1798,7 @@ $(".ProductView").click(function(){
 	   let pcheck       = true;     
 	   /* Validate Password Input Fields Value */
 		if($('#reason_comment').val().length == 0){ 
-		$('#msgcomment').html('<span style="color:red;">This field is required.</span>'); pcheck=false; }
+			$('#msgcomment').html('<span style="color:red;">This field is required.</span>'); pcheck=false; }
 	   	else{ $('#msgcomment').html(' '); pcheck = true; }
 		 
 	   if(check && pcheck){
@@ -1814,6 +1814,7 @@ $(".ProductView").click(function(){
 			   },
 			   success: function(response)
 			   {
+				   //console.log(response);
 				   if(response == 'Failed'){
 					  	$("#CancelItemFromAdminResponse").html('<div class="alert alert-danger alert-dismissible fade show" role="alert"> <span class="alert-inner--icon"><i class="fe fe-slash "></i></span> <span class="alert-inner--text"><strong>Oops!</strong> Unable to Account .Some error occurred..</span> <button type="button" class="close text-black" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button> </div>');
 					  	$(".CancelSubmitAdminForm").html('Retry');

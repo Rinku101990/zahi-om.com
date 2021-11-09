@@ -121,28 +121,28 @@
                               <td class="text-right"><?=currency($this->website->web_currency);?><?php echo $ordValue->pro_price; /*if($ordValue->pro_special_price!=''){echo $ordValue->pro_special_price;}else{echo $ordValue->pro_selling_price;};*/ ?></td>
                               <td class="text-right"><?=currency($this->website->web_currency);?><?php echo $ordValue->pro_price;/* if($ordValue->pro_special_price!=''){echo $ordValue->pro_special_price;}else{echo $ordValue->pro_selling_price;};*/ ?></td>
                               <td class="text-right">
-                                 <?php if(!empty($cancelExchange)){ foreach($cancelExchange as $canExc){ 
+                                 <?php if(!empty($cancelExchange)){ foreach($cancelExchange as $canExc){
                                     if($canExc->c_pro_id==$ordValue->pro_id){ ?>
-                                 <?php if($canExc->return_type=='1'){ ?>
-                                    <?php if($canExc->c_response!=''){ ?>
-                                       <a href="javascript:void(0);" style="color: #ca1212;" class="returnView" returnId="<?php echo $canExc->c_id;?>"  url="<?=base_url();?>"><b><?php echo $canExc->c_status; ?></b></a><br>
-                                    <?php }else{ ?>
-                                       <a href="javascript:void(0);" style="color: #ca1212;" class="returnView" returnId="<?php echo $canExc->c_id;?>"  url="<?=base_url();?>">Cancellation request</a><br>
-                                    <?php } ?>
-                                 <?php }else if($canExc->return_type=='2'){ ?>
+                                    <?php if($canExc->return_type=='1'){ ?>
                                        <?php if($canExc->c_response!=''){ ?>
                                           <a href="javascript:void(0);" style="color: #ca1212;" class="returnView" returnId="<?php echo $canExc->c_id;?>"  url="<?=base_url();?>"><b><?php echo $canExc->c_status; ?></b></a><br>
                                        <?php }else{ ?>
-                                          <a href="javascript:void(0);" style="color: #ca1212;" class="returnView" returnId="<?php echo $canExc->c_id;?>"  url="<?=base_url();?>">Exchange request</a><br>
+                                          <a href="javascript:void(0);" style="color: #ca1212;" class="returnView" returnId="<?php echo $canExc->c_id;?>"  url="<?=base_url();?>">Cancellation request</a><br>
                                        <?php } ?>
-                                 <?php }else if($canExc->return_type=='3'){ ?>
-                                       <?php if($canExc->c_response!=''){ ?>
-                                          <a title="cancel" class="cancel-item" href="javascript:void(0);" style="color: #ca1212;"  opid="<?=encode($ordValue->pro_id);?>" vndid="<?=encode($ordValue->ord_vendors);?>" ordid="<?=encode($ordValue->ord_id);?>"><b>Cancelled</b></a><br>
-                                       <?php }else{ ?>
-                                          <a title="cancel" class="cancel-item" href="javascript:void(0);" style="color: #ca1212;"  opid="<?=encode($ordValue->pro_id);?>" vndid="<?=encode($ordValue->ord_vendors);?>" ordid="<?=encode($ordValue->ord_id);?>">Cancelled</a><br>
-                                       <?php } ?>
-                                   
-                                 <?php } } } }else{ ?>
+                                    <?php }else if($canExc->return_type=='2'){ ?>
+                                          <?php if($canExc->c_response!=''){ ?>
+                                             <a href="javascript:void(0);" style="color: #ca1212;" class="returnView" returnId="<?php echo $canExc->c_id;?>"  url="<?=base_url();?>"><b><?php echo $canExc->c_status; ?></b></a><br>
+                                          <?php }else{ ?>
+                                             <a href="javascript:void(0);" style="color: #ca1212;" class="returnView" returnId="<?php echo $canExc->c_id;?>"  url="<?=base_url();?>">Exchange request</a><br>
+                                          <?php } ?>
+                                    <?php }else if($canExc->return_type=='3'){ ?>
+                                          <?php if($canExc->c_response!=''){ ?>
+                                             <a title="cancel" class="cancel-item" href="javascript:void(0);" style="color: #ca1212;"  opid="<?=encode($ordValue->pro_id);?>" vndid="<?=encode($ordValue->ord_vendors);?>" ordid="<?=encode($ordValue->ord_id);?>"><b>Cancelled</b></a><br>
+                                          <?php }else{ ?>
+                                             <a title="cancel" class="cancel-item" href="javascript:void(0);" style="color: #ca1212;"  opid="<?=encode($ordValue->pro_id);?>" vndid="<?=encode($ordValue->ord_vendors);?>" ordid="<?=encode($ordValue->ord_id);?>">Cancelled</a><br>
+                                          <?php } ?>
+                                    <?php } } ?>
+                                    <?php } }else{ ?>
                                     <center><a title="cancel" class="cancel-item CancelItemFromAdmin" href="javascript:void(0);" style="color: #ca1212;"  opid="<?=encode($ordValue->pro_id);?>" vndid="<?=encode($ordValue->ord_vendors);?>" ordid="<?=encode($ordValue->ord_id);?>"><b>Cancel</b></i></a></center>
                                  <?php } ?>
                               </td>

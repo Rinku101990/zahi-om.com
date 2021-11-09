@@ -1,13 +1,17 @@
 <?php 
 class Orders_model extends MY_Model{
 	
-	public function get_all_orders($page,$start,$ordid,$table)
+	public function get_all_orders($page,$start,$ordid,$filter,$table)
 	{
 		$this->db->select('cust.cust_fname,cust.cust_lname,ord.*,orp.ord_vendors,orp.pro_name,orp.pro_qty,orp.pro_selling_price,orp.pro_special_price,orp.pro_size,orp.pro_color,orp.pro_serialize');
 		$this->db->join('tbl_customer cust','ord.cust_id=cust.cust_id','LEFT');
 		$this->db->join('tbl_orders_product orp','ord.ord_id=orp.ord_id','LEFT');
 		$this->db->order_by('ord.'.$ordid, 'DESC');
-		$this->db->where('ord.status', '2');	
+		$this->db->where('ord.status', '2');
+		if($filter != ''){
+			$this->db->like('cust.cust_fname', $filter);
+			$this->db->or_like('orp.pro_name', $filter);
+		}	
 		if(!empty($page))
   		{
 			$this->db->limit($page, $start);
@@ -27,13 +31,17 @@ class Orders_model extends MY_Model{
 		}
 	}
 
-	public function countAllOrdersList($ordid,$table)
+	public function countAllOrdersList($ordid,$filter,$table)
 	{
 		$this->db->select('cust.cust_fname,cust.cust_lname,ord.*,orp.ord_vendors,orp.pro_name,orp.pro_qty,orp.pro_selling_price,orp.pro_special_price,orp.pro_size,orp.pro_color,orp.pro_serialize');
 		$this->db->join('tbl_customer cust','ord.cust_id=cust.cust_id','LEFT');
 		$this->db->join('tbl_orders_product orp','ord.ord_id=orp.ord_id','LEFT');
 		$this->db->order_by('ord.'.$ordid, 'DESC');
-		$this->db->where('ord.status', '2');	
+		$this->db->where('ord.status', '2');
+		if($filter != ''){
+			$this->db->like('cust.cust_fname', $filter);
+			$this->db->or_like('orp.pro_name', $filter);
+		}	
 		$query = $this->db->get($table.' ord');
 		if($query->num_rows() > 0)
 		{
@@ -46,7 +54,7 @@ class Orders_model extends MY_Model{
 	}
 
 
-	public function get_all_orders_where($page,$start,$ordid,$seller,$status,$from,$to,$table)
+	public function get_all_orders_where($page,$start,$ordid,$seller,$status,$from,$to,$filter,$table)
 	{
 		$this->db->select('cust.cust_fname,cust.cust_lname,ord.*,orp.ord_vendors,orp.pro_name,orp.pro_qty,orp.pro_selling_price,orp.pro_special_price,orp.pro_size,orp.pro_color,orp.pro_serialize');
 		$this->db->join('tbl_customer cust','ord.cust_id=cust.cust_id','LEFT');
@@ -62,6 +70,10 @@ class Orders_model extends MY_Model{
     		$this->db->where('ord.ord_created_date <=', $to);
 	    }
 		$this->db->where('ord.status', '2');
+		if($filter != ''){
+			$this->db->like('cust.cust_fname', $filter);
+			$this->db->or_like('orp.pro_name', $filter);
+		}
 		if(!empty($page))
   		{
 			$this->db->limit($page, $start);
@@ -81,7 +93,7 @@ class Orders_model extends MY_Model{
 		}
 	}
 
-	public function countAllOrdersWhereList()
+	public function countAllOrdersWhereList($ordid,$seller,$status,$from,$to,$filter,$table)
 	{
 		$this->db->select('cust.cust_fname,cust.cust_lname,ord.*,orp.ord_vendors,orp.pro_name,orp.pro_qty,orp.pro_selling_price,orp.pro_special_price,orp.pro_size,orp.pro_color,orp.pro_serialize');
 		$this->db->join('tbl_customer cust','ord.cust_id=cust.cust_id','LEFT');
@@ -97,6 +109,10 @@ class Orders_model extends MY_Model{
     		$this->db->where('ord.ord_created_date <=', $to);
 	    }
 		$this->db->where('ord.status', '2');	
+		if($filter != ''){
+			$this->db->like('cust.cust_fname', $filter);
+			$this->db->or_like('orp.pro_name', $filter);
+		}
 		$query = $this->db->get($table.' ord');
 		if($query->num_rows() > 0)
 		{

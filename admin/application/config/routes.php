@@ -49,7 +49,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | Examples:	my-controller/index	-> my_controller/index
 |		my-controller/my-method	-> my_controller/my_method
 */
-$route['orders/(:any)'] = 'orders/index/$1';
+$route['orders/index/(:any)'] = 'orders/index/$1';
+//$route['orders/invoice/(:any)'] = 'orders/invoice/$1';
 
 $route['default_controller'] = 'login';
 $route['404_override'] = '';

@@ -45,24 +45,32 @@ class Orders extends MY_Controller {
 	    $permission=unserialize($this->login->mst_permission);
 		if($this->login->mst_role=='0' || !empty($permission['orders'])){ 
 			$content['admin']=admin_profile($this->login->mst_email);
-
-
-			//pagination
-			if(!empty($this->input->post('seller')) || !empty($this->input->post('status')) || !empty($this->input->post('from')) || !empty($this->input->post('to'))){		
-				$totalOrders=$this->Orders->countAllOrdersWhereList($this->ordid,$this->input->post('seller'),$this->input->post('status'),$this->input->post('from'),$this->input->post('to'),$this->orders);
+			/*-- Filter Keyword --*/
+			$filter = "";
+			if($this->input->post('submit') != NULL ){
+			  $filter = $this->input->post('keyword_filter');
+			  $this->session->set_userdata(array("keyword_filter"=>$filter));
 			}else{
-				$totalOrders=$this->Orders->countAllOrdersList($this->ordid,$this->orders);
+			  if($this->session->userdata('keyword_filter') != NULL){
+				$filter = $this->session->userdata('keyword_filter');
+			  }
+			} 
+			/*-- Pagination --*/
+			if(!empty($this->input->post('seller')) || !empty($this->input->post('status')) || !empty($this->input->post('from')) || !empty($this->input->post('to'))){		
+				$totalOrders=$this->Orders->countAllOrdersWhereList($this->ordid,$this->input->post('seller'),$this->input->post('status'),$this->input->post('from'),$this->input->post('to'),$this->input->post('keyword_filter'),$this->orders);
+			}else{
+				$totalOrders=$this->Orders->countAllOrdersList($this->ordid,$this->input->post('keyword_filter'),$this->orders);
 			}
 			//print_r($totalOrders);die;
-			$page=$this->uri->segment(2);
+			$page=$this->uri->segment(3);
 			//echo $page;die;
 			sleep(1);
 			$this->load->library('pagination');
 			$config = array();
-			$config['base_url'] = base_url('orders');;
+			$config['base_url'] = base_url('orders/index');;
 			$config['total_rows'] = $totalOrders;
 			$config['per_page'] = 10;
-			$config['uri_segment'] =2;
+			$config['uri_segment'] =3;
 			$config['use_page_numbers'] = TRUE;
 			$config['first_tag_open'] = ' <li>';
 			$config['first_tag_close'] = '</li>';
@@ -88,9 +96,9 @@ class Orders extends MY_Controller {
 			//echo $pagination=$this->pagination->create_links();
 
 			if(!empty($this->input->post('seller')) || !empty($this->input->post('status')) || !empty($this->input->post('from')) || !empty($this->input->post('to'))){		
-				$content['ordlist'] = $this->Orders->get_all_orders_where($config['per_page'],$start,$this->ordid,$this->input->post('seller'),$this->input->post('status'),$this->input->post('from'),$this->input->post('to'),$this->orders);
+				$content['ordlist'] = $this->Orders->get_all_orders_where($config['per_page'],$start,$this->ordid,$this->input->post('seller'),$this->input->post('status'),$this->input->post('from'),$this->input->post('to'),$this->input->post('keyword_filter'),$this->orders);
 			}else{
-				$content['ordlist'] = $this->Orders->get_all_orders($config['per_page'],$start,$this->ordid,$this->orders);
+				$content['ordlist'] = $this->Orders->get_all_orders($config['per_page'],$start,$this->ordid,$this->input->post('keyword_filter'),$this->orders);
 			}
 			$str_links = $this->pagination->create_links();
 			$content["links"] = explode('&nbsp;',$str_links );
@@ -103,14 +111,14 @@ class Orders extends MY_Controller {
 	}
 
 
-   public function design()
+    public function design()
 	{
 	    $permission=unserialize($this->login->mst_permission);
 		if($this->login->mst_role=='0' || !empty($permission['orders'])){ 
-		$content['admin']=admin_profile($this->login->mst_email);
-		$content['ordlist'] = $this->Orders->get_all_orders($this->ordid,'tbl_make_orders');
-		$content['subview']="orders/make_orders_list";
-		$this->load->view('layout', $content);
+			$content['admin']=admin_profile($this->login->mst_email);
+			$content['ordlist'] = $this->Orders->get_all_orders($this->ordid,'tbl_make_orders');
+			$content['subview']="orders/make_orders_list";
+			$this->load->view('layout', $content);
 		}else{
 			redirect('dashboard');
 		}
@@ -142,6 +150,7 @@ class Orders extends MY_Controller {
 		if(!empty($content['ordInfo'])){
 			$content['admin']=admin_profile($this->login->mst_email);
 			$content['ordPro'] = $this->Orders->get_order_product($this->ordid,$incvid,$this->ordProducts);
+			//print("<pre>".print_r($content['ordPro'],true)."</pre>");die;
 			$content['cancelExchange'] = $this->Orders->getCancelExchangeInfo($incvid);
 			//$content['reasonList'] = $this->Orders->getCancelReseanList($this->resean);
 			//print("<pre>".print_r($content['ordPro'],true)."</pre>");die;

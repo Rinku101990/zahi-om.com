@@ -121,6 +121,14 @@
                                  </form>
                               </center>
                               <br>&nbsp;
+                              <center>
+                                 <form action="" method="post">
+                                    <label style="display: inline-block; width:100px;">Keyword </label>
+                                    <input type="text" name="keyword_filter" class="form-control input-group  valid" autocomplete="off" placeholder="Type keyword to filter.." value="<?=@$_REQUEST['keyword_filter'];?>" style="width: 250px; display: inline-block; padding-left: 27px;" aria-invalid="false">
+                                    <input type="submit" value="Filter Keyword" class="btn btn-secondary btn-icon-text mr-2 mb-2 mb-md-0" style="width: 120px;display: inline-block;">
+                                 </form>
+                              </center>
+                              <br>&nbsp;
                               <table class="table table-striped table-hover" >
                                  <thead>
                                     <tr role="row">
