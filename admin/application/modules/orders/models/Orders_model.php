@@ -11,6 +11,7 @@ class Orders_model extends MY_Model{
 		if($filter != ''){
 			$this->db->like('cust.cust_fname', $filter);
 			$this->db->or_like('orp.pro_name', $filter);
+			$this->db->or_like('ord.ord_reference_no', $filter);
 		}	
 		if(!empty($page))
   		{
@@ -41,6 +42,7 @@ class Orders_model extends MY_Model{
 		if($filter != ''){
 			$this->db->like('cust.cust_fname', $filter);
 			$this->db->or_like('orp.pro_name', $filter);
+			$this->db->or_like('ord.ord_reference_no', $filter);
 		}	
 		$query = $this->db->get($table.' ord');
 		if($query->num_rows() > 0)
@@ -73,6 +75,7 @@ class Orders_model extends MY_Model{
 		if($filter != ''){
 			$this->db->like('cust.cust_fname', $filter);
 			$this->db->or_like('orp.pro_name', $filter);
+			$this->db->or_like('ord.ord_reference_no', $filter);
 		}
 		if(!empty($page))
   		{
@@ -112,6 +115,7 @@ class Orders_model extends MY_Model{
 		if($filter != ''){
 			$this->db->like('cust.cust_fname', $filter);
 			$this->db->or_like('orp.pro_name', $filter);
+			$this->db->or_like('ord.ord_reference_no', $filter);
 		}
 		$query = $this->db->get($table.' ord');
 		if($query->num_rows() > 0)
@@ -181,7 +185,7 @@ class Orders_model extends MY_Model{
 
 	public function getCancelExchangeInfo($incvid)
 	{
-		$this->db->select('c_id,c_order_id,c_pro_id,return_type,c_status,c_response');
+		$this->db->select('c_id,c_order_id,c_pro_id,return_type,c_status,c_status_type,c_response');
 		$this->db->where('c_order_id', $incvid);
 		$query = $this->db->get('tbl_cancel_item');
 		if($query->num_rows() > 0)

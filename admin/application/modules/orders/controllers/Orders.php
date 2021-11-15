@@ -174,6 +174,7 @@ class Orders extends MY_Controller {
 				$vndid=decode($this->input->post('cancel_vndid'));
 				$pid=decode($this->input->post('cancel_opid'));
 				$type=$this->input->post('return_type');
+				$status=$this->input->post('status_type');
 				$year = date('y');
 				$month = date('hm');
 				$random = rand(1000, 9999);
@@ -190,6 +191,7 @@ class Orders extends MY_Controller {
 						'c_response'=>$this->input->post('comments'),
 						'c_status'=>'Cancel',
 						'return_type'=>$type,
+						'c_status_type'=>$status,
 						'c_created'=>date('Y-m-d H:i:s') 
 					); 
 					//print("<pre>".print_r($data,true)."</pre>");die;
@@ -419,9 +421,18 @@ class Orders extends MY_Controller {
 				$cid=$this->input->post('cancel_pid');
 				$message=$this->input->post('message');
 				$action=$this->input->post('action');
+				if($this->input->post('action')=='Approved'){
+					$status_type='Approved';
+					$return_type='1';
+				}else if($this->input->post('action')=='Cancel'){
+					$status_type='Cancelled';
+					$return_type='3';
+				}
 				$data=array(		  
 					'c_response'=>$this->input->post('message'),		
 					'c_status'=>$this->input->post('action'),
+					'c_status_type'=>$status_type,
+					'return_type'=>$return_type,
 					'c_updated'=>date('Y-m-d H:i:s') 
 				); 
 				$result = $this->Orders->updateItemPolicy($cid,$data,$this->cancel);	

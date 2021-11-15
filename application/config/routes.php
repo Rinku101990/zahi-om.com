@@ -67,15 +67,16 @@ $route['vendor/(:any)/(:any)'] = 'vendor/index/$1/$2';
 $route['category/(:any)/(:any)/(:any)'] = 'home/category/$1/$2';
 $route['sub-category/(:any)/(:any)/(:any)'] = 'home/sub_category/$1/$2';
 $route['child-category/(:any)/(:any)/(:any)'] = 'home/child_category/$1/$2';
+$route['brand/(:any)/(:any)/(:any)'] = 'home/brand/$1/$2';
 /*--- End New Route Url ---*/
 
 /*--- Old Route Url ---*/ 
 $route['category/(:any)/(:any)'] = 'home/category/$1/$2';
 $route['sub-category/(:any)/(:any)'] = 'home/sub_category/$1/$2';
 $route['child-category/(:any)/(:any)'] = 'home/child_category/$1/$2';
+$route['brand/(:any)/(:any)'] = 'home/brand/$1/$2';
 /*--- End Old Route Url ---*/ 
 
-$route['brand/(:any)/(:any)'] = 'home/brand/$1/$2';
 $route['categories/(:any)'] = 'home/categories/$1';
 $route['hot-products'] = 'home/hot_products';
 $route['recent-products'] = 'home/recent_products';

@@ -512,32 +512,49 @@ function categories_product_list($fld_val,$table){
 		else return false;
 	}
 
- function count_all($brand,$color,$size,$price,$grade,$condition,$category,$category2,$sub_category,$sub_category2,$child_category,$hot,$featured,$trending,$eid,$supplier,$newest_first)
+ function count_all($url_slug,$url_slug_sub,$url_slug_child,$url_slug_brand,$brand,$color,$size,$price,$grade,$condition,$category,$category2,$sub_category,$sub_category2,$child_category,$hot,$featured,$trending,$eid,$supplier,$newest_first)
  {   
- 		$query = $this->make_query($brand,$color,$size,$price,$grade,$condition,$category,$category2,$sub_category,$sub_category2,$child_category,$hot,$featured,$trending,$eid,$supplier,$newest_first);
+ 		$query = $this->make_query($url_slug,$url_slug_sub,$url_slug_child,$url_slug_brand,$brand,$color,$size,$price,$grade,$condition,$category,$category2,$sub_category,$sub_category2,$child_category,$hot,$featured,$trending,$eid,$supplier,$newest_first);
  	$data = $this->db->query($query);
   return $data->num_rows();
 
  }
 
-function make_query($brand,$color,$size,$price,$grade,$condition,$category,$category2,$sub_category,$sub_category2,$child_category,$hot,$featured,$trending,$eid,$supplier,$newest_first)
- { 
-  $date=date('Y-m-d'); 
-  if(isset($condition))
-	 {
-  $query = "SELECT `tp`.`p_id`, `tp`.`p_cate`, `tp`.`p_scate`, `tp`.`p_child`, `tp`.`p_reference_no`, `tp`.`p_name`,`tp`.`p_name_ar`, `tp`.`p_model`, `tp`.`p_selling_price`, `tp`.`p_short_description`, `sp`.`sp_end_date`,`cate`.`cate_name`, `scate`.`scate_name`, `child`.`child_name`, `sp`.`sp_special_price`,`sp`.`sp_end_date`,`sp`.`sp_start_date`, `pimg`.`pg_img`,`brd`.`brd_name` as `vnd_name`,`vndr`.`vnd_status` FROM `tbl_product` `tp` LEFT JOIN `tbl_special_price` `sp` ON `sp`.`sp_pid`=`tp`.`p_id` LEFT JOIN `tbl_product_img` `pimg` ON `pimg`.`pg_pid`=`tp`.`p_id` LEFT JOIN `tbl_category` `cate` ON `cate`.`cate_id`=`tp`.`p_cate` LEFT JOIN `tbl_sub_category` `scate` ON `scate`.`scate_id`=`tp`.`p_scate` LEFT JOIN `tbl_child_category` `child` ON `child`.`child_id`=`tp`.`p_child` LEFT JOIN `tbl_product_link` `pl` ON `pl`.`p_id`=`tp`.`p_id` LEFT JOIN `tbl_inventory` `int` ON `int`.`int_pid`=`tp`.`p_id` LEFT JOIN `tbl_brand` `brd` ON `brd`.`brd_id`=`tp`.`p_brand` LEFT JOIN `tbl_vendor` `vndr` ON `vndr`.`vnd_id`=`brd`.`vnd_id` WHERE `tp`.`p_status` = '1' AND `tp`.`p_approval_status` = '0' AND `vndr`.`vnd_status`='1' 
+function make_query($url_slug,$url_slug_sub,$url_slug_child,$url_slug_brand,$brand,$color,$size,$price,$grade,$condition,$category,$category2,$sub_category,$sub_category2,$child_category,$hot,$featured,$trending,$eid,$supplier,$newest_first)
+{ 
+  	$date=date('Y-m-d'); 
+  	if(isset($condition))
+	{
+  		$query = "SELECT `tp`.`p_id`, `tp`.`p_cate`, `tp`.`p_scate`, `tp`.`p_child`, `tp`.`p_reference_no`, `tp`.`p_name`,`tp`.`p_name_ar`, `tp`.`p_model`, `tp`.`p_selling_price`, `tp`.`p_short_description`, `sp`.`sp_end_date`,`cate`.`cate_name`, `scate`.`scate_name`, `child`.`child_name`, `sp`.`sp_special_price`,`sp`.`sp_end_date`,`sp`.`sp_start_date`, `pimg`.`pg_img`,`brd`.`brd_name` as `vnd_name`,`vndr`.`vnd_status` FROM `tbl_product` `tp` LEFT JOIN `tbl_special_price` `sp` ON `sp`.`sp_pid`=`tp`.`p_id` LEFT JOIN `tbl_product_img` `pimg` ON `pimg`.`pg_pid`=`tp`.`p_id` LEFT JOIN `tbl_category` `cate` ON `cate`.`cate_id`=`tp`.`p_cate` LEFT JOIN `tbl_sub_category` `scate` ON `scate`.`scate_id`=`tp`.`p_scate` LEFT JOIN `tbl_child_category` `child` ON `child`.`child_id`=`tp`.`p_child` LEFT JOIN `tbl_product_link` `pl` ON `pl`.`p_id`=`tp`.`p_id` LEFT JOIN `tbl_inventory` `int` ON `int`.`int_pid`=`tp`.`p_id` LEFT JOIN `tbl_brand` `brd` ON `brd`.`brd_id`=`tp`.`p_brand` LEFT JOIN `tbl_vendor` `vndr` ON `vndr`.`vnd_id`=`brd`.`vnd_id` WHERE `tp`.`p_status` = '1' AND `tp`.`p_approval_status` = '0' AND `vndr`.`vnd_status`='1' 
     ";  
     //LEFT JOIN `tbl_vendor` `vnd` ON `vnd`.`vnd_category`=`tp`.`p_vnd_id`
-}else{
-	$query = "SELECT `tp`.`p_id`, `tp`.`p_cate`, `tp`.`p_scate`, `tp`.`p_child`, `tp`.`p_reference_no`, `tp`.`p_name`,`tp`.`p_name_ar`, `tp`.`p_model`, `tp`.`p_selling_price`, `tp`.`p_short_description`, `sp`.`sp_end_date`,`cate`.`cate_name`, `scate`.`scate_name`, `child`.`child_name`, `sp`.`sp_special_price`,`sp`.`sp_end_date`,`sp`.`sp_start_date`, `pimg`.`pg_img`,`brd`.`brd_name` as `vnd_name`,`vndr`.`vnd_status` FROM `tbl_product` `tp` LEFT JOIN `tbl_special_price` `sp` ON `sp`.`sp_pid`=`tp`.`p_id` LEFT JOIN `tbl_product_img` `pimg` ON `pimg`.`pg_pid`=`tp`.`p_id` LEFT JOIN `tbl_category` `cate` ON `cate`.`cate_id`=`tp`.`p_cate` LEFT JOIN `tbl_sub_category` `scate` ON `scate`.`scate_id`=`tp`.`p_scate` LEFT JOIN `tbl_child_category` `child` ON `child`.`child_id`=`tp`.`p_child` LEFT JOIN `tbl_product_link` `pl` ON `pl`.`p_id`=`tp`.`p_id` LEFT JOIN `tbl_brand` `brd` ON `brd`.`brd_id`=`tp`.`p_brand` LEFT JOIN `tbl_vendor` `vndr` ON `vndr`.`vnd_id`=`brd`.`vnd_id`  WHERE `tp`.`p_status` = '1' AND `tp`.`p_approval_status` = '0' AND `vndr`.`vnd_status`='1'
+	}else{
+		$query = "SELECT `tp`.`p_id`, `tp`.`p_cate`, `tp`.`p_scate`, `tp`.`p_child`, `tp`.`p_reference_no`, `tp`.`p_name`,`tp`.`p_name_ar`, `tp`.`p_model`, `tp`.`p_selling_price`, `tp`.`p_short_description`, `sp`.`sp_end_date`,`cate`.`cate_name`, `scate`.`scate_name`, `child`.`child_name`, `sp`.`sp_special_price`,`sp`.`sp_end_date`,`sp`.`sp_start_date`, `pimg`.`pg_img`,`brd`.`brd_name` as `vnd_name`,`vndr`.`vnd_status` FROM `tbl_product` `tp` LEFT JOIN `tbl_special_price` `sp` ON `sp`.`sp_pid`=`tp`.`p_id` LEFT JOIN `tbl_product_img` `pimg` ON `pimg`.`pg_pid`=`tp`.`p_id` LEFT JOIN `tbl_category` `cate` ON `cate`.`cate_id`=`tp`.`p_cate` LEFT JOIN `tbl_sub_category` `scate` ON `scate`.`scate_id`=`tp`.`p_scate` LEFT JOIN `tbl_child_category` `child` ON `child`.`child_id`=`tp`.`p_child` LEFT JOIN `tbl_product_link` `pl` ON `pl`.`p_id`=`tp`.`p_id` LEFT JOIN `tbl_brand` `brd` ON `brd`.`brd_id`=`tp`.`p_brand` LEFT JOIN `tbl_vendor` `vndr` ON `vndr`.`vnd_id`=`brd`.`vnd_id`  WHERE `tp`.`p_status` = '1' AND `tp`.`p_approval_status` = '0' AND `vndr`.`vnd_status`='1'
     ";  
-//LEFT JOIN `tbl_vendor` `vnd` ON `vnd`.`vnd_category`=`tp`.`p_vnd_id`
-}
+	//LEFT JOIN `tbl_vendor` `vnd` ON `vnd`.`vnd_category`=`tp`.`p_vnd_id`
+	}
+
+	if(!empty($url_slug))
+	{
+		$query .= " AND `tp`.`p_cate` = '".$url_slug."'";
+	}
+	if(!empty($url_slug_sub))
+	{
+		$query .= " AND `tp`.`p_scate` = '".$url_slug_sub."'";
+	}
+	if(!empty($url_slug_child))
+	{
+		$query .= " AND `tp`.`p_child` = '".$url_slug_child."'";
+	}
+	if(!empty($url_slug_brand))
+	{
+		$query .= " AND `tp`.`p_vnd_id` = '".$url_slug_brand."'";
+	}
 
     if(!empty($supplier))
-	  	{  
-	  	 $query .= " AND `tp`.`p_vnd_id` = '".$supplier."'";
-	  	}
+	{  
+		$query .= " AND `tp`.`p_vnd_id` = '".$supplier."'";
+	}
 
       if($hot=='1')
 	  	{  
@@ -648,19 +665,21 @@ function make_query($brand,$color,$size,$price,$grade,$condition,$category,$cate
  
 
 
-	function product_data($page,$start,$brand,$color,$size,$price,$grade,$condition,$category,$category2,$sub_category,$sub_category2,$child_category,$hot,$featured,$trending,$eid,$supplier,$newest_first)
+	function product_data($page,$start,$url_slug,$url_slug_sub,$url_slug_child,$url_slug_brand,$brand,$color,$size,$price,$grade,$condition,$category,$category2,$sub_category,$sub_category2,$child_category,$hot,$featured,$trending,$eid,$supplier,$newest_first)
  	{
     
- 	$query = $this->make_query($brand,$color,$size,$price,$grade,$condition,$category,$category2,$sub_category,$sub_category2,$child_category,$hot,$featured,$trending,$eid,$supplier,$newest_first);
- if(!empty($page))
-  {  
-  $product_limit=12;
- //$start = ceil($page *  $product_limit);
-   $query .= " LIMIT ".$start.", ".$page; 
-  }else  {$product_limit=12; $query .= " LIMIT 0, ".$product_limit; } 
-	  $data = $this->db->query($query);
-	// echo $this->db->last_query($data);
-	  $count = $data->num_rows();
+ 	$query = $this->make_query($url_slug,$url_slug_sub,$url_slug_child,$url_slug_brand,$brand,$color,$size,$price,$grade,$condition,$category,$category2,$sub_category,$sub_category2,$child_category,$hot,$featured,$trending,$eid,$supplier,$newest_first);
+ 	if(!empty($page))
+  	{  
+  		$product_limit=12;
+ 		//$start = ceil($page *  $product_limit);
+   		$query .= " LIMIT ".$start.", ".$page; 
+  	}else{
+		$product_limit=12; $query .= " LIMIT 0, ".$product_limit; 
+	} 
+	  	$data = $this->db->query($query);
+		//echo $this->db->last_query($data);
+	  	$count = $data->num_rows();
 
 	$output = '';
   if($data->num_rows() > 0)

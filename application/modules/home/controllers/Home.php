@@ -113,7 +113,7 @@ class Home extends MY_Controller {
 	}
 	
 	
- public function eid_collection()
+ 	public function eid_collection()
 	{ 	    
 	   	$content['products']=$this->Home_Model->get_eid_product_list($this->table_products);
 	   	$content['category']=$this->Home_Model->get_category_list($this->table_category);
@@ -158,10 +158,13 @@ class Home extends MY_Controller {
  
     public function category()
 	{ 	  
-       	$url_slug=decode($this->uri->segment(2));
-	   	
+       	$url_slug=decode($this->uri->segment(2)); /*--For Category--*/
+		$url_slug_sub=''; /*--For Sub Category--*/
+		$url_slug_child=''; /*--For Child Category--*/
+		$url_slug_brand=''; /*--For Child Category--*/
       	$content['cate_name']=$this->Home_Model->cate_cate_name($url_slug,$this->table_category);  
-	   	$content['products']=$this->Home_Model->get_cate_product_list($url_slug,$this->table_products);
+	   	//$content['products']=$this->Home_Model->get_cate_product_list($url_slug,$this->table_products);
+		//print("<pre>".print_r($content['products'],true)."</pre>");die;
 	   	$content['category']=$this->Home_Model->get_category_list($this->table_category);
 	   	$content['brand_list']=$this->Home_Model->brand_list($this->table_brand);	
 	   	$content['color']=$this->Home_Model->color_list($this->table_option);
@@ -203,7 +206,7 @@ class Home extends MY_Controller {
 		$supplier = $this->input->post('supplier');	
 		$newest_first = $this->input->post('newest_first');
 		//pagination
-		$total_product=$this->Home_Model->count_all($brand,$color,$size,$price,$grade,$condition,$category,$category2,$sub_category,$sub_category2,$child_category,$hot,$featured,$trending,$eid,$supplier,$newest_first);
+		$total_product=$this->Home_Model->count_all($url_slug,$url_slug_sub,$url_slug_child,$url_slug_brand,$brand,$color,$size,$price,$grade,$condition,$category,$category2,$sub_category,$sub_category2,$child_category,$hot,$featured,$trending,$eid,$supplier,$newest_first);
 		$this->load->library('pagination');
 		$config = array();
 		$config['base_url'] = base_url('category/'.$this->uri->segment(2).'/'.$this->uri->segment(3));
@@ -233,7 +236,7 @@ class Home extends MY_Controller {
 		$start = ($page) * $config['per_page'];
 		//echo$config['per_page'];
 		//end pagination
-		$content['filterProducts'] = $this->Home_Model->product_data($config['per_page'],$start,$brand,$color,$size,$price,$grade,$condition,$category,$category2,$sub_category,$sub_category2,$child_category,$hot,$featured,$trending,$eid,$supplier,$newest_first);
+		$content['filterProducts'] = $this->Home_Model->product_data($config['per_page'],$start,$url_slug,$url_slug_sub,$url_slug_child,$url_slug_brand,$brand,$color,$size,$price,$grade,$condition,$category,$category2,$sub_category,$sub_category2,$child_category,$hot,$featured,$trending,$eid,$supplier,$newest_first);
 		//print("<pre>".print_r($content['filterProducts'],true)."</pre>");die;
 		//echo $pagination=$this->pagination->create_links();
 	   	// $content['subview']='home/products';
@@ -274,10 +277,14 @@ class Home extends MY_Controller {
 
     public function sub_category()
 	{ 	  
-       	$id=decode($this->uri->segment(2));   
+       	$id=decode($this->uri->segment(2)); 
+		$url_slug=''; /*--For Category--*/
+		$url_slug_sub=$id; /*--For Sub Category--*/
+		$url_slug_child=''; /*--For Child Category--*/
+		$url_slug_brand=''; /*--For Child Category--*/
        	$content['cate_name']=$this->Home_Model->cate_sub_name($id,$this->table_scategory);      
 	   	$content['category_list']=$this->Home_Model->get_category_list($this->table_category);
-	   	$content['products']=$this->Home_Model->get_sub_cate_product_list($id,$this->table_products);
+	   	//$content['products']=$this->Home_Model->get_sub_cate_product_list($id,$this->table_products);
 	   	$content['category']=$this->Home_Model->get_category_list($this->table_category);
 
 	   	$content['brand_list']=$this->Home_Model->brand_list($this->table_brand);	
@@ -318,7 +325,7 @@ class Home extends MY_Controller {
 		$supplier = $this->input->post('supplier');	
 		$newest_first = $this->input->post('newest_first');
 		//pagination
-		$total_product=$this->Home_Model->count_all($brand,$color,$size,$price,$grade,$condition,$category,$category2,$sub_category,$sub_category2,$child_category,$hot,$featured,$trending,$eid,$supplier,$newest_first);
+		$total_product=$this->Home_Model->count_all($url_slug,$url_slug_sub,$url_slug_child,$url_slug_brand,$brand,$color,$size,$price,$grade,$condition,$category,$category2,$sub_category,$sub_category2,$child_category,$hot,$featured,$trending,$eid,$supplier,$newest_first);
 		$this->load->library('pagination');
 		$config = array();
 		$config['base_url'] = base_url('sub-category/'.$this->uri->segment(2).'/'.$this->uri->segment(3));
@@ -348,7 +355,7 @@ class Home extends MY_Controller {
 		$start = ($page) * $config['per_page'];
 		//echo$config['per_page'];
 		//end pagination
-		$content['filterProducts'] = $this->Home_Model->product_data($config['per_page'],$start,$brand,$color,$size,$price,$grade,$condition,$category,$category2,$sub_category,$sub_category2,$child_category,$hot,$featured,$trending,$eid,$supplier,$newest_first);
+		$content['filterProducts'] = $this->Home_Model->product_data($config['per_page'],$start,$url_slug,$url_slug_sub,$url_slug_child,$url_slug_brand,$brand,$color,$size,$price,$grade,$condition,$category,$category2,$sub_category,$sub_category2,$child_category,$hot,$featured,$trending,$eid,$supplier,$newest_first);
 
 	   $this->load->view('home/products', $content);
 		
@@ -392,6 +399,10 @@ class Home extends MY_Controller {
 	public function child_category()
 	{ 	  
        	$id=decode($this->uri->segment(2)); 
+		$url_slug=''; /*--For Category--*/
+		$url_slug_sub=''; /*--For Sub Category--*/
+		$url_slug_child=$id; /*--For Child Category--*/
+		$url_slug_brand=''; /*--For Child Category--*/
        	$content['cate_name']=$this->Home_Model->cate_child_name($id,$this->table_child_category);
 	   	$content['category_list']=$this->Home_Model->get_category_list($this->table_category);
 	   	$content['products']=$this->Home_Model->get_child_cate_product_list($id,$this->table_products);
@@ -441,7 +452,7 @@ class Home extends MY_Controller {
 		$supplier = $this->input->post('supplier');	
 		$newest_first = $this->input->post('newest_first');
 		//pagination
-		$total_product=$this->Home_Model->count_all($brand,$color,$size,$price,$grade,$condition,$category,$category2,$sub_category,$sub_category2,$child_category,$hot,$featured,$trending,$eid,$supplier,$newest_first);
+		$total_product=$this->Home_Model->count_all($url_slug,$url_slug_sub,$url_slug_child,$url_slug_brand,$brand,$color,$size,$price,$grade,$condition,$category,$category2,$sub_category,$sub_category2,$child_category,$hot,$featured,$trending,$eid,$supplier,$newest_first);
 		$this->load->library('pagination');
 		$config = array();
 		$config['base_url'] = base_url('child-category/'.$this->uri->segment(2).'/'.$this->uri->segment(3));
@@ -471,7 +482,7 @@ class Home extends MY_Controller {
 		$start = ($page) * $config['per_page'];
 		//echo$config['per_page'];
 		//end pagination
-		$content['filterProducts'] = $this->Home_Model->product_data($config['per_page'],$start,$brand,$color,$size,$price,$grade,$condition,$category,$category2,$sub_category,$sub_category2,$child_category,$hot,$featured,$trending,$eid,$supplier,$newest_first);
+		$content['filterProducts'] = $this->Home_Model->product_data($config['per_page'],$start,$url_slug,$url_slug_sub,$url_slug_child,$url_slug_brand,$brand,$color,$size,$price,$grade,$condition,$category,$category2,$sub_category,$sub_category2,$child_category,$hot,$featured,$trending,$eid,$supplier,$newest_first);
 
 	   	$this->load->view('home/products', $content);
 	}
@@ -578,23 +589,89 @@ class Home extends MY_Controller {
 
 	public function brand()
 	{ 	  
-       $url_slug=decode($this->uri->segment(2));     
-        $content['cate_name']=$this->Home_Model->cate_vendor_name($url_slug,$this->table_vendor);  
-	   $content['category_list']=$this->Home_Model->get_category_list($this->table_category);
-	   $content['products']=$this->Home_Model->get_brand_product_list($url_slug,$this->table_products);
-	   
+       	$id=decode($this->uri->segment(2));  
+		$url_slug=''; /*--For Category--*/
+		$url_slug_sub=''; /*--For Sub Category--*/
+		$url_slug_child=''; /*--For Child Category--*/
+		$url_slug_brand=$id; /*--For Child Category--*/   
+        $content['cate_name']=$this->Home_Model->cate_vendor_name($url_slug_brand,$this->table_vendor);  
+	   	$content['category_list']=$this->Home_Model->get_category_list($this->table_category);
+	   	//$content['products']=$this->Home_Model->get_brand_product_list($id,$this->table_products);
+	   	$content['category']=$this->Home_Model->get_category_list($this->table_category);
+	   	$content['brand_list']=$this->Home_Model->brand_list($this->table_brand);	
+	   	$content['color']=$this->Home_Model->color_list($this->table_option);
+	   	$content['size']=$this->Home_Model->size_list($this->table_option);
+	   	$brand=$this->Home_Model->signle_lable('brd_id',$url_slug_brand,$this->table_brand);
+       	$content['p_brand'] =$url_slug_brand;
+       	$content['banner_img']=vendor_banner_img($url_slug_brand);
+      	
+		if($url_slug_brand=='3'){
+				$content['p_hot'] ='1';  
+			}elseif(empty($content['products'][0]->p_cate)){
+				$content['filter_categoty']=$url_slug_brand;}
+			else{  $content['p_category'] =$url_slug_brand;  }
+			
+		if(empty($content['products'][0]->p_scate)){
+				$content['filter_sub_categoty']='';}
+			else{ $content['filter_sub_categoty']=$content['products'][0]->p_scate;}
+		
+		if(empty($content['products'][0]->p_child)){
+			$content['filter_child_categoty']='';}
+		else{ $content['filter_child_categoty']=$content['products'][0]->p_child;}
 
-	   $content['category']=$this->Home_Model->get_category_list($this->table_category);
-	   $content['brand_list']=$this->Home_Model->brand_list($this->table_brand);	
-	   $content['color']=$this->Home_Model->color_list($this->table_option);
-	   $content['size']=$this->Home_Model->size_list($this->table_option);
-	   $brand=$this->Home_Model->signle_lable('brd_id',$url_slug,$this->table_brand);
-       $content['p_brand'] =$url_slug;
-       $content['banner_img']=vendor_banner_img($url_slug);
-      // $content['p_category'] =$content['products'][0]->p_id;
-        	   
-	 //  $content['subview']='home/products';
-	   $this->load->view('home/products', $content);
+		$page=$this->uri->segment(4);	
+		sleep(1); 
+		$brand = $this->input->post('brand');
+		$color = $this->input->post('color');
+		$size = $this->input->post('size');
+		$price =$this->input->post('price');
+		$grade = $this->input->post('grade');	
+		$condition = $this->input->post('condition');	
+		$category =$this->input->post('category');
+		$sub_category = $this->input->post('sub_category');	
+		$category2 =$this->input->post('category2');
+		$sub_category2 = $this->input->post('sub_category2');	
+		$child_category = $this->input->post('child_category');
+		$hot =$this->input->post('hot');
+		$featured = $this->input->post('featured');	
+		$trending = $this->input->post('trending');
+		$eid = $this->input->post('eid');
+		$supplier = $this->input->post('supplier');	
+		$newest_first = $this->input->post('newest_first');
+		//pagination
+		$total_product=$this->Home_Model->count_all($url_slug,$url_slug_sub,$url_slug_child,$url_slug_brand,$brand,$color,$size,$price,$grade,$condition,$category,$category2,$sub_category,$sub_category2,$child_category,$hot,$featured,$trending,$eid,$supplier,$newest_first);
+		$this->load->library('pagination');
+		$config = array();
+		$config['base_url'] = base_url('brand/'.$this->uri->segment(2).'/'.$this->uri->segment(3));
+		$config['total_rows'] = $total_product;
+		$config['per_page'] = 12;
+		$config['uri_segment'] =4;
+		$config['use_page_numbers'] = TRUE;
+		$config['full_tag_open'] = '<div class="col-lg-12"><div class="aiz-pagination aiz-pagination-center mt-4" align="center"><ul class="pagination">';
+		$config['full_tag_close'] = '</ul>';
+		$config['first_tag_open'] = ' <li class="page-item">';
+		$config['first_tag_close'] = '</li>';
+		$config['last_tag_open'] = ' <li class="page-item">';
+		$config['last_tag_close'] = '</li>';
+		$config['next_link'] = '&gt;';
+		$config['next_tag_open'] = ' <li class="page-item">';
+		$config['next_tag_close'] = '</li>';
+		$config['prev_link'] = '&lt;';
+		$config['prev_tag_open'] = ' <li class="page-item">';
+		$config['prev_tag_close'] = '</li>';
+		$config['cur_tag_open'] = '<li class="page-item active" aria-current="page">';
+		$config['cur_tag_close'] = '</li>';
+		$config['num_tag_open'] = ' <li class="page-item">';
+		$config['num_tag_close'] = '</li>';
+		$config['num_links'] = 4;
+		$this->pagination->initialize($config);
+		// $page = $this->uri->segment(4);
+		$start = ($page) * $config['per_page'];
+		//echo$config['per_page'];
+		//end pagination
+		$content['filterProducts'] = $this->Home_Model->product_data($config['per_page'],$start,$url_slug,$url_slug_sub,$url_slug_child,$url_slug_brand,$brand,$color,$size,$price,$grade,$condition,$category,$category2,$sub_category,$sub_category2,$child_category,$hot,$featured,$trending,$eid,$supplier,$newest_first);
+
+	   	$this->load->view('home/products', $content);
 		
 	}
 

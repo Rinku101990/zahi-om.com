@@ -1719,14 +1719,14 @@ $(".ProductView").click(function(){
 				if(response!=''){		
 					$("#cancel_pid").val(response.item.c_id);			
 					$("#returnPolicyModal").modal();
-					if(response.item.return_type=='1'){
-						$("#item_title").html('Cancel Item');
-					}else{
-						$("#item_title").html('Exchange Item');
+					if(response.item.return_type===3){
+						$("#item_title").html(response.item.c_status_type);
+					}else if(response.item.return_type===2){
+						$("#item_title").html(response.item.c_status_type);
 					}
 					$(".reason").val(response.item.ocr_title);
 					$(".comments").val(response.item.c_comment);
-					$(".status").val(response.item.c_status);
+					$(".status").val(response.item.c_status_type);
 				}
 			}
 		});

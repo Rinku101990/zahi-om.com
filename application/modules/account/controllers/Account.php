@@ -117,8 +117,6 @@ class Account extends MY_Controller {
 	    }  
 	}
 
-
-
 	function profile_image()
 	{ 
 		$RequestMethod = $this->input->server('REQUEST_METHOD');
@@ -746,12 +744,13 @@ public function getSize()
 			$vndid=decode($this->input->post('cancel_vndid'));
 			$pid=decode($this->input->post('cancel_pid'));
 			$type=$this->input->post('return_type');
+			$status_type=$this->input->post('status_type');
 			$year = date('y');
 			$month = date('hm');
 			$random = rand(1000, 9999);
 			$orderReferenceID = $year.$month.$random;
 			$check=$this->Account->check_request($cust_id,$ordid,$pid,$this->table_cancel_item);
-		   if(empty($check)){
+		   	if(empty($check)){
 		   	$data=array(
 		   	   	'c_ref'=>$orderReferenceID,
                	'c_cust_id'=>$cust_id,
@@ -761,15 +760,14 @@ public function getSize()
 			   	'c_reason_id'=>$this->input->post('reason'),		
 			    'c_comment'=>$this->input->post('comments'),
 				'return_type'=>$type,
+				'c_status_type'=>$status_type,
 				'c_created'=>date('Y-m-d H:i:s') 
 		   	); 
 		  	$result = $this->Account->save($data,$this->table_cancel_item);	
 			if($result){echo'Success';}else{echo'Failed';}
 		 	}else{echo'Used';}
 		  
-		    
 		  }
-		
 	    }  
 	}
 

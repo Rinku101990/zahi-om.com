@@ -147,25 +147,28 @@
                                           <?php if(!empty($discount)){ echo "discount ".discount_per($row->pro_id)."%";} ?></span>
                                        </td>
                                        <td style="padding: 18px 6px" class="cancel<?=encode($row->pro_id);?>" >
-                                          <?php //$cencel_item=cancel_item($row->pro_id,$order->ord_id);
+                                          <?php 
                                           if(!empty($returnList)){
                                              foreach($returnList as $return){
                                              if($return->c_pro_id==$row->pro_id){
-                                                if($return->return_type=='1'){ 
+                                                if($return->return_type==3){ 
                                              ?>
                                              <?php if($return->c_response!=''){?>
-                                                <p style="line-height: 14px;color: #f51214;"><b><?php echo $return->c_status;?></b></p>
+                                                <p style="line-height: 14px;color: #f51214;"><b><?php echo $return->c_status_type;?></b></p>
                                              <?php }else{?>
                                                 <p style="line-height: 14px;color: #f51214;"><b>Cancellation Requested</b></p>
                                              <?php }?>
                                             
-                                          <?php }else if($return->return_type=='2'){ ?>
+                                          <?php }else if($return->return_type==2){ ?>
                                              <?php if($return->c_response!=''){?>
-                                                <p style="line-height: 14px;color: #f51214;"><b><?php echo $return->c_status;?></b></p>
+                                                <p style="line-height: 14px;color: #f51214;"><b><?php echo $return->c_status_type;?></b></p>
                                              <?php }else{?>
                                                 <p style="line-height: 14px;color: #f51214;"><b>Exchange Requested</b></p>
                                              <?php }?>
-
+                                          <?php }else if($return->return_type==1){ ?>
+                                             <?php if($return->c_response!=''){?>
+                                                <p style="line-height: 14px;color: #f51214;"><b><?php echo $return->c_status_type;?></b></p>
+                                             <?php }?>
                                           <?php } } } }else{?>
                                             <a title="cancel" class="cancel-item CancelItem" href="javascript:void(0);" style="color: #ca1212;"  pid="<?=encode($row->pro_id);?>" vndid="<?=encode($row->ord_vendors);?>">cancel</i></a> |
                                             <a title="exchange" class="exchange-item ExchangeItem" href="javascript:void(0);" style="color: #ca1212;"  pid="<?=encode($row->pro_id);?>" vndid="<?=encode($row->ord_vendors);?>">exchange</i></a>
@@ -205,7 +208,8 @@
                      <input type="hidden" id="cancel_ordid" name="cancel_ordid" value="<?=encode($order->ord_id);?>" >
                      <input type="hidden" id="cancel_vndid" name="cancel_vndid" >
                      <input type="hidden" id="cancel_pid" name="cancel_pid" >
-                     <input type="hidden" name="return_type" value="1">
+                     <input type="hidden" name="return_type" value="3">
+                     <input type="hidden" name="status_type" value="Cancellation Requested">
                      <div class="row">
                         <div class="col-sm-3">
                            <label class="control-label">Reason <span class="required">*</span></label>
@@ -263,6 +267,7 @@
                      <input type="hidden" id="exchange_vndid" name="cancel_vndid" >
                      <input type="hidden" id="exchange_pid" name="cancel_pid" >
                      <input type="hidden" name="return_type" value="2">
+                     <input type="hidden" name="status_type" value="Exchange Requested">
                      <div class="row">
                         <div class="col-sm-3">
                            <label class="control-label">Reason <span class="required">*</span></label>

@@ -101,9 +101,9 @@
                               <th class="text-center">Size</th>
                               <th class="text-center">Dimensions</th>
                               <th class="text-center">Qnt</th>
-                              <th class="text-right">Unit</th>
-                              <th class="text-right">Amount</th>
-                              <th class="text-right">Action</th>
+                              <th class="text-center">Unit</th>
+                              <th class="text-center">Amount</th>
+                              <th class="text-center">Action</th>
                            </tr>
                            <?php foreach($ordPro as $ordKeys=>$ordValue){ ?>
                            <tr>
@@ -118,28 +118,26 @@
                               <td class="text-center"><?php echo $ordValue->pro_size;?></td>
                               <td class="text-center"><?=unserialize($ordValue->pro_serialize);?></td>
                               <td class="text-center"><?php echo $ordValue->pro_qty;?></td>
-                              <td class="text-right"><?=currency($this->website->web_currency);?><?php echo $ordValue->pro_price; /*if($ordValue->pro_special_price!=''){echo $ordValue->pro_special_price;}else{echo $ordValue->pro_selling_price;};*/ ?></td>
-                              <td class="text-right"><?=currency($this->website->web_currency);?><?php echo $ordValue->pro_price;/* if($ordValue->pro_special_price!=''){echo $ordValue->pro_special_price;}else{echo $ordValue->pro_selling_price;};*/ ?></td>
-                              <td class="text-right">
+                              <td class="text-center"><?=currency($this->website->web_currency);?><?php echo $ordValue->pro_price; /*if($ordValue->pro_special_price!=''){echo $ordValue->pro_special_price;}else{echo $ordValue->pro_selling_price;};*/ ?></td>
+                              <td class="text-center"><?=currency($this->website->web_currency);?><?php echo $ordValue->pro_price;/* if($ordValue->pro_special_price!=''){echo $ordValue->pro_special_price;}else{echo $ordValue->pro_selling_price;};*/ ?></td>
+                              <td class="text-center">
                                  <?php if(!empty($cancelExchange)){ foreach($cancelExchange as $canExc){
                                     if($canExc->c_pro_id==$ordValue->pro_id){ ?>
                                     <?php if($canExc->return_type=='1'){ ?>
                                        <?php if($canExc->c_response!=''){ ?>
-                                          <a href="javascript:void(0);" style="color: #ca1212;" class="returnView" returnId="<?php echo $canExc->c_id;?>"  url="<?=base_url();?>"><b><?php echo $canExc->c_status; ?></b></a><br>
-                                       <?php }else{ ?>
-                                          <a href="javascript:void(0);" style="color: #ca1212;" class="returnView" returnId="<?php echo $canExc->c_id;?>"  url="<?=base_url();?>">Cancellation request</a><br>
-                                       <?php } ?>
+                                          <a href="javascript:void(0);" style="color: #ca1212;" ><b><?php echo $canExc->c_status_type; ?></b></a><br>
+                                       <?php }?>
                                     <?php }else if($canExc->return_type=='2'){ ?>
                                           <?php if($canExc->c_response!=''){ ?>
-                                             <a href="javascript:void(0);" style="color: #ca1212;" class="returnView" returnId="<?php echo $canExc->c_id;?>"  url="<?=base_url();?>"><b><?php echo $canExc->c_status; ?></b></a><br>
+                                             <a href="javascript:void(0);" style="color: #ca1212;" ><b><?php echo $canExc->c_status; ?></b></a><br>
                                           <?php }else{ ?>
-                                             <a href="javascript:void(0);" style="color: #ca1212;" class="returnView" returnId="<?php echo $canExc->c_id;?>"  url="<?=base_url();?>">Exchange request</a><br>
+                                             <a href="javascript:void(0);" style="color: #ca1212;" class="returnView" returnId="<?php echo $canExc->c_id;?>"  url="<?=base_url();?>"><b><?php echo $canExc->c_status_type; ?></b</a><br>
                                           <?php } ?>
                                     <?php }else if($canExc->return_type=='3'){ ?>
                                           <?php if($canExc->c_response!=''){ ?>
-                                             <a title="cancel" class="cancel-item" href="javascript:void(0);" style="color: #ca1212;"  opid="<?=encode($ordValue->pro_id);?>" vndid="<?=encode($ordValue->ord_vendors);?>" ordid="<?=encode($ordValue->ord_id);?>"><b>Cancelled</b></a><br>
+                                             <a title="cancel" class="cancel-item" href="javascript:void(0);" style="color: #ca1212;" ><b><?php echo $canExc->c_status_type; ?></b></i></a>
                                           <?php }else{ ?>
-                                             <a title="cancel" class="cancel-item" href="javascript:void(0);" style="color: #ca1212;"  opid="<?=encode($ordValue->pro_id);?>" vndid="<?=encode($ordValue->ord_vendors);?>" ordid="<?=encode($ordValue->ord_id);?>">Cancelled</a><br>
+                                             <a title="cancel" href="javascript:void(0);" style="color: #ca1212;" class="returnView" returnId="<?php echo $canExc->c_id;?>"  url="<?=base_url();?>"><b><?php echo $canExc->c_status_type; ?></b></i></a><br>
                                           <?php } ?>
                                     <?php } } ?>
                                     <?php } }else{ ?>
@@ -150,26 +148,26 @@
                            <?php } ?>
                            <tr>
                               <td colspan="9" class="font-w600 text-right">Coupon Code/Coupon Amount</td>
-                              <td class="text-right"><?php if(!empty($ordInfo->ord_coupon_code)){echo $ordInfo->ord_coupon_code;}else{echo "--";} ?>/<?php if(!empty($ordInfo->ord_coupon_code)){echo $ordInfo->ord_coupon_amount;}else{echo "--";}?></td>
+                              <td class="text-center"><?php if(!empty($ordInfo->ord_coupon_code)){echo $ordInfo->ord_coupon_code;}else{echo "--";} ?>/<?php if(!empty($ordInfo->ord_coupon_code)){echo $ordInfo->ord_coupon_amount;}else{echo "--";}?></td>
                            </tr>
                            <tr>
                               <td colspan="9" class="font-w600 text-right">VAT</td>
-                              <td class="text-right"><?=currency($this->website->web_currency);?><?php echo $ordInfo->ord_gst_sum;?></td>
+                              <td class="text-center"><?=currency($this->website->web_currency);?><?php echo $ordInfo->ord_gst_sum;?></td>
                            </tr>
                            <tr>
                               <td colspan="9" class="font-w600 text-right">Delivery Charge</td>
-                              <td class="text-right"><?php if($ordInfo->ord_deliver_charge!=0){echo currency($this->website->web_currency).$ordInfo->ord_deliver_charge;}else{echo "Free";};?></td>
+                              <td class="text-center"><?php if($ordInfo->ord_deliver_charge!=0){echo currency($this->website->web_currency).$ordInfo->ord_deliver_charge;}else{echo "Free";};?></td>
                            </tr>
                            <tr>
                               <td colspan="9" class="font-w600 text-right">Payable Amount</td>
-                              <td class="text-right"><?=currency($this->website->web_currency);?><?php echo $ordInfo->ord_total_amounts;?></td>
+                              <td class="text-center"><?=currency($this->website->web_currency);?><?php echo $ordInfo->ord_total_amounts;?></td>
                            </tr>
                            <tr>
                               <!-- <td colspan="5" class="text-right">
                                  <button type="button" class="btn btn-success" onclick="javascript:window.print();"><i class="si si-paper-plane"></i> Send Invoice</button>
                                  <button type="button" class="btn btn-info" onclick="javascript:window.print();"><i class="si si-printer"></i> Print Invoice</button>
                                  </td> -->
-                              <td colspan="10" class="text-right">
+                              <td colspan="10" class="text-center">
                                  <?php if($ordInfo->order_status!="Waiting"){ ?>
                                  <a href="<?php echo site_url('orders/update/'.$ordInfo->ord_id.'/'.encode("Waiting"));?>" class="btn btn-primary btn-sm"><i class="icon icon-cup"></i> Waiting</a>
                                  <?php } ?>
@@ -201,7 +199,7 @@
    <div class="modal-dialog" role="document" style="max-width: 700px;width: 700px;">
       <div class="modal-content">
          <div class="modal-header">
-            <h5 class="modal-title" id="item_title">Item Return</h5>
+            <h5 class="modal-title"><span id="item_title"></span></h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">×</span> </button>
          </div>
          <div class="modal-body">
@@ -261,7 +259,6 @@
                            <div class="form-group">
                            <select class="form-control" name="action" >
                                  <option value="Approved">Approved</option>
-                                 <option value="Decline">Decline</option>
                                  <option value="Cancel">Cancel</option>
                            </select>
                            </div>
@@ -296,6 +293,7 @@
                <input type="hidden" id="cancel_vndid" name="cancel_vndid" >
                <input type="hidden" id="cancel_opid" name="cancel_opid" >
                <input type="hidden" name="return_type" value="3">
+               <input type="hidden" name="status_type" value="Cancelled By Zahi Fashion">
                <div class="row">
                   <div class="col-sm-3">
                      <label class="control-label">Comments <span class="required">*</span></label>
