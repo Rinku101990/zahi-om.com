@@ -7,7 +7,6 @@
     <!-- Footer closed -->
     <!-- Back-to-top --><a href="#top" id="back-to-top"><i class="fa fa-angle-double-up"></i></a>
     <input type="hidden" id="site_url" name="site_url" value="<?=base_url();?>" />
-    <input type="hidden" id="current_url" name="current_url" value="<?php  echo (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";?>">
     <!-- Jquery-scripts -->
   
     <script src="<?=base_url();?>assets/js/vendors/jquery-3.2.1.min.js"></script>
@@ -249,10 +248,11 @@ function qty(e) {
             var finalvalue=string.toLowerCase();
             document.getElementById(id).value=finalvalue;
         }
-
-        function selling_price(get,id){
+    function selling_price(get,id){
             var  data=$.trim(get);           
             document.getElementById(id).value=data;
+            document.getElementById('int_selleing_price2').value=data;
+            document.getElementById('int_selleing_price3').value=data;
         }
 
  

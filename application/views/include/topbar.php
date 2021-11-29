@@ -98,10 +98,13 @@
                            </li>
                            <?php }}}?>
                            <li class="nav-item ">
+                              <a class="nav-link " href="<?=base_url('hot-offers');?>" >Hot Offers!</a>
+                           </li>
+                           <li class="nav-item ">
                               <a class="nav-link " href="<?=base_url('brands');?>" >Brands </a>
                            </li>
                             <li class="nav-item ">
-                               <a class="nav-link " href="<?=base_url('best-selling');?>" >Best Selling  </a>
+                               <a class="nav-link " href="<?=base_url('best-selling/1');?>" >Best Selling  </a>
                             </li>
                         </ul>
                      </div>
@@ -376,10 +379,13 @@
                               </li>
                               <?php }}}?>
                               <li class="nav-item ">
+                                 <a class="nav-link " href="<?=base_url('hot-offers/1');?>" >Hot Offers!</a>
+                              </li>
+                              <li class="nav-item ">
                                  <a class="nav-link " href="<?=base_url('brands');?>" >Brands </a>
                               </li>
                                <li class="nav-item ">
-                               <a class="nav-link " href="<?=base_url('best-selling');?>" >Best Selling  </a>
+                               <a class="nav-link " href="<?=base_url('best-selling/1');?>" >Best Selling  </a>
                             </li>
                            </ul>
                         </div>

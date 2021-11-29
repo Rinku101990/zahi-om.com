@@ -14,6 +14,22 @@ class Cms_model extends MY_Model{
 			}
 		
 	}
+
+ function vendor_list($fld_id,$table){	
+	
+		  $this->db->order_by($fld_id,"ASC");
+		  $this->db->where('vnd_status','1');
+		  $query=$this->db->get($table);
+		  // $this->db->last_query($query);
+		   if($query->num_rows() ==''){
+				return '';
+				}else{
+				return $query->result();
+			}
+		
+	}
+
+
 	 function get_navigation_list($fld_id,$table){	
 	
 		  $this->db->order_by($fld_id,"ASC");

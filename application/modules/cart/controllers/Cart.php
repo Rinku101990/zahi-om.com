@@ -31,20 +31,29 @@ class Cart extends MY_Controller {
 	    $this->load->view('cart/viewCart', $content);
 	}
 
-  public function get_color()
+  	public function get_color()
 	{ 
 	    $intid=$this->input->post('intid');
 	    $color=$this->Cart->get_color($intid);
 	    $special_price=$this->Cart->get_color_special($color->int_pid);
 	    if(empty($special_price)){
-	    	$result['color'] =array('int_selleing_price' => $color->int_selleing_price,
-	    		'int_available_qty' => $color->int_available_qty );
+	    	$result['color'] =array(
+				'int_selleing_price' => $color->int_selleing_price,
+	    		'int_available_qty' => $color->int_available_qty 
+			);
 	    }else{ 
-	    	$result['color'] =array('int_selleing_price' =>$special_price,
-	    		'int_available_qty' => $color->int_available_qty );
+			if($special_price->sp_price_type==0){
+				$specialPrice=$special_price->sp_special_price;
+			}else if($special_price->sp_price_type==1){
+				$specialPriceAdjust = $this->cart->format_number($special_price->sp_special_price*$color->int_selleing_price/100);
+				$specialPrice=$this->cart->format_number($color->int_selleing_price-$specialPriceAdjust);
+			}
+	    	$result['color'] =array(
+				'int_selleing_price' =>$specialPrice,
+	    		'int_available_qty' => $color->int_available_qty 
+			);
 	    }
 	    $result['size'] = $this->Cart->get_color_size($color->int_pid,$color->int_color);
-		//$result['color'] = $this->Cart->get_color($intid);
 		echo json_encode($result);
 	}
 
@@ -52,135 +61,147 @@ class Cart extends MY_Controller {
 	{   
 		$current_date=date('Y-m-d');
 		if(empty($this->input->post('sleeve'))){
-		$PID=decode($this->input->post('RefId'));
-		$qty=$this->input->post('qty');
-		 $intid=$this->input->post('intid');
-		$color = $this->Cart->get_color($intid);
-		$product = $this->Cart->product_detail($PID,$this->table_product);		
-		if($product->sp_start_date <= $current_date && $product->sp_end_date >= $current_date){
-	        $special_price=$product->sp_special_price; 
-	        $price=$product->sp_special_price;
-		}else{ 
-			$special_price='';
-	    	//$price=$product->p_selling_price; 
-	    	$price=$color->int_selleing_price; 
-	    }
-    	$img=base_url('seller/uploads/').slug($product->cate_name).'/'.slug($product->scate_name).'/'.slug($product->child_name).'/'.explode(',',$product->pg_image)[0];
-    	$product_url=base_url('product/').encode($product->p_id).'/'.slug($product->p_name);
-		$product_name=preg_replace("/([.,'])/i", '', $product->p_name);
-		if($product->p_tax=='1'){
-			$tax=tax($product->cate_id);
-		}else{
-			$tax='0';
-		}
+			$PID=decode($this->input->post('RefId'));
+			$qty=$this->input->post('qty');
+			$intid=$this->input->post('intid');
+			$color = $this->Cart->get_color($intid);
+			$product = $this->Cart->product_detail($PID,$this->table_product);		
+			if($product->sp_start_date <= $current_date && $product->sp_end_date >= $current_date){
+				if($product->sp_price_type=='0'){
+					$special_price=$product->sp_special_price; 
+					$price=$product->sp_special_price;
+				}else if($product->sp_price_type=='1'){
+					$specialPriceAdjust = $this->cart->format_number($product->sp_special_price*$product->p_selling_price/100);
+					$special_price=$this->cart->format_number($product->p_selling_price-$specialPriceAdjust);
+					$price=$special_price;
+				}
+			}else{ 
+				$special_price='';
+				//$price=$product->p_selling_price; 
+				$price=$color->int_selleing_price; 
+			}
+			$img=base_url('seller/uploads/').slug($product->cate_name).'/'.slug($product->scate_name).'/'.slug($product->child_name).'/'.explode(',',$product->pg_image)[0];
+			$product_url=base_url('product/').encode($product->p_id).'/'.slug($product->p_name);
+			$product_name=preg_replace("/([.,'])/i", '', $product->p_name);
+			if($product->p_tax=='1'){
+				$tax=tax($product->cate_id);
+			}else{
+				$tax='0';
+			}
 
-		if(!empty($this->input->post('shoulder'))){
-			$sz_shoulder="Shoulder :".$this->input->post('shoulder').' Inch <br>';
-		}else{$sz_shoulder='';}
-		if(!empty($this->input->post('bust'))){
-			$Bust="Bust :".$this->input->post('bust').' Inch <br>';
-		}else{$Bust='';}
-		if(!empty($this->input->post('waist'))){
-			$Waist="Waist :".$this->input->post('waist').' Inch <br>';
-		}else{$Waist='';}
-		if(!empty($this->input->post('hips'))){
-			$Hips="Hips :".$this->input->post('hips').' Inch <br>';
-		}else{$Hips='';}
-		if(!empty($this->input->post('length'))){
-			$Length="Length :".$this->input->post('length').' Inch <br>';
-		}else{$Length='';}
-		if(!empty($this->input->post('sleevs_width'))){
-			$sleevs_width="Sleevs Width :".$this->input->post('sleevs_width').' Inch <br>';
-		}else{$sleevs_width='';}
-       if(!empty($this->input->post('sleevs_neck'))){
-			$sleevs_neck="Sleevs Neck :".$this->input->post('sleevs_neck').' Inch <br>';
-		}else{$sleevs_neck='';}
-		 if(!empty($this->input->post('upper_width'))){
-			$upper_width="Upper Width :".$this->input->post('upper_width').' Inch <br>';
-		}else{$upper_width='';}
-		if(!empty($this->input->post('abaya_size'))){
-			$abaya_size="Size :".$this->input->post('abaya_size').'  <br>';
-		}else{$abaya_size='';}
-		if(!empty($this->input->post('additional'))){
-			$additional="Additional comments :".$this->input->post('additional');
-		}else{$additional='';}
+			if(!empty($this->input->post('shoulder'))){
+				$sz_shoulder="Shoulder :".$this->input->post('shoulder').' Inch <br>';
+			}else{$sz_shoulder='';}
+			if(!empty($this->input->post('bust'))){
+				$Bust="Bust :".$this->input->post('bust').' Inch <br>';
+			}else{$Bust='';}
+			if(!empty($this->input->post('waist'))){
+				$Waist="Waist :".$this->input->post('waist').' Inch <br>';
+			}else{$Waist='';}
+			if(!empty($this->input->post('hips'))){
+				$Hips="Hips :".$this->input->post('hips').' Inch <br>';
+			}else{$Hips='';}
+			if(!empty($this->input->post('length'))){
+				$Length="Length :".$this->input->post('length').' Inch <br>';
+			}else{$Length='';}
+			if(!empty($this->input->post('sleevs_length'))){
+			$sleevs_length="Sleevs Length :".$this->input->post('sleevs_length').' Inch <br>';
+			}else{$sleevs_length='';}
+			if(!empty($this->input->post('chest'))){
+			$chest="Chest :".$this->input->post('chest').' Inch <br>';
+			}else{$chest='';}
+			if(!empty($this->input->post('sleevs_width'))){
+				$sleevs_width="Sleevs Width :".$this->input->post('sleevs_width').' Inch <br>';
+			}else{$sleevs_width='';}
+			if(!empty($this->input->post('sleevs_neck'))){
+				$sleevs_neck="Sleevs Neck :".$this->input->post('sleevs_neck').' Inch <br>';
+			}else{$sleevs_neck='';}
+			if(!empty($this->input->post('upper_width'))){
+				$upper_width="Upper Width :".$this->input->post('upper_width').' Inch <br>';
+			}else{$upper_width='';}
+			if(!empty($this->input->post('abaya_size'))){
+				$abaya_size="Size :".$this->input->post('abaya_size').'  <br>';
+			}else{$abaya_size='';}
+			if(!empty($this->input->post('additional'))){
+				$additional="Additional comments :".$this->input->post('additional');
+			}else{$additional='';}
 
-		$serialize=serialize($sz_shoulder.''.$Bust.''.$Waist.''.$Hips.''.$Length.''.$sleevs_width.''.$sleevs_neck.''.$upper_width.''.$abaya_size.''.$additional);
-		if(empty($intid)){
-			$get_main_id=$product->p_id;
-		}else{$get_main_id=$intid;}
+			$serialize=serialize($sz_shoulder.''.$Bust.''.$Waist.''.$Hips.''.$Length.''.$sleevs_length.''.$chest.''.$sleevs_width.''.$sleevs_neck.''.$upper_width.''.$abaya_size.''.$additional);
+			if(empty($intid)){
+				$get_main_id=$product->p_id;
+			}else{$get_main_id=$intid;}
 
-		$data = array(
-            'id' => $get_main_id, 
-            'pid' => $product->p_id, 
-            'intid' => $intid, 
-            'name' => encode($product_name), 
-            'price' => $price,
-           // 'selling_price' => $product->p_selling_price, 
-            'selling_price' => $color->int_selleing_price,
-            'special_price' => $special_price, 
-            'qty' => $qty, 
-            'color' => $this->input->post('color'), 
-			'size' => $this->input->post('size'),
-			// 'sz_shoulder' =>$this->input->post('shoulder'),
-   //          'sz_bust' => $this->input->post('bust'),
-			// 'sz_waist' => $this->input->post('waist'),
-			// 'sz_hips' => $this->input->post('hips'),
-			// 'sz_length' => $this->input->post('length'),
-			// 'sleevs_width' => $this->input->post('sleevs_width'),
-			// 'sleevs_neck' => $this->input->post('sleevs_neck'),
-			// 'upper_width' => $this->input->post('upper_width'),
-			// 'abaya_size' => $this->input->post('abaya_size'),
-			'serialize' => $serialize,
-			'tax' => $tax, 
-            'img' => $img, 
-             'min_qty' => $product->int_min_purchase_qty, 
-             //'max_qty' => $product->int_available_qty, 
-             'max_qty' => $color->int_available_qty, 
-            'product_url' =>$product_url, 
-            'vnd' =>$product->p_vnd_id, 
-        );
-	  }else{
+			$data = array(
+				'id' => $get_main_id, 
+				'pid' => $product->p_id, 
+				'intid' => $intid, 
+				'name' => encode($product_name), 
+				'price' => $price,
+				//'selling_price' => $product->p_selling_price, 
+				'selling_price' => $color->int_selleing_price,
+				'special_price' => $special_price, 
+				'qty' => $qty, 
+				'color' => $this->input->post('color'), 
+				'size' => $this->input->post('size'),
+				// 'sz_shoulder' =>$this->input->post('shoulder'),
+				// 'sz_bust' => $this->input->post('bust'),
+				// 'sz_waist' => $this->input->post('waist'),
+				// 'sz_hips' => $this->input->post('hips'),
+				// 'sz_length' => $this->input->post('length'),
+				// 'sleevs_width' => $this->input->post('sleevs_width'),
+				// 'sleevs_neck' => $this->input->post('sleevs_neck'),
+				// 'upper_width' => $this->input->post('upper_width'),
+				// 'abaya_size' => $this->input->post('abaya_size'),
+				'serialize' => $serialize,
+				'tax' => $tax, 
+				'img' => $img, 
+				'min_qty' => $product->int_min_purchase_qty, 
+				//'max_qty' => $product->int_available_qty, 
+				'max_qty' => $color->int_available_qty, 
+				'product_url' =>$product_url, 
+				'vnd' =>$product->p_vnd_id, 
+			);
+	  	}else{
 
-	  	$sleeve=$this->input->post('sleeve');
-	  	$this->session->set_userdata('sleeve','1');
-	  	$fabric=$this->input->post('fabric');
-	  	$color=$this->input->post('color');
-	  	//$size=$this->input->post('size');
-		$sleeve_p = $this->Cart->product_sleeve($sleeve);
-		$fabric_p = $this->Cart->product_fabric($fabric);
-		$color_p = $this->Cart->product_color($color);	
-		//$size_p = $this->Cart->product_size($size);	
-		$product_url=base_url('make-your-own-design');
-		$img=base_url('admin/uploads/sleeve/').$sleeve_p->sl_img;
-		$fb_img=base_url('admin/uploads/fabric/').$fabric_p->fb_img;
-		$cl_img=base_url('admin/uploads/color/').$color_p->cl_img;
-		//$sz_img=base_url('admin/uploads/size/').$size_p->sz_img;
-		$sz_img=$this->input->post('simg');
-		$data = array(
-            'id' => $sleeve, 
-            'name' => encode($sleeve_p->sl_name), 
-            'price' => $sleeve_p->sl_price,            
-            'qty' => '1', 
-            'img' => $img, 
-            'tax' => '0',            
-            'min_qty' =>'100', 
-            'fb_id' => $fabric, 
-            'fb_name' => encode($fabric_p->fb_name),            
-            'fb_img' => $fb_img, 
-            'cl_id' => $color, 
-            'cl_name' => encode($color_p->cl_name),            
-            'cl_img' => $cl_img, 
-            'sz_shoulder' =>$this->input->post('shoulder'),
-            'sz_bust' => $this->input->post('bust'),
-			'sz_waist' => $this->input->post('waist'),
-			'sz_hips' => $this->input->post('hips'),
-			'sz_length' => $this->input->post('length'),
-            'sz_img' =>$sz_img,
-            'product_url' =>$product_url,            
-        );
+			$sleeve=$this->input->post('sleeve');
+			$this->session->set_userdata('sleeve','1');
+			$fabric=$this->input->post('fabric');
+			$color=$this->input->post('color');
+			//$size=$this->input->post('size');
+			$sleeve_p = $this->Cart->product_sleeve($sleeve);
+			$fabric_p = $this->Cart->product_fabric($fabric);
+			$color_p = $this->Cart->product_color($color);	
+			//$size_p = $this->Cart->product_size($size);	
+			$product_url=base_url('make-your-own-design');
+			$img=base_url('admin/uploads/sleeve/').$sleeve_p->sl_img;
+			$fb_img=base_url('admin/uploads/fabric/').$fabric_p->fb_img;
+			$cl_img=base_url('admin/uploads/color/').$color_p->cl_img;
+			//$sz_img=base_url('admin/uploads/size/').$size_p->sz_img;
+			$sz_img=$this->input->post('simg');
+			$data = array(
+				'id' => $sleeve, 
+				'name' => encode($sleeve_p->sl_name), 
+				'price' => $sleeve_p->sl_price,            
+				'qty' => '1', 
+				'img' => $img, 
+				'tax' => '0',            
+				'min_qty' =>'100', 
+				'fb_id' => $fabric, 
+				'fb_name' => encode($fabric_p->fb_name),            
+				'fb_img' => $fb_img, 
+				'cl_id' => $color, 
+				'cl_name' => encode($color_p->cl_name),            
+				'cl_img' => $cl_img, 
+				'sz_shoulder' =>$this->input->post('shoulder'),
+				'sz_bust' => $this->input->post('bust'),
+				'sz_waist' => $this->input->post('waist'),
+				'sz_hips' => $this->input->post('hips'),
+				'sz_length' => $this->input->post('length'),
+				'sz_img' =>$sz_img,
+				'product_url' =>$product_url,            
+			);
 
-	  }
+	  	}
   		//print_r($data);die();
         $this->cart->insert($data);
         $result=$this->show_cart();       

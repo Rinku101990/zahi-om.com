@@ -592,96 +592,96 @@
    }
 </style>
 <script>
-   $(document).ready(function(){
+  $(document).ready(function(){
        
     //   var page = 1;
     //   var cpage = 0;
-        filter_data(1,1);   
+        //filter_data(1,1);   
    
        
        
-       function filter_data(page,cpage)
-       {  
-           $('.filter_data').html('<div id="loading" style="" ></div>');
-           var get_page=1;
-           var getpage=parseInt(cpage)+parseInt(get_page);
-           var action = 'fetch_data';     
-           var brand  = get_filter('brand');
-           var color  = get_filter('color');
-           var size   = get_filter('size');
-           var price = $('#amount').val();
-           var grade = $('#grade_list').val();        
-           var condition   = get_filter('condition');
-           var category   = '<?=@$p_category;?>';
-           var category2   = '<?=@$filter_categoty;?>';
-           var sub_category = '<?=@$p_scategory;?>';
-           var sub_category2 = '<?=@$filter_sub_categoty;?>';
-           var child_category = '<?=@$p_chcategory;?>';
-           var hot = '<?=@$p_hot;?>';
-           // var hot = '';
-           var featured = '';
-           var trending = '';
-           var eid = '<?=@$p_eid;?>';
-           var supplier = '';
-           var p_name = '';
-           var p_brand = '';
-           var p_cate = ''; 
-           var p_scate = ''; 
-           var p_child = ''; 
-           var newest_first = $('.newest_first').val();
-           $("#more").html('');
-           $.ajax({
-               url:"<?=base_url('home/product_data/');?>"+page+"/"+cpage,
-               method:"POST",
-               //dataType:"JSON",
-               data:{brand:brand,color:color,size:size,price:price,grade:grade,condition:condition,category:category,category2:category2,sub_category:sub_category,sub_category2:sub_category2,child_category:child_category,hot:hot,featured:featured,trending:trending,eid:eid,supplier:supplier,newest_first:newest_first,p_name:p_name,p_brand:p_brand,p_cate:p_cate,p_scate:p_scate,p_child:p_child},
-               success:function(data)
-               { if(cpage=='0'){            
-                $(".filter_data").html(data); 
-                if(data){}else{
-                     $(".filter_data").html('<div class="col-md-12"><img src="<?=base_url('assets/img/not-available.gif');?>" style="width: 55%; margin: 10% 25%;"></div>');
-                //$(".filter_data").html('<div class="col-md-12"><div id="notfound"><div class="notfound"><div class="notfound-bg"><div></div><div></div><div></div></div><h1>oops!</h1><h2>Product Not Available</h2><p></p><p>We`re sorry! this page is currently unavailable, please try again later.</p></div></div></div>'); 
-                }
-                }else{
-                 $(".filter_data").html(data);
-                 $('#loading1').html('');  
-                 }
-            //     if(data){          
-            //   $("#more").html(' <input type="hidden" class="btn btn-primary clickmore" value="'+getpage+'" >');
-            //     }              
-               }
-           })
-       }
+    //   function filter_data(page,cpage)
+    //   {  
+    //       $('.filter_data').html('<div id="loading" style="" ></div>');
+    //       var get_page=1;
+    //       var getpage=parseInt(cpage)+parseInt(get_page);
+    //       var action = 'fetch_data';     
+    //       var brand  = get_filter('brand');
+    //       var color  = get_filter('color');
+    //       var size   = get_filter('size');
+    //       var price = $('#amount').val();
+    //       var grade = $('#grade_list').val();        
+    //       var condition   = get_filter('condition');
+    //       var category   = '<?=@$p_category;?>';
+    //       var category2   = '<?=@$filter_categoty;?>';
+    //       var sub_category = '<?=@$p_scategory;?>';
+    //       var sub_category2 = '<?=@$filter_sub_categoty;?>';
+    //       var child_category = '<?=@$p_chcategory;?>';
+    //       var hot = '<?=@$p_hot;?>';
+    //       // var hot = '';
+    //       var featured = '';
+    //       var trending = '';
+    //       var eid = '<?=@$p_eid;?>';
+    //       var supplier = '';
+    //       var p_name = '';
+    //       var p_brand = '';
+    //       var p_cate = ''; 
+    //       var p_scate = ''; 
+    //       var p_child = ''; 
+    //       var newest_first = $('.newest_first').val();
+    //       $("#more").html('');
+    //       $.ajax({
+    //           url:"<?=base_url('home/product_data/');?>"+page+"/"+cpage,
+    //           method:"POST",
+    //           //dataType:"JSON",
+    //           data:{brand:brand,color:color,size:size,price:price,grade:grade,condition:condition,category:category,category2:category2,sub_category:sub_category,sub_category2:sub_category2,child_category:child_category,hot:hot,featured:featured,trending:trending,eid:eid,supplier:supplier,newest_first:newest_first,p_name:p_name,p_brand:p_brand,p_cate:p_cate,p_scate:p_scate,p_child:p_child},
+    //           success:function(data)
+    //           { if(cpage=='0'){            
+    //             $(".filter_data").html(data); 
+    //             if(data){}else{
+    //                  $(".filter_data").html('<div class="col-md-12"><img src="<?=base_url('assets/img/not-available.gif');?>" style="width: 55%; margin: 10% 25%;"></div>');
+    //             //$(".filter_data").html('<div class="col-md-12"><div id="notfound"><div class="notfound"><div class="notfound-bg"><div></div><div></div><div></div></div><h1>oops!</h1><h2>Product Not Available</h2><p></p><p>We`re sorry! this page is currently unavailable, please try again later.</p></div></div></div>'); 
+    //             }
+    //             }else{
+    //              $(".filter_data").html(data);
+    //              $('#loading1').html('');  
+    //              }
+    //         //     if(data){          
+    //         //   $("#more").html(' <input type="hidden" class="btn btn-primary clickmore" value="'+getpage+'" >');
+    //         //     }              
+    //           }
+    //       })
+    //   }
    
-       function get_filter(class_name)
-       { 
+      function get_filter(class_name)
+      { 
         var filter = [];
-           $('.'+class_name+':checked').each(function(){
-               filter.push($(this).val());         
-           });
-           return filter;
-       }
+          $('.'+class_name+':checked').each(function(){
+              filter.push($(this).val());         
+          });
+          return filter;
+      }
    
-       $('.common_selector').click(function(){     
-           filter_data(1,1);   
-       });
+      $('.common_selector').click(function(){     
+          //filter_data(1,1);   
+      });
    
-       $('.grade_large').click(function(){ 
+      $('.grade_large').click(function(){ 
          $(this).addClass('active');
          $('.grade_list').removeClass('active');
          $('#grade_list').val($(this).attr('large'));          
-           filter_data(1,1);   
-       });
+          //filter_data(1,1);   
+      });
    
-       $('.grade_list').click(function(){  
+      $('.grade_list').click(function(){  
          $(this).addClass('active');
          $('.grade_large').removeClass('active');
          $('#grade_list').val($(this).attr('large'));          
-           filter_data(1,1);   
-       });
-       $('.newest_first').change(function(){       
-           filter_data(1,1);   
-       });
+          //filter_data(1,1);   
+      });
+      $('.newest_first').change(function(){       
+          //filter_data(1,1);   
+      });
     //     $('.clickmore1').click(function(){
     //       var cpage       = $(this).val();        
     //       filter_data(1,cpage);   
@@ -696,20 +696,20 @@
     //     filter_data(1,cpage);
     // });
        
-   $( "#slider-range" ).slider({
+  $( "#slider-range" ).slider({
          range: true,
          min: 1,
          max: <?=max_price();?>,
          values: [ 1, <?=max_price();?> ],
          slide: function( event, ui ) {
-           $( "#amount" ).val( "" + ui.values[ 0 ] + " - " + ui.values[ 1 ] );
+          $( "#amount" ).val( "" + ui.values[ 0 ] + " - " + ui.values[ 1 ] );
          },     
          stop: function( event, ui ) {
-           $( "#amount" ).val( "" + ui.values[ 0 ] + " - " + ui.values[ 1 ] );
-           filter_data(1,1);   
+          $( "#amount" ).val( "" + ui.values[ 0 ] + " - " + ui.values[ 1 ] );
+          //filter_data(1,1);   
          }
-       });
-       $( "#amount" ).val( "" + $( "#slider-range" ).slider( "values", 0 ) +
+      });
+      $( "#amount" ).val( "" + $( "#slider-range" ).slider( "values", 0 ) +
          " - " + $( "#slider-range" ).slider( "values", 1 ) );
        
     //  $(window).scroll(function() {
@@ -721,7 +721,7 @@
     //       }}
     //   });
    
-   });
+  });
    
 </script>
 <script>

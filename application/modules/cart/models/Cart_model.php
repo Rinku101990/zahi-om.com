@@ -6,7 +6,7 @@ class Cart_model extends MY_Model{
 	
 	function product_detail($fld_val,$table){
 		$date=date('Y-m-d');
-		$this->db->select('cate.cate_id,cate.cate_slug,scate.scate_slug,child.child_slug,cate.cate_name,scate.scate_name,child.child_name,tp.p_id,tp.p_vnd_id,tp.p_reference_no,tp.p_name,tp.p_model,tp.p_selling_price,tp.p_tax,tp.p_lenght,tp.p_width,tp.p_height,tp.p_weight,tp.p_barcode,tp.p_short_description,tp.p_description,pl.p_warranty_policy,pl.p_return_policy,ut.ut_dime_name,ut2.ut_weight_name,pl.p_option_group,pl.option_grop_add,pl.option_grop,int.int_stock,int.int_available_qty,int.int_min_purchase_qty,sp.sp_special_price,sp.sp_start_date,sp.sp_end_date,pimg.pg_image,brd.brd_name');	
+		$this->db->select('cate.cate_id,cate.cate_slug,scate.scate_slug,child.child_slug,cate.cate_name,scate.scate_name,child.child_name,tp.p_id,tp.p_vnd_id,tp.p_reference_no,tp.p_name,tp.p_model,tp.p_selling_price,tp.p_tax,tp.p_lenght,tp.p_width,tp.p_height,tp.p_weight,tp.p_barcode,tp.p_short_description,tp.p_description,pl.p_warranty_policy,pl.p_return_policy,ut.ut_dime_name,ut2.ut_weight_name,pl.p_option_group,pl.option_grop_add,pl.option_grop,int.int_stock,int.int_available_qty,int.int_min_purchase_qty,sp.sp_price_type,sp.sp_special_price,sp.sp_start_date,sp.sp_end_date,pimg.pg_image,brd.brd_name');	
 		$this->db->order_by('tp.p_id',"DESC");
 		$this->db->join('tbl_category cate','cate.cate_id=tp.p_cate','LEFT');		
 		$this->db->join('tbl_sub_category scate','scate.scate_id=tp.p_scate','LEFT');
@@ -52,14 +52,15 @@ class Cart_model extends MY_Model{
 
 	public function get_color_special($intid){	
 	    $date=date('Y-m-d');	
-		$this->db->select('sp_special_price');			
+		$this->db->select('sp_price_type,sp_special_price');			
 		$this->db->from('tbl_special_price');
 		$this->db->where('sp_start_date <=', $date);				
 		$this->db->where('sp_end_date >=', $date);	
 		$this->db->where('sp_pid',$intid);
 		$query=$this->db->get();
 		//echo $this->db->last_query($query);
-		if($query->num_rows() != 0) return $query->row()->sp_special_price;
+		// if($query->num_rows() != 0) return $query->row()->sp_special_price;
+		if($query->num_rows() != 0) return $query->row();
 		else return '0';
 	}
 

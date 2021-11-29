@@ -117,6 +117,8 @@ class Account extends MY_Controller {
 	    }  
 	}
 
+
+
 	function profile_image()
 	{ 
 		$RequestMethod = $this->input->server('REQUEST_METHOD');

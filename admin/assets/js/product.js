@@ -87,7 +87,8 @@ $(document).ready(function(){
                        $('.GeneralProduct').prop('disabled', false)
 					}else{
 						 $(".GeneralProduct").html('Save');
-						 $('.GeneralProduct').prop('disabled', false);
+						 $('.GeneralProduct').prop('disabled', true);
+						 $('.general_product_next').show();
 					  //  $(".CategoryResponse").html('<div class="alert alert-success alert-dismissible fade show" role="alert"> <span class="alert-inner--icon"><i class="fe fe-thumbs-up "></i></span> <span class="alert-inner--text"><strong>Success!</strong> General Product has been successfully Save.</span> <button type="button" class="close text-white" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button> </div>');
                         $('#category').hide();
 						$('#general').hide();
@@ -273,8 +274,10 @@ $(document).ready(function(){
 					$('.CategoryProduct').prop('disabled', true);
 				},
 				success: function(response)
-				{
-					if(response == 'Failed'){
+				{ 
+					var result = $.parseJSON(response);
+					//console.log(result.response);
+					if(result.response == 'Failed'){
 					   $(".CategoryResponse").html('<div class="alert alert-danger alert-dismissible fade show" role="alert"> <span class="alert-inner--icon"><i class="fe fe-slash "></i></span> <span class="alert-inner--text"><strong>Oops!</strong> Already General Product name Used..</span> <button type="button" class="close text-white" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button> </div>');
                        $(".CategoryProduct").html('Retry');
 					}else{
@@ -283,10 +286,19 @@ $(document).ready(function(){
 					   // $(".OptionGroupResponse").html('<div class="alert alert-success alert-dismissible fade show" role="alert"> <span class="alert-inner--icon"><i class="fe fe-thumbs-up "></i></span> <span class="alert-inner--text"><strong>Success!</strong> Category link Product has been successfully Save.</span> <button type="button" class="close text-white" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button> </div>');
                         $('#category').hide();
 						$('#product_category_link').hide();
-						$('#option_add').show();
+						$('#option_add').show();						
 						$('.category-tab').removeClass('active');
 		                $('.option-tab').addClass('active');
 						$('.og_p_id').val(PID);
+						// satrt p_option_group
+						$('#p_option_group').find('option').remove();	
+							//	console.log(response.option);	
+						$.each(result.option, function() 
+						{
+							
+							var option1 = $('<option>').attr('value', this.opt_id).html(this.opt_name);
+							$('#p_option_group').append(option1);
+						});
 					}
 					
 					
@@ -301,6 +313,88 @@ $(document).ready(function(){
 		
 	});
     /* End Category  product Link */
+
+    $(".CategoryProduct_Save").click(function()
+	{
+        let url 		= $(this).attr('url');  
+        let PID 		= $('.p_id').val();  
+        let check 		= true;
+        let Pcheck 		= true;        
+		            
+        /* Validate Product Tag Input Fields Value */
+        // if($('.p_tag').val().length == 0){ $('.p_tag').css('border','1px solid red');
+        //  $('#PTag').html('<span style="color:red;">This field is required.</span>'); check=false; }
+        // else{ $('#PTag').html(' ');$('.p_tag').css('border',''); check = true; }		
+        
+		if(check){
+            $.ajax(
+			{	
+				type: "POST",
+				url: url+"catalog/Category_Product_save",
+				data:$('#CategoryProductForm').serialize(),
+				
+				beforeSend: function ()
+				{
+					$('.CategoryProduct_Save').html('Checking...');
+					$('.CategoryProduct_Save').prop('disabled', true);
+				},
+				success: function(response)
+				{ 
+					var result = $.parseJSON(response);
+					//console.log(result.response);
+					if(result.response == 'Failed'){
+					   $(".CategoryResponse").html('<div class="alert alert-danger alert-dismissible fade show" role="alert"> <span class="alert-inner--icon"><i class="fe fe-slash "></i></span> <span class="alert-inner--text"><strong>Oops!</strong> Already General Product name Used..</span> <button type="button" class="close text-white" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button> </div>');
+                       $(".CategoryProduct_Save").html('Retry');
+					}else{
+					  $('.CategoryProduct_Save').html('save');
+					   $('.CategoryProduct_Save').prop('disabled', false);
+					   // $(".OptionGroupResponse").html('<div class="alert alert-success alert-dismissible fade show" role="alert"> <span class="alert-inner--icon"><i class="fe fe-thumbs-up "></i></span> <span class="alert-inner--text"><strong>Success!</strong> Category link Product has been successfully Save.</span> <button type="button" class="close text-white" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button> </div>');
+                    $('#category').hide();
+						$('#product_category_link').hide();
+						$('#inventory_setup2').show();						
+						$('.category-tab').removeClass('active');
+		                $('.inventory-tab').addClass('active');
+						$('.int_p_id').val(PID);
+						$('.getsize').html('/ '+result.option_name);
+						$('.SizeColumn').html(result.option_field);
+						// satrt p_option_group
+						$('#p_option_group').find('option').remove();	
+							//	console.log(response.option);	
+						$.each(result.option, function() 
+						{
+							
+							var option1 = $('<option>').attr('value', this.opt_id).html(this.opt_name);
+							$('#p_option_group').append(option1);
+						});
+					}
+					
+					
+				}
+			});
+        }
+        else
+		{
+            $(".CategoryProduct_Save").html('Retry');          
+            $('.CategoryResponse').html('<span style="color:red;">(Any of the fields are empty.)</span>');
+		}	
+		
+	});
+
+ /*start click sizechecked  */
+
+  $(".sizechecked").click(function()
+	{
+		var getsize=$(this).val();		
+		if(getsize==1){
+			$("#Dimensions_add").show(); 
+			$("#Size_add").hide(); 
+		}else if(getsize==2){
+			$("#Dimensions_add").hide(); 
+			$("#Size_add").show(); 
+		}
+	});
+
+		 /*end click sizechecked  */
 
       /* CATEGORY PRODUCT Onclick Update enent */
 
@@ -353,6 +447,69 @@ $(document).ready(function(){
 		}	
 		
 	});
+
+
+	$(".CategoryProduct_update1").click(function()
+	{
+        let url 		= $(this).attr('url');  
+        let PID 		= $('.p_id').val();  
+        let check 		= true;
+        let Pcheck 		= true;        
+		            
+        /* Validate Product Tag Input Fields Value */
+        // if($('.p_tag').val().length == 0){ $('.p_tag').css('border','1px solid red');
+        //  $('#PTag').html('<span style="color:red;">This field is required.</span>'); check=false; }
+        // else{ $('#PTag').html(' ');$('.p_tag').css('border',''); check = true; }		
+        
+		if(check){
+            $.ajax(
+			{	
+				type: "POST",
+				url: url+"catalog/Category_Product_Update",
+				data:$('#CategoryProductForm').serialize(),
+				
+				beforeSend: function ()
+				{
+					$('.CategoryProduct_update1').html('Update...');
+					$('.CategoryProduct_update1').prop('disabled', false);
+				},
+				success: function(response)
+				{
+					var result = $.parseJSON(response);
+
+					if(result.response == 'Failed'){
+					   $(".CategoryResponse").html('<div class="alert alert-danger alert-dismissible fade show" role="alert"> <span class="alert-inner--icon"><i class="fe fe-slash "></i></span> <span class="alert-inner--text"><strong>Oops!</strong> Already General Product name Used..</span> <button type="button" class="close text-white" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button> </div>');
+                       $(".CategoryProduct_update1").html('Retry');
+					}else{
+					   // $(".OptionGroupResponse").html('<div class="alert alert-success alert-dismissible fade show" role="alert"> <span class="alert-inner--icon"><i class="fe fe-thumbs-up "></i></span> <span class="alert-inner--text"><strong>Success!</strong> Category link Product has been successfully Save.</span> <button type="button" class="close text-white" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button> </div>');
+                        $('#product_category_link').hide();
+						$('#inventory_setup2').show();	
+						$('.category-tab').removeClass('active');
+		                $('.inventory-tab').addClass('active');		
+		                $('.getsize').html('/ '+result.option_name);
+						$('.SizeColumn').html(result.option_field);
+						// satrt p_option_group
+						$('#p_option_group').find('option').remove();	
+							//	console.log(response.option);	
+						$.each(result.option, function() 
+						{
+							
+							var option1 = $('<option>').attr('value', this.opt_id).html(this.opt_name);
+							$('#p_option_group').append(option1);
+						});			
+					}
+					
+					
+				}
+			});
+        }
+        else
+		{
+            $(".CategoryProduct_update1").html('Retry');          
+            $('.CategoryResponse').html('<span style="color:red;">(Any of the fields are empty.)</span>');
+		}	
+		
+	});
     /* End Category  product Link Update */
 
 
@@ -384,6 +541,14 @@ $(document).ready(function(){
 		$('#product_category_link').hide();
 		$('.category-tab').removeClass('active');
 		$('.option-tab').addClass('active');
+					
+	});
+	$(".product_link_next1").click(function()
+	{ 
+	 	$('#inventory_setup2').show();
+		$('#product_category_link').hide();
+		$('.category-tab').removeClass('active');
+		$('.inventory-tab').addClass('active');
 					
 	});
 
@@ -610,6 +775,80 @@ $(document).ready(function(){
 	});
     /* End Inventory Product  Link */
 
+
+    /* start cloth Inventory  Product save */
+	$(".InventoryProduct_cloth").click(function()
+	{
+        let url 		= $(this).attr('url');  
+        let PID 		= $('.p_id').val(); 
+        let selleing_price=  $('.int_selleing_price').val();  
+        //let cost_price=  $('.int_cost_price').val()  
+        let check 		= true;
+        let Pcheck 		= true;        
+     
+		/* Validate Product int_cost_price Input Fields Value */
+		// if($('.int_cost_price').val().length == 0 || $('.int_cost_price').val() == 0 || parseInt(selleing_price) <= parseInt(cost_price) ){ $('.int_cost_price').css('border','1px solid red');
+  //        $('#cost_price').html('<span style="color:red;">This field is required.</span>'); check=false; }
+  //       else{ $('#cost_price').html(' ');$('.int_cost_price').css('border',''); check = true; }
+        	
+          /* Validate Product int_available_qty Input Fields Value */
+		if($('.int_available_qty').val().length == 0 || $('.int_available_qty').val() == 0){ $('.int_available_qty').css('border','1px solid red');
+         $('#available_qty1').html('<span style="color:red;">This field is required.</span>'); Pcheck=false; }
+        else{ $('#available_qty1').html(' ');$('.int_available_qty').css('border',''); Pcheck = true; } 
+
+  //       /* Validate Product int_min_purchase_qty Input Fields Value */
+		// if($('.int_min_purchase_qty').val().length == 0 || $('.int_min_purchase_qty').val() == 0){ $('.int_min_purchase_qty').css('border','1px solid red');
+  //        $('#purchase_qty').html('<span style="color:red;">This field is required.</span>'); Pcheck=false; }
+  //       else{ $('#purchase_qty').html(' ');$('.int_min_purchase_qty').css('border',''); Pcheck = true; }  
+
+             /* Validate Product int_min_purchase_qty Input Fields Value */
+		if($('.int_stock').val().length == 0){ $('.int_stock').css('border','1px solid red');
+         $('#intstock').html('<span style="color:red;">This field is required.</span>'); Pcheck=false; }
+        else{ $('#intstock').html(' ');$('.int_stock').css('border',''); Pcheck = true; }  
+       	
+       
+		if(check && Pcheck){
+            $.ajax(
+			{	
+				type: "POST",
+				url: url+"catalog/Inventory_Product_Cloth_Save",
+				data:$('#InventoryProductCLothForm').serialize(),
+				
+				beforeSend: function ()
+				{
+					$('.InventoryProduct_cloth').html('Checking...');
+					$('.InventoryProduct_cloth').prop('disabled', true);
+				},
+				success: function(response)
+				{
+					if(response == 'Failed'){
+					   $(".InventoryResponse").html('<div class="alert alert-danger alert-dismissible fade show" role="alert"> <span class="alert-inner--icon"><i class="fe fe-slash "></i></span> <span class="alert-inner--text"><strong>Oops!</strong> Already General Product name Used..</span> <button type="button" class="close text-white" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button> </div>');
+                       $(".InventoryProduct_cloth").html('Retry');
+					}else{
+						$('.InventoryProduct_cloth').html('save');
+				    	$('.InventoryProduct_cloth').prop('disabled', false);
+					   // $(".WarrantyResponse").html('<div class="alert alert-success alert-dismissible fade show" role="alert"> <span class="alert-inner--icon"><i class="fe fe-thumbs-up "></i></span> <span class="alert-inner--text"><strong>Success!</strong> Inventory Product has been successfully Save.</span> <button type="button" class="close text-white" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button> </div>');
+                        $('#category').hide();
+						$('#inventory_setup2').hide();
+						$('.ws_p_id').val(PID);
+	                    $('#warranty_setup').show();
+	                    $('.inventory-tab').removeClass('active');
+		                $('.warranty-tab').addClass('active');						
+					}
+					
+					
+				}
+			});
+        }
+        else
+		{
+            $(".InventoryProduct_cloth").html('Retry');          
+            $('.InventoryResponse').html('<span style="color:red;">(Any of the fields are empty.)</span>');
+		}	
+		
+	});
+    /* End cloth Inventory  Product save */
+
      /* -Inventory Product  Update  Onclick enent */
 	$(".Inventory_update").click(function()
 	{
@@ -678,6 +917,74 @@ $(document).ready(function(){
 		}	
 		
 	});
+
+	$(".InventoryProduct_cloth_update").click(function()
+	{
+        let url 		= $(this).attr('url');  
+        let PID 		= $('.p_id').val(); 
+        let selleing_price=  $('.int_selleing_price').val();  
+        //let cost_price=  $('.int_cost_price').val();  
+        let check 		= true;
+        let Pcheck 		= true; 
+     
+		/* Validate Product int_cost_price Input Fields Value */
+		// if($('.int_cost_price').val().length == 0 || $('.int_cost_price').val() == 0 || parseInt(selleing_price) <= parseInt(cost_price) ){ $('.int_cost_price').css('border','1px solid red');
+  //        $('#cost_price').html('<span style="color:red;">This field is required.</span>'); check=false; }
+  //       else{ $('#cost_price').html(' ');$('.int_cost_price').css('border',''); check = true; }
+        	
+          /* Validate Product int_available_qty Input Fields Value */
+		if($('.int_available_qty').val().length == 0 || $('.int_available_qty').val() == 0){ $('.int_available_qty').css('border','1px solid red');
+         $('#available_qty1').html('<span style="color:red;">This field is required.</span>'); Pcheck=false; }
+        else{ $('#available_qty1').html(' ');$('.int_available_qty').css('border',''); Pcheck = true; } 
+
+        /* Validate Product int_min_purchase_qty Input Fields Value */
+		// if($('.int_min_purchase_qty').val().length == 0 || $('.int_min_purchase_qty').val() == 0){ $('.int_min_purchase_qty').css('border','1px solid red');
+  //        $('#purchase_qty').html('<span style="color:red;">This field is required.</span>'); Pcheck=false; }
+  //       else{ $('#purchase_qty').html(' ');$('.int_min_purchase_qty').css('border',''); Pcheck = true; }  
+
+             /* Validate Product int_min_purchase_qty Input Fields Value */
+		if($('.int_stock').val().length == 0){ $('.int_stock').css('border','1px solid red');
+         $('#intstock').html('<span style="color:red;">This field is required.</span>'); Pcheck=false; }
+        else{ $('#intstock').html(' ');$('.int_stock').css('border',''); Pcheck = true; }  
+       	
+       
+		if(check && Pcheck){
+            $.ajax(
+			{	
+				type: "POST",
+				url: url+"catalog/Inventory_cloth_update",
+				data:$('#InventoryProductCLothForm').serialize(),
+				
+				beforeSend: function ()
+				{
+					$('.InventoryProduct_cloth_update').html('Update...');
+					$('.InventoryProduct_cloth_update').prop('disabled', false);
+				},
+				success: function(response)
+				{
+					if(response == 'Failed'){
+					   $(".InventoryResponse").html('<div class="alert alert-danger alert-dismissible fade show" role="alert"> <span class="alert-inner--icon"><i class="fe fe-slash "></i></span> <span class="alert-inner--text"><strong>Oops!</strong> Already General Product name Used..</span> <button type="button" class="close text-white" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button> </div>');
+                       $(".InventoryProduct_cloth_update").html('Retry');
+					}else{
+					   // $(".WarrantyResponse").html('<div class="alert alert-success alert-dismissible fade show" role="alert"> <span class="alert-inner--icon"><i class="fe fe-thumbs-up "></i></span> <span class="alert-inner--text"><strong>Success!</strong> Inventory Product has been successfully Save.</span> <button type="button" class="close text-white" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button> </div>');
+                         $('#inventory_setup2').hide();
+						 $('#warranty_setup').show();
+						 $('.inventory-tab').removeClass('active');
+		                $('.warranty-tab').addClass('active');
+						
+					}
+					
+					
+				}
+			});
+        }
+        else
+		{
+            $(".InventoryProduct_cloth_update").html('Retry');          
+            $('.InventoryResponse').html('<span style="color:red;">(Any of the fields are empty.)</span>');
+		}	
+		
+	});
     /* End Inventory Product Update Link */
 
      /* Start product Inventory Prev Next  */
@@ -691,12 +998,22 @@ $(document).ready(function(){
 					
 	});
 
+	$(".Inventorycloth_prev").click(function()
+	{ 
+			$('#product_category_link').show();		
+		$('.category-tab').addClass('active');
+		$('#inventory_setup2').hide();		
+		 $('.inventory-tab').removeClass('active');
+					
+	});
+
 	 $(".InventoryProduct_next").click(function()
 	{ 
 		let PID = $('.p_id').val();
 		$('.ws_p_id').val(PID);
 	    $('#warranty_setup').show();
 		$('#inventory_setup').hide();
+		$('#inventory_setup2').hide();
 		 $('.inventory-tab').removeClass('active');
 		 $('.warranty-tab').addClass('active');
 					
@@ -799,6 +1116,23 @@ $(document).ready(function(){
 					
 	});
 
+	$(".Warranty_prev1").click(function()
+	{ 
+	 	$('#warranty_setup').hide();
+		$('#inventory_setup2').show();
+		$('.inventory-tab').addClass('active');
+		$('.warranty-tab').removeClass('active');
+					
+	});
+	$(".WarrantyPrev").click(function()
+	{ 
+	 	$('#warranty_setup').hide();
+		$('#inventory_setup2').show();
+		$('.inventory-tab').addClass('active');
+		$('.warranty-tab').removeClass('active');
+					
+	});
+
 	 $(".WarrantyProduct_next").click(function()
 	{ 
 		let PID = $('.p_id').val();
@@ -848,10 +1182,13 @@ $(document).ready(function(){
 					   // $(".WarrantyResponse").html('<div class="alert alert-success alert-dismissible fade show" role="alert"> <span class="alert-inner--icon"><i class="fe fe-thumbs-up "></i></span> <span class="alert-inner--text"><strong>Success!</strong> Inventory Product has been successfully Save.</span> <button type="button" class="close text-white" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button> </div>');
                         $('#category').hide();
 						$('#return_setup').hide();
-						$('#special_price').show();
-						$('.sp_p_id').val(PID);
+						//$('#special_price').show();
+					//	$('.sp_p_id').val(PID);
 						$('.return-tab').removeClass('active');
-		                $('.special-tab').addClass('active');
+		               // $('.special-tab').addClass('active');
+		               $('#volume_discount').show();
+						  $('.vd_p_id').val(PID);					
+		                $('.discount-tab').addClass('active');
 					}
 					
 					
@@ -884,9 +1221,11 @@ $(document).ready(function(){
 					}else{
 					   // $(".WarrantyResponse").html('<div class="alert alert-success alert-dismissible fade show" role="alert"> <span class="alert-inner--icon"><i class="fe fe-thumbs-up "></i></span> <span class="alert-inner--text"><strong>Success!</strong> Inventory Product has been successfully Save.</span> <button type="button" class="close text-white" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button> </div>');
                          $('#return_setup').hide();
-						$('#special_price').show();
+						//$('#special_price').show();
 						$('.return-tab').removeClass('active');
-		                $('.special-tab').addClass('active');
+		               // $('.special-tab').addClass('active');
+		                $('#volume_discount').show();						  				
+		                $('.discount-tab').addClass('active');
 						
 					}
 					
@@ -910,20 +1249,25 @@ $(document).ready(function(){
 	 $(".ReturnProduct_next").click(function()
 	{ 
 		let PID = $('.p_id').val();
-		$('.sp_p_id').val(PID);
-	 	$('#special_price').show();
+		 $('#volume_discount').show();
+	  $('.vd_p_id').val(PID);	 
+	  $('.discount-tab').addClass('active');
+		//$('.sp_p_id').val(PID);
+	 	//$('#special_price').show();
 		$('#return_setup').hide();
 		$('.return-tab').removeClass('active');
-		$('.special-tab').addClass('active');
+		//$('.special-tab').addClass('active');
 					
 	});
 
 	$(".Return_next").click(function()
 	{ 
-	 	$('#special_price').show();
+	 	//$('#special_price').show();
+	 	$('#volume_discount').show();
 		$('#return_setup').hide();
 		$('.return-tab').removeClass('active');
-		$('.special-tab').addClass('active');
+		 $('.discount-tab').addClass('active');
+		//$('.special-tab').addClass('active');
 					
 	});
 
@@ -1221,10 +1565,12 @@ $(document).ready(function(){
 
 	$(".Discount_Prev").click(function()
 	{ 
-	  $('#special_price').show();
+		$('#return_setup').show();
+	  //$('#special_price').show();
 	  $('#volume_discount').hide();
 	   $('.discount-tab').removeClass('active');
-	  $('.special-tab').addClass('active');
+	   	  $('.return-tab').addClass('active');
+	  //$('.special-tab').addClass('active');
 	});
 
 	$(".Discount_Next").click(function()
@@ -1456,14 +1802,74 @@ let maxFieldq = 15; //Input fields increment limitatio
 					
 				}
 				});
-            	
+		
+	}
+
+	function add_Dimensions(e) {
+          let url 		= $('#site_url').val();	
+            $.ajax(
+			{	
+				type: "POST",
+				url: url+"catalog/dimensions_filed",
+				data:$('#InventoryProductForm').serialize(),
+				dataType:'json',
+				
+				beforeSend: function ()
+				{
+					//$('.add_Dimensions').html('Add...');
+					$('.add_Dimensions').prop('disabled', false);
+				},
+				success: function(response)
+				{
 					
+						 k++;
+					
+				// $(".InventoryResponse").html('<div class="alert alert-success alert-dismissible fade show" role="alert"> <span class="alert-inner--icon"><i class="fe fe-thumbs-up "></i></span> <span class="alert-inner--text"><strong>Success!</strong> Option Product has been successfully Save.</span> <button type="button" class="close text-white" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button> </div>');
+                $('#dimensions_filed').append('<span id="dimensionsfield'+k+'" style="    display: inherit;width:100%"><div class="row">'+response.option+'<div class="col-sm-2 col-md-2"><label style="width:100%">&nbsp;</label><a href="javascript:void(0);" class="btn btn-default  "  onclick="remove_dimensions('+k+',this)"  ><i class="fa fa-close"></i> Remove</a></div></div></span>');
+					
+				}
+				});
+		
+	}
+
+	function add_getsize(e) {
+          let url 		= $('#site_url').val();	
+            $.ajax(
+			{	
+				type: "POST",
+				url: url+"catalog/getsize_filed",
+				data:$('#InventoryProductForm').serialize(),
+				dataType:'json',
+				
+				beforeSend: function ()
+				{
+					//$('.add_getsize').html('Add...');
+					$('.add_getsize').prop('disabled', false);
+				},
+				success: function(response)
+				{
+					
+						 k++;
+					
+				// $(".InventoryResponse").html('<div class="alert alert-success alert-dismissible fade show" role="alert"> <span class="alert-inner--icon"><i class="fe fe-thumbs-up "></i></span> <span class="alert-inner--text"><strong>Success!</strong> Option Product has been successfully Save.</span> <button type="button" class="close text-white" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button> </div>');
+                $('#getsize_filed').append('<span id="getsizefield'+k+'" style="    display: inherit;width:100%"><div class="row">'+response.option+'<div class="col-sm-2 col-md-2"><label style="width:100%">&nbsp;</label><a href="javascript:void(0);" class="btn btn-default  "  onclick="remove_getsize('+k+',this)"  ><i class="fa fa-close"></i> Remove</a></div></div></span>');
+					
+				}
+				});
 		
 	}
 
 
    function remove_size(id,e) {
 	$('#sizefield'+id).remove();
+	}
+
+	 function remove_dimensions(id,e) {
+	$('#dimensionsfield'+id).remove();
+	}
+
+	 function remove_getsize(id,e) {
+	$('#getsizefield'+id).remove();
 	}
 	// end
  
@@ -1512,7 +1918,8 @@ function getValue(e) {
 	// end
 
    function category(CID,url,clt) { 
-   		$('.sub_category_list').html('<div id="loading_page" style="" ></div>');	  
+   		$('.sub_category_list').html('<div id="loading_page" style="" ></div>');	
+   		var current_url=$('.current_url').val();  
 		$.ajax({
 			method:'post',
 			url:url+'catalog/getSubCate',
@@ -1524,6 +1931,29 @@ function getValue(e) {
           $(clt).addClass('active').siblings().removeClass('active');				
            // $('#'+CID).addClass('active');		
 			$(".child_category_list").html('');
+			if(CID=='6'){
+			$(".option-tab").hide();
+			$('#CategoryButton1').show();
+			$('#Warranty_prev1').show();
+			$('#Warranty_prev').hide();
+			$('#CategoryButton').hide();
+			$("#CategoryNext").hide();	
+			$("#CategoryNext1").show();	
+			$('#cloth-product').show();	
+				$('#other-product').hide();	
+			}else{
+		   	$(".option-tab").show();
+		  			$('#CategoryButton').show();
+			$('#CategoryButton1').hide();
+			$("#CategoryNext1").hide();	
+			$("#CategoryNext").show();	
+			$('#Warranty_prev1').hide();
+			$('#Warranty_prev').show();
+			$('#cloth-product').hide();
+			$('#other-product').show();
+
+		   }
+
 		}else{
 			$(".sub_category_list").html('');
 			 $(clt).removesClass('active');	
@@ -1705,8 +2135,8 @@ $(".ProductView").click(function(){
 			}
 		});
 	});
-
-	/*--- View Item Return Modal ---*/ 
+	
+		/*--- View Item Return Modal ---*/ 
 	$(".returnView").click(function(){
 		var refer_url = $(this).attr("url");
 		var returnid = $(this).attr("returnId");

@@ -5,16 +5,25 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
      <meta name="google-site-verification" content="hdvlk2Z0OY_6QMZj3R1vzWHynhllVTyF0RJElWQTNSg" />
       <meta name="robots" content="index, follow">
+    <?php if($cate_name=='Hot Offers!'){?>
+        <meta name="keywords" content="<?php echo $cate_name; ?>">
+      <meta name="description" content="<?php echo $cate_name;?>">
+      <meta name="author" content="<?php echo $cate_name; ?>">
+        <?php }else{?>
       <meta name="keywords" content="<?php echo $cate_name->cate_meta_keyword; ?>">
       <meta name="description" content="<?php echo $cate_name->cate_meta_description;?>">
       <meta name="author" content="<?php echo $cate_name->cate_meta_keyword; ?>">
+      <?php } ?>
       <meta name="author" content="Rinku Vishwakarma, Manish Kumar">
       <meta name="google-signin-client_id" content="976170906910-h4itraeqrq38eg5jfta8s9qlb79223eh.apps.googleusercontent.com"> 
-           <link rel="canonical" href="<?php  echo (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";?>" />
-  
+        <link rel="canonical" href="<?php  echo (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";?>" />
       <!-- Favicon -->
       <link name="favicon" type="image/x-icon" href="<?=base_url('admin/uploads/website/favicon/').$this->website->web_favicon_icon;?>" rel="shortcut icon" />
-      <title><?php echo $cate_name->cate_meta_title; ?></title>
+      <?php if($cate_name=='Hot Offers!'){?>
+      <title><?php echo $cate_name; ?></title>
+      <?php }else{ ?>
+        <title><?php echo $cate_name->cate_meta_title; ?></title>
+        <?php } ?>
       <?php $this->load->view('include/header');
 if($this->website->web_lang=='en'){
  $this->load->view('include/topbar');
@@ -27,9 +36,15 @@ if($this->website->web_lang=='en'){
   $floatl='left';$floatr='right';
   $direction='ltr';
    $right='0';
-     $category=$cate_name->category;
-     $scategory=$cate_name->scategory;
-    $mcategory=$cate_name->mcategory;
+    if($cate_name=='Hot Offers!'){
+        $category='Hot Offers!';
+        $scategory='Hot Offers!';
+        $mcategory='Hot Offers!';
+    }else{
+        $category=$cate_name->category;
+        $scategory=$cate_name->scategory;
+        $mcategory=$cate_name->mcategory;
+    }
       $home=lang(46);
        $cate12=lang(62);
        $price=lang(63);
@@ -43,9 +58,16 @@ if($this->website->web_lang=='en'){
   $right='85%';
   $direction='rtl';
   $floatl='right';$floatr='left'; 
-  $category=$cate_name->category_ar;
-     $scategory=$cate_name->scategory_ar;
-    $mcategory=$cate_name->mcategory_ar;
+  if($cate_name=='Hot Offers!'){
+        $category='Hot Offers!';
+        $scategory='Hot Offers!';
+        $mcategory='Hot Offers!';
+    }else{
+        $category=$cate_name->category_ar;
+        $scategory=$cate_name->scategory_ar;
+        $mcategory=$cate_name->mcategory_ar;
+}
+  
     $home=lang_ar(46);
      $cate12=lang_ar(62);
        $price=lang_ar(63);
@@ -657,14 +679,17 @@ a.scate_categorie.active i {
                                                             <input type="hidden" name="category" value="Women-Clothing-Fashion">
                                                                                     
                             <div class="sort-by-bar row no-gutters bg-white mb-3 px-3">
-                                  <div class="col-lg-12 mb-3">
-                                <?php if(empty($banner_img)){?>
-                             <!--<img src="<?=base_url('assets/img/category_filetr.jpg');?>" alt="<?=$scategory;?>" class="img-responsive1" style="width:100%;">-->
-                             <img src="<?=base_url('assets/img/category_filter.jpg');?>" alt="<?=$scategory;?>" class="img-responsive1" style="width:100%;">
-                             <?php }else{?>
-                              <img src="<?=base_url('admin/uploads/category/').$banner_img;?>" alt="<?=$scategory;?>" class="img-responsive1" style="width:100%;">
-                             <?php }?>
-                             </div>
+                                <div class="col-lg-12 mb-3">
+                                    <?php if($cate_name=='Hot Offers!'){?>
+                                        <img src="<?=$banner_img;?>" alt="<?=$cate_name;?>" class="img-responsive1" style="width:100%;">
+                                    <?php }else {?>
+                                        <?php if(empty($banner_img)){?>
+                                        <!--<img src="<?=base_url('assets/img/category_filetr.jpg');?>" alt="<?=$scategory;?>" class="img-responsive1" style="width:100%;">-->
+                                        <img src="<?=base_url('assets/img/category_filter.jpg');?>" alt="<?=$scategory;?>" class="img-responsive1" style="width:100%;">
+                                        <?php }else{?>
+                                            <img src="<?=base_url('admin/uploads/category/').$banner_img;?>" alt="<?=$scategory;?>" class="img-responsive1" style="width:100%;">
+                                    <?php } }?>
+                                </div>
 
                                 <!--<div class="col-lg-4 col-md-5">-->
                                 <!--    <div class="sort-by-box">-->

@@ -58,10 +58,10 @@ if($this->website->web_lang=='en'){
                      <div class="card-image">     
                      <a href="<?=base_url('brand/').encode($brd_val->vnd_id).'/'.slug($brd_val->vnd_name);?>"> 
                      <?php if(!empty($brd_val->vnd_picture)){?>                    
-                           <img src="<?=base_url('seller/uploads/profile/').$brd_val->vnd_picture;?>" title="<?=$brd_val->vnd_name;?>" class="hover-img" style="margin: 0 auto;">
-                            <center><h6 style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;    width: 150px;"><b><?=$brd_val->vnd_name;?></b></h6></center>
+                           <center><img src="<?=base_url('seller/uploads/profile/').$brd_val->vnd_picture;?>" title="<?=$brd_val->vnd_name;?>" class="hover-img" style="margin: 0 auto;">
+                            <h6 style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;width: 150px;"><b><?=$brd_val->vnd_name;?></b></h6></center>
                            <?php }else{?>
-                            <img src="<?=base_url('seller/uploads/profile/avatar.png');?>" title="<?=$brd_val->vnd_name;?>" class="hover-img" style="margin: 0 auto;">
+                            <center><img src="<?=base_url('seller/uploads/profile/avatar.png');?>" title="<?=$brd_val->vnd_name;?>" class="hover-img" style="margin: 0 auto;"></center>
                            <?php }?>
                          </a>
                      </div>                    

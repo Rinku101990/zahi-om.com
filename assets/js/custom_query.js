@@ -485,6 +485,8 @@ $(document).ready(function(){
         let waist         = $('#waist').val(); 
         let hips         = $('#hips').val(); 
         let length         = $('#length').val();
+        let sleevs_length         = $('#sleevs_length').val();
+        let chest         = $('#chest').val();
         let sleevs_width   = $('#sleevs_width').val();
         let sleevs_neck         = $('#sleevs_neck').val();
         let upper_width         = $('#upper_width').val();
@@ -556,6 +558,18 @@ $(document).ready(function(){
         }else{ 
             $('#length').css('border',''); check = true; 
         }
+        if(sleevs_length ==  ''){ 
+            $('#sleevs_length').css('border','1px solid red');
+            check=false; 
+        }else{ 
+            $('#sleevs_length').css('border',''); check = true; 
+        }
+        if(chest ==  ''){ 
+            $('#chest').css('border','1px solid red');
+            check=false; 
+        }else{ 
+            $('#chest').css('border',''); check = true; 
+        }
          if(sleevs_width ==  ''){ 
             $('#sleevs_width').css('border','1px solid red');
             check=false; 
@@ -586,7 +600,7 @@ $(document).ready(function(){
             $.ajax({
             type: "POST",
             url: url+"cart/cart_save",
-            data:{'intid':intid,'RefId':RefId,'qty':qty,'size':size,'color':color,'shoulder':shoulder,'bust':bust,'waist':waist,'hips':hips,'length':length,'sleevs_width':sleevs_width,'sleevs_neck':sleevs_neck,'upper_width':upper_width,'abaya_size':abaya_size,'additional':additional},
+            data:{'intid':intid,'RefId':RefId,'qty':qty,'size':size,'color':color,'shoulder':shoulder,'bust':bust,'waist':waist,'hips':hips,'length':length,'sleevs_length':sleevs_length,'chest':chest,'sleevs_width':sleevs_width,'sleevs_neck':sleevs_neck,'upper_width':upper_width,'abaya_size':abaya_size,'additional':additional},
             dataType: 'json',
 			beforeSend: function ()
 			{ 
@@ -621,6 +635,8 @@ $(document).ready(function(){
         let waist         = $('#waist').val(); 
         let hips         = $('#hips').val(); 
         let length         = $('#length').val();
+         let sleevs_length         = $('#sleevs_length').val();
+        let chest         = $('#chest').val();
         let sleevs_width   = $('#sleevs_width').val();
         let sleevs_neck         = $('#sleevs_neck').val();
         let upper_width         = $('#upper_width').val();
@@ -679,6 +695,19 @@ $(document).ready(function(){
         }else{ 
             $('#length').css('border',''); check = true; 
         }
+           if(sleevs_length ==  ''){ 
+            $('#sleevs_length').css('border','1px solid red');
+            check=false; 
+        }else{ 
+            $('#sleevs_length').css('border',''); check = true; 
+        }
+        if(chest ==  ''){ 
+            $('#chest').css('border','1px solid red');
+            check=false; 
+        }else{ 
+            $('#chest').css('border',''); check = true; 
+        }
+     
          if(sleevs_width ==  ''){ 
             $('#sleevs_width').css('border','1px solid red');
             check=false; 
@@ -708,7 +737,7 @@ $(document).ready(function(){
             $.ajax({
             type: "POST",
             url: url+"cart/cart_save",
-            data:{'intid':intid,'RefId':RefId,'qty':qty,'size':size,'color':color,'shoulder':shoulder,'bust':bust,'waist':waist,'hips':hips,'length':length,'sleevs_width':sleevs_width,'sleevs_neck':sleevs_neck,'upper_width':upper_width,'abaya_size':abaya_size,'additional':additional},
+            data:{'intid':intid,'RefId':RefId,'qty':qty,'size':size,'color':color,'shoulder':shoulder,'bust':bust,'waist':waist,'hips':hips,'length':length,'sleevs_length':sleevs_length,'chest':chest,'sleevs_width':sleevs_width,'sleevs_neck':sleevs_neck,'upper_width':upper_width,'abaya_size':abaya_size,'additional':additional},
             dataType: 'json',
             beforeSend: function ()
             { 
@@ -1146,14 +1175,14 @@ $(document).ready(function(){
 		});	 
 	});
 
-    $(".CancelItem").click(function(){       
+ $(".CancelItem").click(function(){       
          var vndid = $(this).attr('vndid');
         var pid = $(this).attr('pid');
         $(".Cancel_Item_Model").modal();
         $('#cancel_vndid').val(vndid);
         $('#cancel_pid').val(pid);       
     });
-    /* Cancel_submit  On click */
+ /* Cancel_submit  On click */
     $(".Cancel_submit ").click(function()
     {
         let url         = $('#site_url').val();    
@@ -1210,68 +1239,6 @@ $(document).ready(function(){
         
     });
     /* End Cancel_ ITem*/
-    $(".ExchangeItem").click(function(){       
-        var vndid = $(this).attr('vndid');
-        var pid = $(this).attr('pid');
-        $(".Exchange_Item_Model").modal();
-        $('#exchange_vndid').val(vndid);
-        $('#exchange_pid').val(pid);       
-   });
-   /* Exchange Item On click */
-   $(".Exchange_submit ").click(function()
-   {
-       let url         = $('#site_url').val();    
-       let pid         = $('#exchange_pid').val();           
-       let check       = true;    
-       let pcheck       = true;     
-      /* Validate email Input Fields Value */
-      if($('.reasonEx').val().length == 0 || $('.reasonEx').val() == 0){ $('.reasonEx').css('border','1px solid red');
-      $('#msgreasonEx').html('<span style="color:red;">This field is required.</span>'); check=false; }
-     else{ $('#msgreasonEx').html(' ');$('.reasonEx').css('border',''); check = true;
-         }
-     /* Validate Password Input Fields Value */
-      if($('#reason_commentEx').val().length == 0){ 
-      $('#msgcommentEx').html('<span style="color:red;">This field is required.</span>'); pcheck=false; }
-     else{ $('#msgcommentEx').html(' '); pcheck = true; }
-         
-       if(check && pcheck){
-           $.ajax(
-           {   
-               type: "POST",
-               url: url+"account/cancel_item",
-               data:$('#ExchangeItemForm').serialize(),
-               // dataType:'json',             
-               beforeSend: function ()
-               {
-                   $('.Exchange_submit').html('Submit...');
-                   $('.Exchange_submit').prop('disabled', true);
-               },
-               success: function(response)
-               {
-                   if(response == 'Failed'){
-                      $("#ExchangeItemResponse").html('<div class="alert alert-danger alert-dismissible fade show" role="alert"> <span class="alert-inner--icon"><i class="fe fe-slash "></i></span> <span class="alert-inner--text"><strong>Oops!</strong> Unable to Account .Some error occurred..</span> <button type="button" class="close text-black" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button> </div>');
-                      $(".Exchange_submit").html('Retry');
-                      $('.Exchange_submit').prop('disabled', false);                      
-                   }else if(response == 'Used'){
-                   $("#ExchangeItemResponse").html('<div class="alert alert-danger alert-dismissible fade show" role="alert"> <span class="alert-inner--icon"><i class="fe fe-slash "></i></span> <span class="alert-inner--text"><strong>Danger!</strong> Already request submit.</span> <button type="button" class="close text-black" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button> </div>');
-                   }else{               
-                   
-                       $("#ExchangeItemResponse").html('<div class="alert alert-success alert-dismissible fade show" role="alert"> <span class="alert-inner--icon"><i class="fe fe-thumbs-up "></i></span> <span class="alert-inner--text"><strong>Success !</strong> you request has been submitted .</span> <button type="button" class="close text-black" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button> </div>');
-                       $('.cancel'+pid).html('<p style="line-height: 14px;color: #2874f0;"><b>Cancellation Request</b></p>');
-                       setTimeout(function(){ 
-                         $(".Exchange_Item_Model").modal('hide'); 
-                         },500); 
-                     }
-               }
-           });
-       }
-       else
-       {
-           $(".Exchange_submit").html('Retry');          
-           $('#ExchangeItemResponse').html('<span style="color:red;">(Any of the fields are empty.)</span>');
-       }   
-       
-   });
 
   //Alert Message
 	window.setTimeout(function() {

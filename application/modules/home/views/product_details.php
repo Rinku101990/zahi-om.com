@@ -191,10 +191,10 @@ input[type='number'] {
                             <hr>
 
                             <div class="row no-gutters mt-3">
-                                <div class="col-4">
+                                <div class="col-2">
                                     <div class="product-description-label"><?=$Reference;?>:</div>
                                 </div>
-                                <div class="col-7">
+                                <div class="col-10">
                                     <span>#<?=$products->p_reference_no;?></span>
                                 </div>
                             </div>
@@ -202,21 +202,56 @@ input[type='number'] {
                             <hr>
 
                             <div class="row no-gutters mt-3">
-                                <div class="col-2">
+                                <div class="col-1">
                                     <div class="product-description-label"><?=$Brand;?>:</div>
                                 </div>
-                                <div class="col-4">
-                                    <span><?=vendor_name($products->p_vnd_id);?></span>
+                                <div class="col-5">
+                                    <span style="margin-left:5px"><?=vendor_name($products->p_vnd_id);?></span>
                                 </div>
-                                <div class="col-2">
+                                <div class="col-1">
                                     <div class="product-description-label"><?=$Model;?>:</div>
                                 </div>
-                                <div class="col-4">
-                                    <span><?=$products->p_model;?></span>
+                                <div class="col-5">
+                                    <span style="margin-left:5px"><?=$products->p_model;?></span>
                                 </div>
                             </div>
 
                             <hr>
+                             <?php if(!empty($products->p_fabric)){?>
+                             <div class="row no-gutters mt-3">
+                                <div class="col-1">
+                                    <div class="product-description-label">Fabric:</div>
+                                </div>
+                                <div class="col-11">
+                                    <span style="margin-left:5px"><?=$products->p_fabric;?></span>
+                                </div>                               
+                            </div>
+                            <hr><?php }?>
+                             <?php if($products->p_belt=='1' || $products->p_sarf=='1'){?>
+                             <div class="row no-gutters mt-3">
+                                 <div class="col-2">
+                                     <div class="product-description-label">Included</div>
+                                 </div>
+                                 <div class="col-10">
+                                    <?php if($products->p_belt=='1'){?>
+                                        Belt
+                                    <?php }?>
+                                    <?php if($products->p_sarf=='1'){?>
+                                       ,Scarf
+                                    <?php }?>  
+                                </div>                                                           
+                            </div>
+                            <hr><?php }?>
+                             <?php if(!empty($products->ready_collection)){?>
+                             <div class="row no-gutters mt-3">
+                                <div class="col-3">
+                                    <div class="product-description-label">Ready For Collection: </div>
+                                </div>
+                                <div class="col-4">
+                                    <span style="margin-left:5px"> <b><?=$products->ready_collection;?> Days</b></span>
+                                </div>                               
+                            </div>
+                            <hr><?php }?>
 
                             <!-- <div class="row no-gutters mt-3">
                                 <div class="col-2">
@@ -243,9 +278,13 @@ input[type='number'] {
                                     <div class="product-description-label"><?=$price;?>:</div>
                                 </div>
                                 <div class="col-10">
-                                    <?php if(!empty($products->sp_special_price)  && $products->sp_start_date <= $date && $products->sp_end_date >= $date){?>
+                                    <?php if(!empty($products->sp_special_price)  && $products->sp_start_date <= $date && $products->sp_end_date >= $date){ ?>
                                     <div class="product-price" id="price">
-                                        <strong><?=currency($this->website->web_currency);?><?=$products->sp_special_price;?></strong>
+                                        <?php if($products->sp_price_type=='0'){ $specialPrice = $products->sp_special_price;?>
+                                        <strong><?=currency($this->website->web_currency);?><?=$specialPrice;?></strong>
+                                        <?php }else if($products->sp_price_type=='1'){ $specialPriceAdjust = $products->sp_special_price*$products->p_selling_price/100;$specialPrice=$products->p_selling_price-$specialPriceAdjust;?>
+                                            <strong><?=currency($this->website->web_currency);?><?=$this->cart->format_number($specialPrice);?></strong>
+                                        <?php } ?>
                                     </div>
                                     <del> <?=currency($this->website->web_currency);?><?=$products->p_selling_price;?></del>
                                     <?php }else{?>
@@ -380,12 +419,13 @@ input[type='number'] {
                                            
                                             <span id="sizeError"></span>
                                         </div>
-                                        <div class="col-12 " id="normal_size" style="display: none; padding-top: 20px;">
+                                        <div class="col-2"></div>
+                                        <div class="col-10 " id="normal_size" style="display: none; padding-top: 20px;">
                                           <select class="form-control custom-select mt-1 Custom_size" id="abaya_size" name="regular_size">
                                              <option value="" selected="">Select Size</option>  
                                            </select>
                                         </div>
-                                        <div class="col-12 " id="custom_size" style="display: none; padding-top: 20px;">
+                                        <div class="col-10 " id="custom_size" style="display: none; padding-top: 20px;">
                                            <div class="row">
                                             <div class="col-xl-4 col-lg-3 col-sm-4 col-6">
                                               <label>Item Length</label>
@@ -437,7 +477,7 @@ input[type='number'] {
                                             <span id="sizeError"></span>
                                         </div>
                                         <?php if($option_group=='6' || $option_group=='9'){?>
-                                         <div class="col-12 " id="normal_size" style="display: none; padding-top: 20px;">
+                                         <div class="col-10 " id="normal_size" style="display: none; padding-top: 20px;">
                                           <select class="form-control custom-select mt-1 Custom_size" id="abaya_size" name="regular_size">
                                              <option value="" selected="">Select Size</option>  
                                            </select>
@@ -479,7 +519,7 @@ input[type='number'] {
                                 
 
 
-                                         <?php } } }else{?>
+                                 <?php } } }else{?>
                                         <input type="hidden" id="color_name" value="0">
                                         <input type="hidden" id="size_name" value="0">
                                        <input type="hidden" id="shoulder" value="0">
@@ -487,6 +527,8 @@ input[type='number'] {
                                         <input type="hidden" id="waist" value="0">
                                         <input type="hidden" id="hips" value="0">
                                         <input type="hidden" id="length" value="0">
+                                    <input type="hidden" id="sleevs_length" value="0">
+                                                <input type="hidden" id="chest" value="0">
                                         <input type="hidden" id="sleevs_width" value="0">
                                          <input type="hidden" id="sleevs_neck" value="0">
                                           <input type="hidden" id="upper_width" value="0">
@@ -495,7 +537,51 @@ input[type='number'] {
                                           
                                                   
                                     <?php }?>
-                                     <?php if($products->p_cate=='6'){?>
+                                     <?php if($products->p_cate=='6'){
+                                         if($products->int_custom=='1'){?>
+                                    
+                                     <div class="row">
+                                        <?php if($products->length=='1'){?>
+                                            <div class="col-xl-4 col-lg-3 col-sm-4 col-6">
+                                              <label>Item Length</label>
+                                              <input type="number" class="form-control" id="length" placeholder="Inch">
+                                            </div>
+                                        <?php } if($products->waist=='1'){?>
+                                           <div class="col-xl-4 col-lg-3 col-sm-4 col-6">
+                                              <label>Waist</label>
+                                              <input type="number" class="form-control" id="waist" placeholder="Inch"  >
+                                            </div>
+                                            <?php } if($products->shoulder=='1'){?>
+                                             <div class="col-xl-4 col-lg-3 col-sm-4 col-6">
+                                              <label>Shoulder</label>
+                                              <input type="number" class="form-control" id="shoulder" placeholder="Shoulder"  >
+                                            </div>
+                                             <?php } if($products->hips=='1'){?>
+                                            <div class="col-xl-4 col-lg-3 col-sm-4 col-6">
+                                              <label>Hips</label>
+                                              <input type="number" class="form-control" id="hips" placeholder="Hips"  >
+                                            </div>
+                                             <?php } if($products->sleeve_length=='1'){?>
+                                             <div class="col-xl-4 col-lg-3 col-sm-4 col-6">
+                                              <label>Sleeve Length</label>
+                                              <input type="number" class="form-control" id="sleevs_length" placeholder="Sleeve Length"  >
+                                            </div>
+                                             <?php } if($products->neck=='1'){?>
+                                             <div class="col-xl-4 col-lg-3 col-sm-4 col-6">
+                                              <label>Neck</label>
+                                              <input type="number" class="form-control" id="sleevs_neck" placeholder="Neck"  >
+                                            </div>
+                                             <?php } if($products->chest=='1'){?>
+                                             <div class="col-xl-4 col-lg-3 col-sm-4 col-6">
+                                              <label>Chest</label>
+                                              <input type="number" class="form-control" id="chest" placeholder="Chest"  >
+                                            </div>
+                                        <?php }?>
+                                        </div>
+                                    <?php }?>
+
+                                    
+                                       
                                       <div class="row" style="margin-top: 10px">
                                        <div class="col-xl-12 col-lg-12 col-sm-12 col-12">
                                               <label>Additional Comments</label>

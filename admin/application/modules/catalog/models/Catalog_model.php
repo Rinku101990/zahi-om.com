@@ -15,11 +15,55 @@ class Catalog_model extends MY_Model{
 		
 	}
 	
+	 function vendor_list($fld_id,$table){	
+	
+		  $this->db->order_by($fld_id,"desc");
+		  $this->db->where('vnd_status','1');
+		  $this->db->where('vnd_VerifiedStatus','1');
+		  $query=$this->db->get($table);
+		   //$this->db->last_query($query);
+		   if($query->num_rows() ==''){
+				return '';
+				}else{
+				return $query->result();
+			}
+		
+	}
+
+	 function productlist($fld_id,$table){	
+	
+		  $this->db->order_by($fld_id,"desc");
+		  $this->db->where('status','1');	
+		  $query=$this->db->get($table);
+		   $this->db->last_query($query);
+		   if($query->num_rows() ==''){
+				return '';
+				}else{
+				return $query->result();
+			}
+		
+	}
+	
 
 	function featured_list($fld_id,$table){	
 	
 		  $this->db->order_by($fld_id,"desc");
 		  	 $this->db->where('p_feature','1');	
+		  $query=$this->db->get($table);		
+		 $this->db->last_query($query);
+		   if($query->num_rows() ==''){
+				return '';
+				}else{
+				return $query->result();
+			}
+		
+	}
+
+
+ function getfeatured($fld_id,$table){	
+	
+		  $this->db->order_by($fld_id,"desc");
+		  	 $this->db->where('p_feature','0');	
 		  $query=$this->db->get($table);		
 		 $this->db->last_query($query);
 		   if($query->num_rows() ==''){
@@ -91,7 +135,7 @@ class Catalog_model extends MY_Model{
         $this->db->where($fld_name,$fld_id);
         $this->db->limit(1);		
 		$query=$this->db->get($tabel);
-	 $this->db->last_query($query);
+	// $this->db->last_query($query);
 		if($query->num_rows()== 1)
 	    {
 		 return $query->row();
@@ -125,6 +169,8 @@ class Catalog_model extends MY_Model{
 			return false;
 		}
     } 
+
+    
 
      public function delete($fld_email,$email,$table) {
         $this->db->where($fld_email, $email);

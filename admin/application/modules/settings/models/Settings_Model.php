@@ -63,6 +63,18 @@ class Settings_Model extends MY_Model{
 			}
 		
 	}
+	
+	 function product_list($v_id,$table){	
+	      $this->db->select('p_id,p_name');	
+		  $this->db->where('p_vnd_id',$v_id);		
+		  $query=$this->db->get($table);
+		   if($query->num_rows() ==''){
+				return '';
+				}else{
+				return $query->result();
+			}
+		
+	}
 
 	function get_location_list($fld_id,$table){	
 	

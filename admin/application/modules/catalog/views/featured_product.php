@@ -8,6 +8,11 @@
             </ol>
             <div class="mt-3 mt-lg-0"> <div class="d-flex align-items-center flex-wrap text-nowrap"> 
              <button type="button" onclick="history.go(-1)" class="btn btn-secondary btn-icon-text mr-2 mb-2 mb-md-0"> <i class="fa fa-arrow-left"></i> Go Back  </button>
+
+             <a href="<?=base_url('catalog/featured-add');?>">
+            <button type="button" class="btn btn-primary btn-icon-text mb-2 mb-md-0"> <i class="fe fe-plus "></i> Add Featured </button>
+             </a>
+           
           
             
              
@@ -27,7 +32,9 @@
                     <?php $msg=$this->session->flashdata('msg');  
     if($msg){  ?>
     
-<div class="alert alert-<?php echo $msg['class'] ?> alert-dismissible fade show" role="alert"> <span class="alert-inner--icon"><i class="fe fe-<?php echo $msg['icon'] ?> "></i></span> <span class="alert-inner--text"><strong><?php echo $msg['type'] ?></strong> <?php echo $msg['message']; ?></span> <button type="button" class="close text-white" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button> </div>
+<div class="alert alert-<?php echo $msg['class'] ?> alert-dismissible fade show" role="alert"> 
+<!--     <span class="alert-inner--icon"><i class="fe fe-<?php echo $msg['icon'] ?> "></i></span>  -->
+    <span class="alert-inner--text"><strong><?php echo $msg['type'] ?></strong> <?php echo $msg['message']; ?></span> <button type="button" class="close text-white" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span> </button> </div>
     <?php }?>
                         <div class="table-responsive product-datatable">
                             <div id="example_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
@@ -68,6 +75,10 @@
 <td align="center"> 
 
 <a href="javascript:void(0);" class="btn btn-default btn-sm mb-2 mb-xl-0 text-black ProductView" productview="<?=$list->p_id;?>" url="<?=base_url();?>" data-toggle="tooltip" data-original-title="Product View"><i class="fa fa-eye"></i></a>
+
+
+
+<a href="javascript:void(0);" onclick="javascript:showMyModalSetTitle('Delete','featured_delete/',<?=$list->p_id;?>,'')" class="btn btn-danger btn-sm mb-2 mb-xl-0 text-white" data-toggle="tooltip" data-original-title="Delete"><i class="fa fa-trash"></i></a>
 
 
   </td>

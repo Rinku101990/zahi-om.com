@@ -1487,6 +1487,12 @@ function city_delete(){
 		echo json_encode($getdata['brand']);
 	}
 	
+	public function getproduct()
+	{
+		$VID = $this->input->get('VID');
+		$getdata['product'] = $this->Settings_Model->product_list($VID,'tbl_product');
+		echo json_encode($getdata['product']);
+	}
 	public function getState()
 	{
 		$CID = $this->input->get('CID');

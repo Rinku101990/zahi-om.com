@@ -34,6 +34,45 @@ $(document).ready(function(){
 			}
 		});
 	});
+	
+	
+	$(".VendorProduct").change(function()
+	{
+       var VID = $(this).val();
+       	var url = $('#site_url').val();
+        //alert(url);
+		$.ajax(
+		{
+			type: "GET",
+			url: url+'settings/getproduct',
+			data:{'VID':VID},
+			dataType: 'json',
+
+			beforeSend: function ()
+			{ 
+				console.log(VID+url);
+			},
+			
+			success: function(data)
+			{
+				$('.ProductList').find('option').remove();
+
+				//var option = $('<option>').attr('value', '').html('Select State');
+				//$('.State').append(option);
+
+				$.each(data, function() 
+				{
+					var option = $('<option>').attr('value', this.p_id).html(this.p_name);
+					$('.ProductList').append(option);
+				});
+
+				
+			}
+		});
+	});
+  
+	
+	
 
     $(".Country").change(function()
 	{

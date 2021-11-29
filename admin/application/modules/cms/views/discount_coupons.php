@@ -49,7 +49,8 @@
                                                  
                                                     <th class="wd-15p sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending" >Coupon Code</th>
                                                     <th class="wd-15p sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending" >Min. Order</th>
-                                                      <th class="wd-15p sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending" >Discount (%)</th>
+                                                    <th class="wd-15p sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending" >Vendor </th>
+                                                      <th class="wd-15p sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending" >Discount </th>
                                                   
                                                         <th class="wd-20p sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Price: activate to sort column ascending" style="width: 90px;">Available</th>
                                                           <th class="wd-15p sorting" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending" >Status</th>
@@ -66,7 +67,13 @@
    <td> <?=$list->cup_name;?></td>
    <td> <?=$list->cup_code;?></td>
    <td><?=currency($this->website->web_currency);?> <?=$list->cup_min_order;?></td>
-   <td> <?=$list->cup_discount;?></td>
+   <td> <?php  if(empty($list->vendor)){echo'All';}else{
+    foreach(explode(', ',$list->vendor) as $vnd_name){
+echo getVnd_name($vnd_name). ', ';
+}
+   }
+?></td>
+   <td> <?=$list->cup_discount;?> <?php if($list->cup_type=='flat') {echo'OMR';}else{echo'%';}?></td>
     <td align="center"> 
 <?=date('d-M-Y',strtotime($list->cup_start_date));?><br/>
 <?=date('d-M-Y',strtotime($list->cup_end_date));?>

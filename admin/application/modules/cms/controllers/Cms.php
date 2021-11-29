@@ -43,7 +43,10 @@ class Cms extends MY_Controller {
             $this->table_banner="tbl_banner";
                /* ========FOR ENQUIRY  TABEL=========== */ 			
             $this->fld_en_id="id";	
-            $this->table_enquiry="tbl_enquiry";	 
+            $this->table_enquiry="tbl_enquiry";	
+               /* ========FOR VENDOR  TABEL=========== */ 			
+            $this->fld_vnd_id="vnd_id";	
+            $this->table_vendor="tbl_vendor";	 
 
           
 
@@ -869,14 +872,18 @@ class Cms extends MY_Controller {
 
 	function discount_coupons_add(){
 		 $permission=unserialize($this->login->mst_permission);
+		 $content['vendor']=  $this->Cms_Model->vendor_list('vnd_name',$this->table_vendor);
 		 if($this->login->mst_role=='0' || !empty($permission['discount_coupons_add'])){ 	
         $content['admin']=admin_profile($this->login->mst_email);	
 	     $RequestMethod = $this->input->server('REQUEST_METHOD'); 
 	    if($RequestMethod == "POST") { 	
 		$check = $this->Cms_Model->check('cup_code',$this->input->post('cup_code'),$this->table_coupon);
 		if(empty($check)){				
-		    $data=array('cup_name' =>$this->input->post('cup_name'),		             
-		                'cup_code' =>$this->input->post('cup_code'),		             
+		    $data=array(
+							    	'vendor' =>implode(', ',$this->input->post('vendor')),
+							    	'cup_name' =>$this->input->post('cup_name'),		             
+		                'cup_code' =>$this->input->post('cup_code'),	
+		                'cup_type' =>$this->input->post('cup_type'),	             
 		                'cup_discount' =>$this->input->post('cup_discount'),
 		                'cup_min_order' =>$this->input->post('cup_min_order'),
 		                'cup_start_date' =>$this->input->post('cup_start_date'),
@@ -919,14 +926,18 @@ class Cms extends MY_Controller {
 
 	function discount_edit(){
 		 $permission=unserialize($this->login->mst_permission);
+		  $content['vendor']=  $this->Cms_Model->vendor_list('vnd_name',$this->table_vendor);
 		 if($this->login->mst_role=='0' || !empty($permission['discount_coupons_edit'])){ 	
         $content['admin']=admin_profile($this->login->mst_email);	     
 	    $cup_id=decode($this->uri->segment(3));	   
 	    $content['coupon'] = $this->Cms_Model->single_record($this->fld_cup_id,$cup_id,$this->table_coupon);	
 	     $RequestMethod = $this->input->server('REQUEST_METHOD'); 
 	    if($RequestMethod == "POST") { 		  
-        $data=array('cup_name' =>$this->input->post('cup_name'),		             
-		                //'cup_code' =>$this->input->post('cup_code'),		             
+        $data=array(
+        	           'vendor' =>implode(', ',$this->input->post('vendor')),
+        	           'cup_name' =>$this->input->post('cup_name'),		             
+		                //'cup_code' =>$this->input->post('cup_code'),	
+		                   'cup_type' =>$this->input->post('cup_type'),		             
 		                'cup_discount' =>$this->input->post('cup_discount'),
 		                'cup_min_order' =>$this->input->post('cup_min_order'),
 		                'cup_start_date' =>$this->input->post('cup_start_date'),

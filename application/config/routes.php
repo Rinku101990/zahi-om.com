@@ -68,6 +68,8 @@ $route['category/(:any)/(:any)/(:any)'] = 'home/category/$1/$2';
 $route['sub-category/(:any)/(:any)/(:any)'] = 'home/sub_category/$1/$2';
 $route['child-category/(:any)/(:any)/(:any)'] = 'home/child_category/$1/$2';
 $route['brand/(:any)/(:any)/(:any)'] = 'home/brand/$1/$2';
+$route['hot-offers/(:any)'] = 'home/hot_offers/$1';
+$route['best-selling/(:any)'] = 'home/best_collection/$1';
 /*--- End New Route Url ---*/
 
 /*--- Old Route Url ---*/ 

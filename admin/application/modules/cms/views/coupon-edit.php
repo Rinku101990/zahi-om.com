@@ -1,26 +1,8 @@
 <style type="text/css">
-  span#select2-sp_pid-oc-container {
-    line-height: 40px;
-}
-span.select2-selection.select2-selection--single {
-      height: 40px;
-      border: 1px solid #e8e7ea;
-          border-radius: 4px !important;
-}
-.select2-container--default .select2-selection--single .select2-selection__rendered {
-    color: #444;
-    line-height: 35px;
-}
-.select2-container--default .select2-selection--single .select2-selection__arrow {
-    height: 40px;
-    position: absolute;
-    top: 1px;
-    right: 1px;
-    width: 20px;
-}
-span.select2.select2-container.select2-container--default {
-    width: 100% !important;
-    height: 40px;
+
+.select2-container--default.select2-container--focus .select2-selection--multiple,.select2-container--default .select2-selection--multiple {
+    height: 41px;   
+    line-height: 26px;
 }
 </style>
 <div class="app-content">
@@ -60,6 +42,30 @@ span.select2.select2-container.select2-container--default {
 
    
                         <div class="row">
+                                 <div class="col-lg-12 col-md-12">
+                                 <div class="row">
+                    <div class="col-sm-6 col-md-2">
+                        <div class="form-group">
+                            <label class="form-label">Vendor <span class="text-red">*</span></label>
+                           </div>
+                    </div>
+          <div class="col-sm-6 col-md-8">
+              <div class="form-group">    
+    <select class="form-control select2" name="vendor[]"  multiple="">
+       <option value="" >All</option>
+       <?php foreach($vendor as $val){
+        $multivend=explode(', ', $coupon->vendor);?>
+        <option value="<?=$val->vnd_id;?>" <?php if(in_array($val->vnd_id, $multivend))echo'selected';?>><?=$val->vnd_name;?></option>
+    <?php }?>
+
+    </select>
+
+                    </div>
+                    </div> 
+                    
+                </div>
+                               
+                            </div>
               <div class="col-lg-12 col-md-12">
                                  <div class="row">
                     <div class="col-sm-6 col-md-2">
@@ -102,6 +108,24 @@ span.select2.select2-container.select2-container--default {
           <div class="col-sm-6 col-md-8">
               <div class="form-group">    
     <input type="text" class="form-control" name="cup_min_order" value="<?=$coupon->cup_min_order;?>" onkeypress="return (event.charCode !=8 && event.charCode ==0 || ( event.charCode == 46 || (event.charCode >= 48 && event.charCode <= 57)))" placeholder="Min. Order Amount"  >                      
+                    </div>
+                    </div> 
+                    
+                </div>
+                               
+                            </div>
+
+                            <div class="col-lg-12 col-md-12">
+                                 <div class="row">
+                    <div class="col-sm-6 col-md-2">
+                        <div class="form-group">
+                            <label class="form-label">Coupon Type <span class="text-red">*</span></label>
+                           </div>
+                    </div>
+          <div class="col-sm-6 col-md-8">
+              <div class="form-group">    
+    <input type="radio" class="form-control1" name="cup_type" value="flat"   <?php if($coupon->cup_type=='flat')echo'checked';?>> Flat  &nbsp;
+    <input type="radio" class="form-control1" name="cup_type"  value="Percentage"  <?php if($coupon->cup_type=='Percentage')echo'selected';?>> Percentage                      
                     </div>
                     </div> 
                     

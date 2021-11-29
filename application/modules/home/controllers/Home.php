@@ -32,8 +32,6 @@ class Home extends MY_Controller {
 		$this->table_products="tbl_product"; 
 		/* ========FOR NEWS LETTER =========== */
 		$this->table_newsletter="tbl_newsletter"; 
-		
-			
 		/* ========FOR LOGIN =========== */
 		$this->cust_id="custId"; 
 		$this->table_customer="tbl_customers";
@@ -124,37 +122,6 @@ class Home extends MY_Controller {
 	   	$this->load->view('home/eid_collection', $content);
 		
 	}
-
-
- 
-    // public function category()
-	// { 	  
-    //    	$url_slug=decode($this->uri->segment(2));
-	   	
-    //   	$content['cate_name']=$this->Home_Model->cate_cate_name($url_slug,$this->table_category);  
-	//    	$content['products']=$this->Home_Model->get_cate_product_list($url_slug,$this->table_products);
-	//    	$content['category']=$this->Home_Model->get_category_list($this->table_category);
-	//    	$content['brand_list']=$this->Home_Model->brand_list($this->table_brand);	
-	//    	$content['color']=$this->Home_Model->color_list($this->table_option);
-	//    	$content['size']=$this->Home_Model->size_list($this->table_option);
-	//     if($url_slug=='3'){
-    //    		$content['p_hot'] ='1';  
-    //    	}elseif(empty($content['products'][0]->p_cate)){
-	//    		$content['filter_categoty']=$url_slug;}
-	//    	else{  $content['p_category'] =$url_slug;  }
-       	
-	// 	if(empty($content['products'][0]->p_scate)){
-    //    		$content['filter_sub_categoty']='';}
-    //    	else{ $content['filter_sub_categoty']=$content['products'][0]->p_scate;}
-        
-	// 	if(empty($content['products'][0]->p_child)){
-    //     	$content['filter_child_categoty']='';}
-    //     else{ $content['filter_child_categoty']=$content['products'][0]->p_child;}
-       	
-	// 	$category=$this->Home_Model->signle_lable('mn_slug',$url_slug,$this->table_navigation);      
-    //    	$content['banner_img'] =category_img($url_slug); 
-	// 	   $this->load->view('home/products', $content);
-	// }
  
     public function category()
 	{ 	  
@@ -199,10 +166,10 @@ class Home extends MY_Controller {
 		$category2 =$this->input->post('category2');
 		$sub_category2 = $this->input->post('sub_category2');	
 		$child_category = $this->input->post('child_category');
-		$hot =$this->input->post('hot');
+		$hot ='';
 		$featured = $this->input->post('featured');	
 		$trending = $this->input->post('trending');
-		$eid = $this->input->post('eid');
+		$eid = '';
 		$supplier = $this->input->post('supplier');	
 		$newest_first = $this->input->post('newest_first');
 		//pagination
@@ -233,7 +200,7 @@ class Home extends MY_Controller {
 		$config['num_links'] = 4;
 		$this->pagination->initialize($config);
 		// $page = $this->uri->segment(4);
-		$start = ($page) * $config['per_page'];
+		$start = ($page-1) * $config['per_page'];
 		//echo$config['per_page'];
 		//end pagination
 		$content['filterProducts'] = $this->Home_Model->product_data($config['per_page'],$start,$url_slug,$url_slug_sub,$url_slug_child,$url_slug_brand,$brand,$color,$size,$price,$grade,$condition,$category,$category2,$sub_category,$sub_category2,$child_category,$hot,$featured,$trending,$eid,$supplier,$newest_first);
@@ -244,40 +211,9 @@ class Home extends MY_Controller {
 		
 	}
 
-	// public function sub_category()
-	// { 	  
-    //    $id=decode($this->uri->segment(2));   
-    //    $content['cate_name']=$this->Home_Model->cate_sub_name($id,$this->table_scategory);      
-	//    $content['category_list']=$this->Home_Model->get_category_list($this->table_category);
-	//    $content['products']=$this->Home_Model->get_sub_cate_product_list($id,$this->table_products);
-	//    $content['category']=$this->Home_Model->get_category_list($this->table_category);
-
-	//    $content['brand_list']=$this->Home_Model->brand_list($this->table_brand);	
-	//    $content['color']=$this->Home_Model->color_list($this->table_option);
-	//    $content['size']=$this->Home_Model->size_list($this->table_option);
-	//    if(empty($content['products'][0]->p_cate)){
-	//    	$content['filter_categoty']='';}
-	//    	else{ $content['filter_categoty']=$content['products'][0]->p_cate;}
-    //    if(empty($content['products'][0]->p_scate)){
-    //    	$content['filter_sub_categoty']=$id;}
-    //    	 else{  $content['p_scategory'] =$id; }
-    //     if(empty($content['products'][0]->p_child)){
-    //     	$content['filter_child_categoty']='';}
-    //     	else{ $content['filter_child_categoty']=$content['products'][0]->p_child;}      
-    //    $content['p_category'] =cate_id($id);   
-    //     //$content['p_scategory'] =$id;   
-    //     $content['banner_img'] =scate_img($id);
-    //     // echo"<pre>";
-    //     // print_r($content);
-    //     // die; 
-	//    //$content['subview']='home/products';
-	//    $this->load->view('home/products', $content);
-		
-	// }
-
-    public function sub_category()
+	public function sub_category()
 	{ 	  
-       	$id=decode($this->uri->segment(2)); 
+       	$id=decode($this->uri->segment(2)); /*--For Sub Category--*/
 		$url_slug=''; /*--For Category--*/
 		$url_slug_sub=$id; /*--For Sub Category--*/
 		$url_slug_child=''; /*--For Child Category--*/
@@ -318,10 +254,10 @@ class Home extends MY_Controller {
 		$category2 =$this->input->post('category2');
 		$sub_category2 = $this->input->post('sub_category2');	
 		$child_category = $this->input->post('child_category');
-		$hot =$this->input->post('hot');
+		$hot ='';
 		$featured = $this->input->post('featured');	
 		$trending = $this->input->post('trending');
-		$eid = $this->input->post('eid');
+		$eid = '';
 		$supplier = $this->input->post('supplier');	
 		$newest_first = $this->input->post('newest_first');
 		//pagination
@@ -352,7 +288,7 @@ class Home extends MY_Controller {
 		$config['num_links'] = 4;
 		$this->pagination->initialize($config);
 		// $page = $this->uri->segment(4);
-		$start = ($page) * $config['per_page'];
+		$start = ($page-1) * $config['per_page'];
 		//echo$config['per_page'];
 		//end pagination
 		$content['filterProducts'] = $this->Home_Model->product_data($config['per_page'],$start,$url_slug,$url_slug_sub,$url_slug_child,$url_slug_brand,$brand,$color,$size,$price,$grade,$condition,$category,$category2,$sub_category,$sub_category2,$child_category,$hot,$featured,$trending,$eid,$supplier,$newest_first);
@@ -360,41 +296,6 @@ class Home extends MY_Controller {
 	   $this->load->view('home/products', $content);
 		
 	}
-
-	// public function child_category()
-	// { 	  
-    //    	$id=decode($this->uri->segment(2)); 
-    //    	$content['cate_name']=$this->Home_Model->cate_child_name($id,$this->table_child_category);
-	//    	$content['category_list']=$this->Home_Model->get_category_list($this->table_category);
-	//    	$content['products']=$this->Home_Model->get_child_cate_product_list($id,$this->table_products);
-	//    	//print("<pre>".print_r($content['products'],true)."</pre>");die;
-	//    	$content['category']=$this->Home_Model->get_category_list($this->table_category);
-	//    	$content['brand_list']=$this->Home_Model->brand_list($this->table_brand);	
-	//    	$content['color']=$this->Home_Model->color_list($this->table_option);
-	//    	$content['size']=$this->Home_Model->size_list($this->table_option);	
-
-	//    	if(empty($content['products'][0]->p_cate)){
-	//    		$content['filter_categoty']='';}
-	//    	else{ $content['filter_categoty']=$content['products'][0]->p_cate;}
-       	
-	// 	if(empty($content['products'][0]->p_scate)){
-    //    		$content['filter_sub_categoty']='';}
-    //    	else{ $content['filter_sub_categoty']=$content['products'][0]->p_scate;}
-        
-	// 	if(empty($content['products'][0]->p_child)){
-    //     	$content['filter_child_categoty']='';}
-    // 	else{ $content['filter_child_categoty']=$content['products'][0]->p_child;}
-		
-	// 	if(!empty(child_img($id))){
-	// 		$img=child_img($id);
-	// 	}else{$img=scate_img(scate($id));}
-    //    	$content['p_chcategory'] =$id; 
-    //    	$content['p_category'] =child_cate_id($id);  
-    //     $content['p_scategory'] =scate($id); 	 
-    //     $content['banner_img']=$img; 
-	// 	// $content['subview']='home/products';
-	//    	$this->load->view('home/products', $content);
-	// }
 
 	public function child_category()
 	{ 	  
@@ -445,10 +346,10 @@ class Home extends MY_Controller {
 		$category2 =$this->input->post('category2');
 		$sub_category2 = $this->input->post('sub_category2');	
 		$child_category = $this->input->post('child_category');
-		$hot =$this->input->post('hot');
+		$hot ='';
 		$featured = $this->input->post('featured');	
 		$trending = $this->input->post('trending');
-		$eid = $this->input->post('eid');
+		$eid = '';
 		$supplier = $this->input->post('supplier');	
 		$newest_first = $this->input->post('newest_first');
 		//pagination
@@ -479,12 +380,150 @@ class Home extends MY_Controller {
 		$config['num_links'] = 4;
 		$this->pagination->initialize($config);
 		// $page = $this->uri->segment(4);
-		$start = ($page) * $config['per_page'];
+		$start = ($page-1) * $config['per_page'];
 		//echo$config['per_page'];
 		//end pagination
 		$content['filterProducts'] = $this->Home_Model->product_data($config['per_page'],$start,$url_slug,$url_slug_sub,$url_slug_child,$url_slug_brand,$brand,$color,$size,$price,$grade,$condition,$category,$category2,$sub_category,$sub_category2,$child_category,$hot,$featured,$trending,$eid,$supplier,$newest_first);
 
 	   	$this->load->view('home/products', $content);
+	}
+
+	public function hot_offers()
+	{
+		$url_slug=''; /*--For Category--*/
+		$url_slug_sub=''; /*--For Sub Category--*/
+		$url_slug_child=''; /*--For Child Category--*/
+		$url_slug_brand=''; /*--For Child Category--*/
+		$content['cate_name']='Hot Offers!';  
+		$content['category']=$this->Home_Model->get_category_list($this->table_category);
+	   	$content['brand_list']=$this->Home_Model->brand_list($this->table_brand);	
+	   	$content['color']=$this->Home_Model->color_list($this->table_option);
+	   	$content['size']=$this->Home_Model->size_list($this->table_option);
+		$content['banner_img'] =base_url('assets/img/hot_offers.jpg'); 
+		
+		$page=($this->uri->segment(2))? $this->uri->segment(2) : 0;
+		sleep(1); 
+		$brand = $this->input->post('brand');
+		$color = $this->input->post('color');
+		$size = $this->input->post('size');
+		$price =$this->input->post('price');
+		$grade = $this->input->post('grade');	
+		$condition = $this->input->post('condition');	
+		$category =$this->input->post('category');
+		$sub_category = $this->input->post('sub_category');	
+		$category2 =$this->input->post('category2');
+		$sub_category2 = $this->input->post('sub_category2');	
+		$child_category = $this->input->post('child_category');
+		$hot =date('Y-m-d');
+		$featured = $this->input->post('featured');	
+		$trending = $this->input->post('trending');
+		$eid = '';
+		$supplier = $this->input->post('supplier');	
+		$newest_first = $this->input->post('newest_first');
+
+		//pagination
+		$total_product=$this->Home_Model->count_all($url_slug,$url_slug_sub,$url_slug_child,$url_slug_brand,$brand,$color,$size,$price,$grade,$condition,$category,$category2,$sub_category,$sub_category2,$child_category,$hot,$featured,$trending,$eid,$supplier,$newest_first);
+		$this->load->library('pagination');
+		$config = array();
+		$config['base_url'] = base_url('hot-offers/'.$this->uri->segment(3));
+		$config['total_rows'] = $total_product;
+		$config['per_page'] = 12;
+		$config['uri_segment'] =2;
+		$config['use_page_numbers'] = TRUE;
+		$config['full_tag_open'] = '<div class="col-lg-12"><div class="aiz-pagination aiz-pagination-center mt-4" align="center"><ul class="pagination">';
+		$config['full_tag_close'] = '</ul>';
+		$config['first_tag_open'] = ' <li class="page-item">';
+		$config['first_tag_close'] = '</li>';
+		$config['last_tag_open'] = ' <li class="page-item">';
+		$config['last_tag_close'] = '</li>';
+		$config['next_link'] = '&gt;';
+		$config['next_tag_open'] = ' <li class="page-item">';
+		$config['next_tag_close'] = '</li>';
+		$config['prev_link'] = '&lt;';
+		$config['prev_tag_open'] = ' <li class="page-item">';
+		$config['prev_tag_close'] = '</li>';
+		$config['cur_tag_open'] = '<li class="page-item active" aria-current="page">';
+		$config['cur_tag_close'] = '</li>';
+		$config['num_tag_open'] = ' <li class="page-item">';
+		$config['num_tag_close'] = '</li>';
+		$config['num_links'] = 4;
+		$this->pagination->initialize($config);
+		// $page = $this->uri->segment(4);
+		$start = ($page-1) * $config['per_page'];
+		//end pagination
+		$content['filterProducts'] = $this->Home_Model->product_data($config['per_page'],$start,$url_slug,$url_slug_sub,$url_slug_child,$url_slug_brand,$brand,$color,$size,$price,$grade,$condition,$category,$category2,$sub_category,$sub_category2,$child_category,$hot,$featured,$trending,$eid,$supplier,$newest_first);
+		//print("<pre>".print_r($content['filterProducts'],true)."</pre>");die;
+		//echo $pagination=$this->pagination->create_links();
+	   	// $content['subview']='home/products';
+	   	$this->load->view('home/products', $content);
+	}
+
+	public function best_collection()
+	{ 	    
+		$url_slug=''; /*--For Category--*/
+		$url_slug_sub=''; /*--For Sub Category--*/
+		$url_slug_child=''; /*--For Child Category--*/
+		$url_slug_brand=''; /*--For Child Category--*/
+		$content['cate_name']='Hot Offers!';  
+		$content['category']=$this->Home_Model->get_category_list($this->table_category);
+	   	$content['brand_list']=$this->Home_Model->brand_list($this->table_brand);	
+	   	$content['color']=$this->Home_Model->color_list($this->table_option);
+	   	$content['size']=$this->Home_Model->size_list($this->table_option);
+		$content['banner_img'] =base_url('assets/img/hot_offers.jpg'); 
+
+		$page=$this->uri->segment(2);	
+		sleep(1); 
+		$brand = $this->input->post('brand');
+		$color = $this->input->post('color');
+		$size = $this->input->post('size');
+		$price =$this->input->post('price');
+		$grade = $this->input->post('grade');	
+		$condition = $this->input->post('condition');	
+		$category =$this->input->post('category');
+		$sub_category = $this->input->post('sub_category');	
+		$category2 =$this->input->post('category2');
+		$sub_category2 = $this->input->post('sub_category2');	
+		$child_category = $this->input->post('child_category');
+		$hot ='';
+		$featured = $this->input->post('featured');	
+		$trending = $this->input->post('trending');
+		$eid = '1';
+		$supplier = $this->input->post('supplier');	
+		$newest_first = $this->input->post('newest_first');
+
+		//pagination
+		$total_product=$this->Home_Model->count_all($url_slug,$url_slug_sub,$url_slug_child,$url_slug_brand,$brand,$color,$size,$price,$grade,$condition,$category,$category2,$sub_category,$sub_category2,$child_category,$hot,$featured,$trending,$eid,$supplier,$newest_first);
+		$this->load->library('pagination');
+		$config = array();
+		$config['base_url'] = base_url('best-selling/'.$this->uri->segment(3));
+		$config['total_rows'] = $total_product;
+		$config['per_page'] = 12;
+		$config['uri_segment'] =2;
+		$config['use_page_numbers'] = TRUE;
+		$config['full_tag_open'] = '<div class="col-lg-12"><div class="aiz-pagination aiz-pagination-center mt-4" align="center"><ul class="pagination">';
+		$config['full_tag_close'] = '</ul>';
+		$config['first_tag_open'] = ' <li class="page-item">';
+		$config['first_tag_close'] = '</li>';
+		$config['last_tag_open'] = ' <li class="page-item">';
+		$config['last_tag_close'] = '</li>';
+		$config['next_link'] = '&gt;';
+		$config['next_tag_open'] = ' <li class="page-item">';
+		$config['next_tag_close'] = '</li>';
+		$config['prev_link'] = '&lt;';
+		$config['prev_tag_open'] = ' <li class="page-item">';
+		$config['prev_tag_close'] = '</li>';
+		$config['cur_tag_open'] = '<li class="page-item active" aria-current="page">';
+		$config['cur_tag_close'] = '</li>';
+		$config['num_tag_open'] = ' <li class="page-item">';
+		$config['num_tag_close'] = '</li>';
+		$config['num_links'] = 4;
+		$this->pagination->initialize($config);
+		// $page = $this->uri->segment(4);
+		$start = ($page-1) * $config['per_page'];
+		//echo$config['per_page'];
+		//end pagination
+		$content['filterProducts'] = $this->Home_Model->product_data($config['per_page'],$start,$url_slug,$url_slug_sub,$url_slug_child,$url_slug_brand,$brand,$color,$size,$price,$grade,$condition,$category,$category2,$sub_category,$sub_category2,$child_category,$hot,$featured,$trending,$eid,$supplier,$newest_first);
+		$this->load->view('home/best_collection', $content);
 	}
 
 	public function hot_products()
@@ -587,7 +626,7 @@ class Home extends MY_Controller {
 		
 	}
 
-	public function brand()
+   	public function brand()
 	{ 	  
        	$id=decode($this->uri->segment(2));  
 		$url_slug=''; /*--For Category--*/
@@ -688,75 +727,13 @@ class Home extends MY_Controller {
 
 	public function product()
 	{ 	  
-       $id=decode($this->uri->segment(2));      
-	   $content['products']=$this->Home_Model->product_detail($id,$this->table_products);
-	   $content['related_product']=$this->Home_Model->related_product($content['products']->child_slug,$this->table_products);	
-	    $content['reviews_cmnts']=$this->Home_Model->reviews_cmnts($id,$this->table_cmnts_reviews);	
-	   //  echo"<pre>";
-	   // print_r($content['products']);
-	   // exit();
-	   // $content['detail']=1;
-	   // $content['subview']='home/product_details';
-	   $this->load->view('home/product_details', $content);
-		
+       	$id=decode($this->uri->segment(2));      
+	   	$content['products']=$this->Home_Model->product_detail($id,$this->table_products);
+	   	$content['related_product']=$this->Home_Model->related_product($content['products']->child_slug,$this->table_products);	
+		$content['reviews_cmnts']=$this->Home_Model->reviews_cmnts($id,$this->table_cmnts_reviews);
+	   	$this->load->view('home/product_details', $content);
 	}
 
-
-	function product_data()
-	{
-	           $page=$this->uri->segment(4);			 
-			  sleep(1);			 
-			  $brand = $this->input->post('brand');
-			  $color = $this->input->post('color');
-			  $size = $this->input->post('size');
-			  $price =$this->input->post('price');
-			  $grade = $this->input->post('grade');	
-			  $condition = $this->input->post('condition');	
-			  $category =$this->input->post('category');
-			  $sub_category = $this->input->post('sub_category');	
-			  $category2 =$this->input->post('category2');
-			  $sub_category2 = $this->input->post('sub_category2');	
-			  $child_category = $this->input->post('child_category');
-			  $hot =$this->input->post('hot');
-			  $featured = $this->input->post('featured');	
-			  $trending = $this->input->post('trending');
-			  $eid = $this->input->post('eid');
-			  $supplier = $this->input->post('supplier');	
-			  $newest_first = $this->input->post('newest_first');
-			  //pagination
-			   $total_product=$this->Home_Model->count_all($brand,$color,$size,$price,$grade,$condition,$category,$category2,$sub_category,$sub_category2,$child_category,$hot,$featured,$trending,$eid,$supplier,$newest_first);
-			   $this->load->library('pagination');
-              $config = array();
-              $config['base_url'] = '#';
-              $config['total_rows'] = $total_product;
-              $config['per_page'] = 12;
-              $config['uri_segment'] =4;
-              $config['use_page_numbers'] = TRUE;
-              $config['full_tag_open'] = '<div class="col-lg-12"><div class="aiz-pagination aiz-pagination-center mt-4" align="center"><ul class="pagination">';
-              $config['full_tag_close'] = '</ul>';
-              $config['first_tag_open'] = ' <li class="page-item">';
-              $config['first_tag_close'] = '</li>';
-              $config['last_tag_open'] = ' <li class="page-item">';
-              $config['last_tag_close'] = '</li>';
-              $config['next_link'] = '&gt;';
-              $config['next_tag_open'] = ' <li class="page-item">';
-              $config['next_tag_close'] = '</li>';
-              $config['prev_link'] = '&lt;';
-              $config['prev_tag_open'] = ' <li class="page-item">';
-              $config['prev_tag_close'] = '</li>';
-              $config['cur_tag_open'] = '<li class="page-item active" aria-current="page">';
-              $config['cur_tag_close'] = '</li>';
-              $config['num_tag_open'] = ' <li class="page-item">';
-              $config['num_tag_close'] = '</li>';
-              $config['num_links'] = 4;
-              $this->pagination->initialize($config);
-             // $page = $this->uri->segment(4);
-              $start = ($page - 1) * $config['per_page'];
-              //echo$config['per_page'];
-              //end pagination
-		      echo $query = $this->Home_Model->product_data($config['per_page'],$start,$brand,$color,$size,$price,$grade,$condition,$category,$category2,$sub_category,$sub_category2,$child_category,$hot,$featured,$trending,$eid,$supplier,$newest_first);
-		      echo $pagination=$this->pagination->create_links();
-	}
 
     function search_data(){		
 		$search = $this->input->post('search');	
@@ -851,20 +828,20 @@ class Home extends MY_Controller {
 
 	function search()
 	{ 	
-	  $search = $this->input->get('search');	
+	  	$search = $this->input->get('search');	
 	
-	 $p_name='p_name';
-	 $p_brand='p_brand';
-	 $p_cate='p_cate';
-	 $p_scate='p_scate';
-	 $p_child='p_child';
-	 $Product_Name=$this->Home_Model->Product_Search($p_name,$search,$this->table_products);
-	 $Product_Brand=$this->Home_Model->Product_Brand_Search($p_brand,$search,$this->table_products);
-	 $Product_Cate=$this->Home_Model->Product_Cate_Search($p_cate,$search,$this->table_products);
-	 $Product_Scate=$this->Home_Model->Product_Scate_Search($p_scate,$search,$this->table_products);
-	 $Product_child=$this->Home_Model->Product_Child_Search($p_child,$search,$this->table_products);
+		$p_name='p_name';
+		$p_brand='p_brand';
+		$p_cate='p_cate';
+		$p_scate='p_scate';
+		$p_child='p_child';
+		$Product_Name=$this->Home_Model->Product_Search($p_name,$search,$this->table_products);
+		$Product_Brand=$this->Home_Model->Product_Brand_Search($p_brand,$search,$this->table_products);
+		$Product_Cate=$this->Home_Model->Product_Cate_Search($p_cate,$search,$this->table_products);
+		$Product_Scate=$this->Home_Model->Product_Scate_Search($p_scate,$search,$this->table_products);
+		$Product_child=$this->Home_Model->Product_Child_Search($p_child,$search,$this->table_products);
 	
-	 //p_name
+	 	//p_name
 
 
        if(!empty($Product_Name)){

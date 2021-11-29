@@ -39,9 +39,11 @@
                                
                                 <div class="row">
                                     <div class="col-sm-12">
+                                        <form action="<?=base_url('catalog/products_delete')?>" method="post">
                                         <table id="example" class="table table-striped table-bordered dataTable no-footer" role="grid" aria-describedby="example_info">
                                             <thead>
                                                 <tr role="row">
+                                                     <th>    <input type="checkbox" id="ckbCheckAll" /></th>
                                                     <th class="w-15p sorting_asc" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Product name: activate to sort column descending" >Sr. No.</th>
                                                     <th class="w-15p sorting_asc" tabindex="0" aria-controls="example" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Product name: activate to sort column descending" >Img</th>
                                             
@@ -62,6 +64,7 @@
    <?php if(!empty($product)){
      $i=1;  foreach($product AS $list){?>
  <tr role="row" >
+    <td><input type="checkbox" name="product[]" class="checkBoxClass" value="<?=$list->p_id;?>">
    <td class="sorting_1" align="center"><?=$i;$i++;?>.</td>
 
    <td ><?php if(!empty(product_img($list->p_id))){?>
@@ -93,8 +96,8 @@
 <a href="javascript:void(0);" class="btn btn-default btn-sm mb-2 mb-xl-0 text-black ProductView" productview="<?=$list->p_id;?>" url="<?=base_url();?>" data-toggle="tooltip" data-original-title="Product View"><i class="fa fa-eye"></i></a>
 <?php } if($this->login->mst_role=='0' || !empty($permission['products_delete'])){?>
 
-<a href="javascript:void(0);" onclick="javascript:showMyModalSetTitle('Delete','product_delete/',<?=$list->p_id;?>,'')" class="btn btn-danger btn-sm mb-2 mb-xl-0 text-white" data-toggle="tooltip" data-original-title="Delete"><i class="fa fa-trash"></i></a>
-<?php }?>
+<!-- <a href="javascript:void(0);" onclick="javascript:showMyModalSetTitle('Delete','product_delete/',<?=$list->p_id;?>,'')" class="btn btn-danger btn-sm mb-2 mb-xl-0 text-white" data-toggle="tooltip" data-original-title="Delete"><i class="fa fa-trash"></i></a>
+ --><?php }?>
   </td>
 <?php }?>
                                                 </tr>
@@ -102,6 +105,13 @@
                                                
                                             </tbody>
                                         </table>
+                                        <div class="save_button primary_btn default_button">
+  <button type="submit" class="btn btn-primary btn2 "><i class="fa fa-trash"></i> Delete Priduct</button>
+      
+ 
+     </div>
+
+ </form>
                                     </div>
                                 </div>
                                 

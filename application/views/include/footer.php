@@ -208,7 +208,7 @@
                <div class="copyright text-center text-md-center">
                   <ul class="copy-links no-margin" style="list-style: none;">
                      <li style="color: #fff">
-                        <?php echo $this->website->web_copy_right;?>
+                        <?php echo $this->website->web_copy_right;?> Developed by <a href="https://sapphireitsg.com/" target="_blank">Sapphire Technologies</a>
                      </li>
                   </ul>
                </div>

@@ -87,9 +87,10 @@ class Home_model extends MY_Model{
 
 	function hot_product_list($table){
 		$date=date('Y-m-d');
-		$this->db->select('cate.cate_name,scate.scate_name,child.child_name,tp.p_id,tp.p_cate,tp.p_scate,tp.p_child,tp.p_reference_no,tp.p_name,tp.p_name_ar,tp.p_model,tp.p_selling_price,sp.sp_special_price,sp.sp_end_date,pimg.pg_img,brd.brd_name as vnd_name,vndr.vnd_status');	
+		$this->db->select('cate.cate_name,scate.scate_name,child.child_name,tp.p_id,tp.p_cate,tp.p_scate,tp.p_child,tp.p_reference_no,tp.p_name,tp.p_name_ar,tp.p_model,tp.p_selling_price,sp.sp_price_type,sp.sp_special_price,sp.sp_end_date,pimg.pg_img,brd.brd_name as vnd_name');	
 		$this->db->order_by('tp.p_id',"DESC");		
 		$this->db->join('tbl_special_price sp','sp.sp_pid=tp.p_id','LEFT');
+		//$this->db->join('tbl_brand tb','tb.brd_id=tp.p_brand','LEFT');
 		$this->db->join('tbl_product_img pimg','pimg.pg_pid=tp.p_id','LEFT');
 		$this->db->join('tbl_category cate','cate.cate_id=tp.p_cate','LEFT');
 		$this->db->join('tbl_sub_category scate','scate.scate_id=tp.p_scate','LEFT');
@@ -101,16 +102,18 @@ class Home_model extends MY_Model{
 		$this->db->where('sp.sp_start_date <=', $date);				
 		$this->db->where('sp.sp_end_date >=', $date);		
 		$this->db->where('tp.p_status','1');	
+		$this->db->where('vndr.vnd_status','1');	
 		$this->db->where('tp.p_approval_status','0');
-		$this->db->where('vndr.vnd_status','1');
 		$this->db->limit('6','0');		
 		$query=$this->db->get();
+		//echo $this->db->last_query($query);
+		// die();
 		if($query->num_rows() != 0) return $query->result();
 		else return false;
 	}
 
 	function recent_product_list($table){	
-		$this->db->select('cate.cate_name,scate.scate_name,child.child_name,tp.p_id,tp.p_cate,tp.p_scate,tp.p_child,tp.p_reference_no,tp.p_name,tp.p_name_ar,tp.p_model,tp.p_selling_price,sp.sp_special_price,sp.sp_start_date,sp.sp_end_date,pimg.pg_img,brd.brd_name as vnd_name,vndr.vnd_status');	
+		$this->db->select('cate.cate_name,scate.scate_name,child.child_name,tp.p_id,tp.p_cate,tp.p_scate,tp.p_child,tp.p_reference_no,tp.p_name,tp.p_name_ar,tp.p_model,tp.p_selling_price,sp.sp_price_type,sp.sp_special_price,sp.sp_start_date,sp.sp_end_date,pimg.pg_img,brd.brd_name as vnd_name');	
 		$this->db->order_by('tp.p_id',"DESC");		
 		$this->db->join('tbl_special_price sp','sp.sp_pid=tp.p_id','LEFT');	
 		$this->db->join('tbl_product_img pimg','pimg.pg_pid=tp.p_id','LEFT');
@@ -118,20 +121,20 @@ class Home_model extends MY_Model{
 		$this->db->join('tbl_sub_category scate','scate.scate_id=tp.p_scate','LEFT');
 		$this->db->join('tbl_child_category child','child.child_id=tp.p_child','LEFT');
 		$this->db->join('tbl_brand brd','brd.brd_id=tp.p_brand','LEFT');
-		$this->db->join('tbl_vendor vndr','vndr.vnd_id=brd.vnd_id','LEFT');
 		$this->db->from($table.' tp');	  			
 		$this->db->where('tp.p_status','1');	
-		$this->db->where('tp.p_approval_status','0');
-		$this->db->where('vndr.vnd_status','1');	
+		$this->db->where('tp.p_approval_status','0');	
 		$this->db->limit('6','0');	
 		$query=$this->db->get();	
+		// echo $this->db->last_query($query);
+		// die();
 		if($query->num_rows() != 0) return $query->result();
 		else return false;
 	}
 
 	function featured_product_list($table){
 		$date=date('Y-m-d');
-		$this->db->select('cate.cate_name,scate.scate_name,child.child_name,tp.p_id,tp.p_cate,tp.p_scate,tp.p_child,tp.p_reference_no,tp.p_name,tp.p_name_ar,tp.p_model,tp.p_selling_price,sp.sp_special_price,sp.sp_end_date,sp.sp_start_date,pimg.pg_img,brd.brd_name as vnd_name,vndr.vnd_status');	
+		$this->db->select('cate.cate_name,scate.scate_name,child.child_name,tp.p_id,tp.p_cate,tp.p_scate,tp.p_child,tp.p_reference_no,tp.p_name,tp.p_name_ar,tp.p_model,tp.p_selling_price,sp.sp_price_type,sp.sp_special_price,sp.sp_end_date,sp.sp_start_date,pimg.pg_img,brd.brd_name as vnd_name');	
 		$this->db->order_by('tp.p_id',"DESC");		
 		$this->db->join('tbl_special_price sp','sp.sp_pid=tp.p_id','LEFT');	
 		$this->db->join('tbl_product_img pimg','pimg.pg_pid=tp.p_id','LEFT');
@@ -139,14 +142,13 @@ class Home_model extends MY_Model{
 		$this->db->join('tbl_sub_category scate','scate.scate_id=tp.p_scate','LEFT');
 		$this->db->join('tbl_child_category child','child.child_id=tp.p_child','LEFT');
 		$this->db->join('tbl_brand brd','brd.brd_id=tp.p_brand','LEFT');
-		$this->db->join('tbl_vendor vndr','vndr.vnd_id=brd.vnd_id','LEFT');
 		$this->db->from($table.' tp');	
 		$this->db->where('tp.p_feature','1');			
 		$this->db->where('tp.p_status','1');	
-		$this->db->where('tp.p_approval_status','0');
-		$this->db->where('vndr.vnd_status','1');
+		$this->db->where('tp.p_approval_status','0');	
 		$this->db->limit('6','0');	
 		$query=$this->db->get();
+		//echo $this->db->last_query($query);
 		if($query->num_rows() != 0) return $query->result();
 		else return false;
 	}
@@ -166,6 +168,7 @@ class Home_model extends MY_Model{
 		$this->db->where('tp.p_approval_status','0');
 		$this->db->limit('15','0');	
 		$query=$this->db->get();
+		//echo $this->db->last_query($query);
 		if($query->num_rows() != 0) return $query->result();
 		else return false;
 	}
@@ -192,7 +195,7 @@ class Home_model extends MY_Model{
 	}
 
 
-function categories_product_list($fld_val,$table){
+    function categories_product_list($fld_val,$table){
 		$this->db->select('cate.cate_slug,scate.scate_slug,child.child_slug,tp.p_id,tp.p_cate,tp.p_scate,tp.p_child,tp.p_reference_no,tp.p_name,tp.p_model,tp.p_selling_price,tp.p_short_description,sp.sp_special_price,sp.sp_end_date,pimg.pg_image');	
 		$this->db->order_by('tp.p_id',"DESC");		
 		$this->db->join('tbl_special_price sp','sp.sp_pid=tp.p_id','LEFT');
@@ -228,7 +231,6 @@ function categories_product_list($fld_val,$table){
 		$this->db->where('tp.p_status','1');	
 		$this->db->where('tp.p_approval_status','0');
 		$query=$this->db->get();
-		//echo $this->db->last_query($query);
 		if($query->num_rows() != 0) return $query->result();
 		else return false;
 	}
@@ -275,21 +277,19 @@ function categories_product_list($fld_val,$table){
 	}
 
 
-	function get_child_cate_product_list($fld_val,$table)
-	{
-		$this->db->select('cate.cate_slug,scate.scate_slug,child.child_slug,tp.p_id,tp.p_vnd_id,tp.p_cate,tp.p_scate,tp.p_child,tp.p_reference_no,tp.p_name,tp.p_model,tp.p_selling_price,tp.p_short_description,sp.sp_special_price,sp.sp_end_date,pimg.pg_image,vndr.vnd_status');	
+	function get_child_cate_product_list($fld_val,$table){
+		$this->db->select('cate.cate_slug,scate.scate_slug,child.child_slug,tp.p_id,tp.p_cate,tp.p_scate,tp.p_child,tp.p_reference_no,tp.p_name,tp.p_model,tp.p_selling_price,tp.p_short_description,sp.sp_special_price,sp.sp_end_date,pimg.pg_image');	
 		$this->db->order_by('tp.p_id',"DESC");		
 		$this->db->join('tbl_special_price sp','sp.sp_pid=tp.p_id','LEFT');
+		//$this->db->join('tbl_brand tb','tb.brd_id=tp.p_brand','LEFT');
 		$this->db->join('tbl_product_img pimg','pimg.pg_pid=tp.p_id','LEFT');
 		$this->db->join('tbl_category cate','cate.cate_id=tp.p_cate','LEFT');		
 		$this->db->join('tbl_sub_category scate','scate.scate_id=tp.p_scate','LEFT');
 		$this->db->join('tbl_child_category child','child.child_id=tp.p_child','LEFT');
-		$this->db->join('tbl_vendor vndr','vndr.vnd_id=tp.p_vnd_id','LEFT');
 		$this->db->from($table.' tp');		
 		$this->db->where('child.child_id',$fld_val);		
 		$this->db->where('tp.p_status','1');	
 		$this->db->where('tp.p_approval_status','0');
-		$this->db->where('vndr.vnd_status','1');
 		$query=$this->db->get();
 		//echo $this->db->last_query($query);
 		if($query->num_rows() != 0) return $query->result();
@@ -378,7 +378,7 @@ function categories_product_list($fld_val,$table){
 
 	function product_detail($fld_val,$table){
 		$date=date('Y-m-d');
-		$this->db->select('cate.cate_slug,scate.scate_slug,child.child_slug,cate.cate_name,cate.cate_name_ar,scate.scate_name,scate.scate_name_ar,child.child_name,child.child_name_ar,tp.p_id,tp.p_vnd_id,tp.p_cate,tp.p_reference_no,tp.p_name,tp.p_name_ar,tp.p_model,tp.p_selling_price,tp.p_lenght,tp.p_width,tp.p_height,tp.p_weight,tp.p_barcode,tp.p_short_description,tp.p_description,tp.p_short_description_ar,tp.p_description_ar,pl.p_warranty_policy,pl.p_return_policy,ut.ut_dime_name,ut2.ut_weight_name,pl.p_option_group,pl.option_grop,pl.option_grop_add,pl.option_grop,int.int_stock,int.int_available_qty,int.int_min_purchase_qty,int.int_custom,sp.sp_special_price,sp.sp_end_date,sp.sp_start_date,pimg.pg_image,brd.brd_name,tp.p_meta_title,tp.p_meta_keyword,tp.p_meta_description');	
+		$this->db->select('cate.cate_slug,scate.scate_slug,child.child_slug,cate.cate_name,cate.cate_name_ar,scate.scate_name,scate.scate_name_ar,child.child_name,child.child_name_ar,tp.p_id,tp.p_vnd_id,tp.p_cate,tp.p_reference_no,tp.p_name,tp.p_name_ar,tp.p_model,tp.p_selling_price,tp.p_fabric,tp.p_belt,tp.p_sarf,tp.p_lenght,tp.p_width,tp.p_height,tp.p_weight,tp.p_barcode,tp.p_short_description,tp.p_description,tp.p_short_description_ar,tp.p_description_ar,pl.p_warranty_policy,pl.p_return_policy,ut.ut_dime_name,ut2.ut_weight_name,pl.p_option_group,pl.option_grop,pl.option_grop_add,pl.option_grop,int.ready_collection,int.int_stock,int.int_available_qty,int.int_min_purchase_qty,int.int_custom,int.length,int.waist,int.shoulder,int.hips,int.sleeve_length,int.neck,int.chest,sp.sp_price_type,sp.sp_special_price,sp.sp_end_date,sp.sp_start_date,pimg.pg_image,brd.brd_name,tp.p_meta_title,tp.p_meta_keyword,tp.p_meta_description');	
 		$this->db->order_by('tp.p_id',"DESC");
 		$this->db->join('tbl_category cate','cate.cate_id=tp.p_cate','LEFT');		
 		$this->db->join('tbl_sub_category scate','scate.scate_id=tp.p_scate','LEFT');
@@ -454,7 +454,7 @@ function categories_product_list($fld_val,$table){
 	}
 
 	function vendor_list($table){
-     	$this->db->select('vnd_id,vnd_name,vnd_picture,vnd_status');
+     	$this->db->select('vnd_id,vnd_name,vnd_picture');
 		$this->db->order_by('vnd_id',"DESC");
 		$this->db->where('vnd_VerifiedStatus','1');	
 		$this->db->where('vnd_status','1');	
@@ -512,7 +512,7 @@ function categories_product_list($fld_val,$table){
 		else return false;
 	}
 
- function count_all($url_slug,$url_slug_sub,$url_slug_child,$url_slug_brand,$brand,$color,$size,$price,$grade,$condition,$category,$category2,$sub_category,$sub_category2,$child_category,$hot,$featured,$trending,$eid,$supplier,$newest_first)
+function count_all($url_slug,$url_slug_sub,$url_slug_child,$url_slug_brand,$brand,$color,$size,$price,$grade,$condition,$category,$category2,$sub_category,$sub_category2,$child_category,$hot,$featured,$trending,$eid,$supplier,$newest_first)
  {   
  		$query = $this->make_query($url_slug,$url_slug_sub,$url_slug_child,$url_slug_brand,$brand,$color,$size,$price,$grade,$condition,$category,$category2,$sub_category,$sub_category2,$child_category,$hot,$featured,$trending,$eid,$supplier,$newest_first);
  	$data = $this->db->query($query);
@@ -525,11 +525,11 @@ function make_query($url_slug,$url_slug_sub,$url_slug_child,$url_slug_brand,$bra
   	$date=date('Y-m-d'); 
   	if(isset($condition))
 	{
-  		$query = "SELECT `tp`.`p_id`, `tp`.`p_cate`, `tp`.`p_scate`, `tp`.`p_child`, `tp`.`p_reference_no`, `tp`.`p_name`,`tp`.`p_name_ar`, `tp`.`p_model`, `tp`.`p_selling_price`, `tp`.`p_short_description`, `sp`.`sp_end_date`,`cate`.`cate_name`, `scate`.`scate_name`, `child`.`child_name`, `sp`.`sp_special_price`,`sp`.`sp_end_date`,`sp`.`sp_start_date`, `pimg`.`pg_img`,`brd`.`brd_name` as `vnd_name`,`vndr`.`vnd_status` FROM `tbl_product` `tp` LEFT JOIN `tbl_special_price` `sp` ON `sp`.`sp_pid`=`tp`.`p_id` LEFT JOIN `tbl_product_img` `pimg` ON `pimg`.`pg_pid`=`tp`.`p_id` LEFT JOIN `tbl_category` `cate` ON `cate`.`cate_id`=`tp`.`p_cate` LEFT JOIN `tbl_sub_category` `scate` ON `scate`.`scate_id`=`tp`.`p_scate` LEFT JOIN `tbl_child_category` `child` ON `child`.`child_id`=`tp`.`p_child` LEFT JOIN `tbl_product_link` `pl` ON `pl`.`p_id`=`tp`.`p_id` LEFT JOIN `tbl_inventory` `int` ON `int`.`int_pid`=`tp`.`p_id` LEFT JOIN `tbl_brand` `brd` ON `brd`.`brd_id`=`tp`.`p_brand` LEFT JOIN `tbl_vendor` `vndr` ON `vndr`.`vnd_id`=`brd`.`vnd_id` WHERE `tp`.`p_status` = '1' AND `tp`.`p_approval_status` = '0' AND `vndr`.`vnd_status`='1' 
+  		$query = "SELECT `tp`.`p_id`, `tp`.`p_cate`, `tp`.`p_scate`, `tp`.`p_child`, `tp`.`p_reference_no`, `tp`.`p_name`,`tp`.`p_name_ar`, `tp`.`p_model`, `tp`.`p_selling_price`, `tp`.`p_short_description`, `sp`.`sp_end_date`,`cate`.`cate_name`, `scate`.`scate_name`, `child`.`child_name`, `sp`.`sp_price_type`,`sp`.`sp_special_price`,`sp`.`sp_end_date`,`sp`.`sp_start_date`, `pimg`.`pg_img`,`brd`.`brd_name` as `vnd_name`,`vndr`.`vnd_status` FROM `tbl_product` `tp` LEFT JOIN `tbl_special_price` `sp` ON `sp`.`sp_pid`=`tp`.`p_id` LEFT JOIN `tbl_product_img` `pimg` ON `pimg`.`pg_pid`=`tp`.`p_id` LEFT JOIN `tbl_category` `cate` ON `cate`.`cate_id`=`tp`.`p_cate` LEFT JOIN `tbl_sub_category` `scate` ON `scate`.`scate_id`=`tp`.`p_scate` LEFT JOIN `tbl_child_category` `child` ON `child`.`child_id`=`tp`.`p_child` LEFT JOIN `tbl_product_link` `pl` ON `pl`.`p_id`=`tp`.`p_id` LEFT JOIN `tbl_inventory` `int` ON `int`.`int_pid`=`tp`.`p_id` LEFT JOIN `tbl_brand` `brd` ON `brd`.`brd_id`=`tp`.`p_brand` LEFT JOIN `tbl_vendor` `vndr` ON `vndr`.`vnd_id`=`brd`.`vnd_id` WHERE `tp`.`p_status` = '1' AND `tp`.`p_approval_status` = '0' AND `vndr`.`vnd_status`='1' 
     ";  
     //LEFT JOIN `tbl_vendor` `vnd` ON `vnd`.`vnd_category`=`tp`.`p_vnd_id`
 	}else{
-		$query = "SELECT `tp`.`p_id`, `tp`.`p_cate`, `tp`.`p_scate`, `tp`.`p_child`, `tp`.`p_reference_no`, `tp`.`p_name`,`tp`.`p_name_ar`, `tp`.`p_model`, `tp`.`p_selling_price`, `tp`.`p_short_description`, `sp`.`sp_end_date`,`cate`.`cate_name`, `scate`.`scate_name`, `child`.`child_name`, `sp`.`sp_special_price`,`sp`.`sp_end_date`,`sp`.`sp_start_date`, `pimg`.`pg_img`,`brd`.`brd_name` as `vnd_name`,`vndr`.`vnd_status` FROM `tbl_product` `tp` LEFT JOIN `tbl_special_price` `sp` ON `sp`.`sp_pid`=`tp`.`p_id` LEFT JOIN `tbl_product_img` `pimg` ON `pimg`.`pg_pid`=`tp`.`p_id` LEFT JOIN `tbl_category` `cate` ON `cate`.`cate_id`=`tp`.`p_cate` LEFT JOIN `tbl_sub_category` `scate` ON `scate`.`scate_id`=`tp`.`p_scate` LEFT JOIN `tbl_child_category` `child` ON `child`.`child_id`=`tp`.`p_child` LEFT JOIN `tbl_product_link` `pl` ON `pl`.`p_id`=`tp`.`p_id` LEFT JOIN `tbl_brand` `brd` ON `brd`.`brd_id`=`tp`.`p_brand` LEFT JOIN `tbl_vendor` `vndr` ON `vndr`.`vnd_id`=`brd`.`vnd_id`  WHERE `tp`.`p_status` = '1' AND `tp`.`p_approval_status` = '0' AND `vndr`.`vnd_status`='1'
+		$query = "SELECT `tp`.`p_id`, `tp`.`p_cate`, `tp`.`p_scate`, `tp`.`p_child`, `tp`.`p_reference_no`, `tp`.`p_name`,`tp`.`p_name_ar`, `tp`.`p_model`, `tp`.`p_selling_price`, `tp`.`p_short_description`, `sp`.`sp_end_date`,`cate`.`cate_name`, `scate`.`scate_name`, `child`.`child_name`, `sp`.`sp_price_type`, `sp`.`sp_special_price`,`sp`.`sp_end_date`,`sp`.`sp_start_date`, `pimg`.`pg_img`,`brd`.`brd_name` as `vnd_name`,`vndr`.`vnd_status` FROM `tbl_product` `tp` LEFT JOIN `tbl_special_price` `sp` ON `sp`.`sp_pid`=`tp`.`p_id` LEFT JOIN `tbl_product_img` `pimg` ON `pimg`.`pg_pid`=`tp`.`p_id` LEFT JOIN `tbl_category` `cate` ON `cate`.`cate_id`=`tp`.`p_cate` LEFT JOIN `tbl_sub_category` `scate` ON `scate`.`scate_id`=`tp`.`p_scate` LEFT JOIN `tbl_child_category` `child` ON `child`.`child_id`=`tp`.`p_child` LEFT JOIN `tbl_product_link` `pl` ON `pl`.`p_id`=`tp`.`p_id` LEFT JOIN `tbl_brand` `brd` ON `brd`.`brd_id`=`tp`.`p_brand` LEFT JOIN `tbl_vendor` `vndr` ON `vndr`.`vnd_id`=`brd`.`vnd_id`  WHERE `tp`.`p_status` = '1' AND `tp`.`p_approval_status` = '0' AND `vndr`.`vnd_status`='1'
     ";  
 	//LEFT JOIN `tbl_vendor` `vnd` ON `vnd`.`vnd_category`=`tp`.`p_vnd_id`
 	}
@@ -556,9 +556,9 @@ function make_query($url_slug,$url_slug_sub,$url_slug_child,$url_slug_brand,$bra
 		$query .= " AND `tp`.`p_vnd_id` = '".$supplier."'";
 	}
 
-      if($hot=='1')
+      if(!empty($hot))
 	  	{  
-	  	 $query .= " AND `sp`.`sp_status` = '1' AND `sp`.`sp_start_date` <= '".$date."' AND `sp`.`sp_end_date` >= '".$date."'";
+	  	 $query .= " AND `sp`.`sp_status` = '1' AND `sp`.`sp_start_date` <= '".$hot."' AND `sp`.`sp_end_date` >= '".$hot."'";
 	  	}
 
 	  if(!empty($featured))
@@ -670,16 +670,14 @@ function make_query($url_slug,$url_slug_sub,$url_slug_child,$url_slug_brand,$bra
     
  	$query = $this->make_query($url_slug,$url_slug_sub,$url_slug_child,$url_slug_brand,$brand,$color,$size,$price,$grade,$condition,$category,$category2,$sub_category,$sub_category2,$child_category,$hot,$featured,$trending,$eid,$supplier,$newest_first);
  	if(!empty($page))
-  	{  
-  		$product_limit=12;
- 		//$start = ceil($page *  $product_limit);
-   		$query .= " LIMIT ".$start.", ".$page; 
-  	}else{
-		$product_limit=12; $query .= " LIMIT 0, ".$product_limit; 
-	} 
-	  	$data = $this->db->query($query);
+  	{
+  $product_limit=12;
+ //$start = ceil($page *  $product_limit);
+   $query .= " LIMIT ".$start.", ".$page; 
+  }else  {$product_limit=12; $query .= " LIMIT 0, ".$product_limit; } 
+	  $data = $this->db->query($query);
 		//echo $this->db->last_query($data);
-	  	$count = $data->num_rows();
+	  $count = $data->num_rows();
 
 	$output = '';
   if($data->num_rows() > 0)
@@ -695,8 +693,17 @@ function make_query($url_slug,$url_slug_sub,$url_slug_child,$url_slug_brand,$bra
         $img='<img src="'.base_url('seller/uploads/default-image.png').'" alt="'.$row['p_name'].'" class="hover-img1 img-fit lazyloaded">';
          }
         if(!empty($row['sp_special_price']) && $row['sp_start_date'] <= $date && $row['sp_end_date'] >= $date){
-         $price=' <del class="old-product-price strong-400">'.$this->price_symbol().''.$row['p_selling_price'].'</del><br/>
-         <span class="product-price strong-600">'.$this->price_symbol().''.$row['sp_special_price'].'</span>';
+			if($row['sp_price_type']==0){
+				$specialPrice=$row['sp_special_price'];
+				$price=' <del class="old-product-price strong-400">'.$this->price_symbol().''.$row['p_selling_price'].'</del><br/>
+         		<span class="product-price strong-600">'.$this->price_symbol().''.$specialPrice.'</span>';
+			}else if($row['sp_price_type']==1){
+				$specialPriceAdjust = $row['sp_special_price']*$row['p_selling_price']/100;
+				$specialPrice=$row['p_selling_price']-$specialPriceAdjust;
+				$price=' <del class="old-product-price strong-400">'.$this->price_symbol().''.$row['p_selling_price'].'</del><br/>
+         		<span class="product-price strong-600">'.$this->price_symbol().''.$specialPrice.'</span>';
+			}
+         
          
         }else{
         $price='<span class="product-price strong-600">'.$this->price_symbol().''.$row['p_selling_price'].'</span>';
@@ -768,9 +775,10 @@ function make_query($url_slug,$url_slug_sub,$url_slug_child,$url_slug_brand,$bra
   return $output; }
 	
 	
-	function Product_Search($search_fld,$search,$table)
- 	{
- 		$this->db->select('cate.cate_slug,cate.cate_name,scate.scate_slug,scate.scate_name,child.child_slug,child.child_name,tp.p_id,tp.p_vnd_id,tp.p_cate,tp.p_scate,tp.p_child,tp.p_reference_no,tp.p_name,tp.p_name,tp.p_model,tp.p_selling_price,sp.sp_special_price,sp.sp_end_date,sp.sp_start_date,pimg.pg_image,pimg.pg_img,int.int_stock,vndr.vnd_status');	
+function Product_Search($search_fld,$search,$table)
+ {
+ 	
+ 	$this->db->select('cate.cate_slug,cate.cate_name,scate.scate_slug,scate.scate_name,child.child_slug,child.child_name,tp.p_id,tp.p_cate,tp.p_scate,tp.p_child,tp.p_reference_no,tp.p_name,tp.p_name,tp.p_model,tp.p_selling_price,sp.sp_special_price,sp.sp_end_date,sp.sp_start_date,pimg.pg_image,pimg.pg_img,int.int_stock');	
 		$this->db->order_by('tp.p_id',"DESC");		
 		$this->db->join('tbl_special_price sp','sp.sp_pid=tp.p_id','LEFT');	
 		$this->db->join('tbl_product_img pimg','pimg.pg_pid=tp.p_id','LEFT');
@@ -778,23 +786,21 @@ function make_query($url_slug,$url_slug_sub,$url_slug_child,$url_slug_brand,$bra
 		$this->db->join('tbl_sub_category scate','scate.scate_id=tp.p_scate','LEFT');
 		$this->db->join('tbl_child_category child','child.child_id=tp.p_child','LEFT');
 		$this->db->join('tbl_inventory int','int.int_pid=tp.p_id','LEFT');
-
-		$this->db->join('tbl_vendor vndr','vndr.vnd_id=tp.p_vnd_id','LEFT');
-
 		$this->db->from($table.' tp');	  			
 		$this->db->where('tp.p_status','1');		
 		$this->db->where('tp.p_approval_status','0');
-		$this->db->where('vndr.vnd_status','1');
 		$this->db->like('tp.'.$search_fld, $search, 'both');		
 		$this->db->limit('10','0');	
 		$query=$this->db->get();	
+	 //echo $this->db->last_query($query);
 		if($query->num_rows() != 0) return $query->result();
 		else return false;
- 	}
+ }
 
- 	function Product_Brand_Search($search_fld,$search,$table)
- 	{
- 		$this->db->select('cate.cate_slug,cate.cate_name,scate.scate_slug,scate.scate_name,child.child_slug,child.child_name,tp.p_id,tp.p_vnd_id,tp.p_cate,tp.p_scate,tp.p_child,tp.p_reference_no,tp.p_name,tp.p_model,tp.p_selling_price,sp.sp_special_price,sp.sp_end_date,sp.sp_start_date,pimg.pg_image,pimg.pg_img,int.int_stock,vndr.vnd_status');	
+ function Product_Brand_Search($search_fld,$search,$table)
+ {
+ 	
+ 	$this->db->select('cate.cate_slug,cate.cate_name,scate.scate_slug,scate.scate_name,child.child_slug,child.child_name,tp.p_id,tp.p_cate,tp.p_scate,tp.p_child,tp.p_reference_no,tp.p_name,tp.p_model,tp.p_selling_price,sp.sp_special_price,sp.sp_end_date,sp.sp_start_date,pimg.pg_image,pimg.pg_img,int.int_stock');	
 		$this->db->order_by('tp.p_id',"DESC");		
 		$this->db->join('tbl_special_price sp','sp.sp_pid=tp.p_id','LEFT');	
 		$this->db->join('tbl_product_img pimg','pimg.pg_pid=tp.p_id','LEFT');
@@ -803,23 +809,21 @@ function make_query($url_slug,$url_slug_sub,$url_slug_child,$url_slug_brand,$bra
 		$this->db->join('tbl_brand brd','brd.brd_id=tp.p_brand','LEFT');
 		$this->db->join('tbl_child_category child','child.child_id=tp.p_child','LEFT');
 		$this->db->join('tbl_inventory int','int.int_pid=tp.p_id','LEFT');
-
-		$this->db->join('tbl_vendor vndr','vndr.vnd_id=tp.p_vnd_id','LEFT');
-
 		$this->db->from($table.' tp');	  			
 		$this->db->where('tp.p_status','1');		
 		$this->db->where('tp.p_approval_status','0');
-		$this->db->where('vndr.vnd_status','1');
 		$this->db->like('brd.brd_name', $search, 'both');		
 		$this->db->limit('10','0');	
 		$query=$this->db->get();	
+	 //echo $this->db->last_query($query);
 		if($query->num_rows() != 0) return $query->result();
 		else return false;
- 	}
+ }
 
-  	function Product_Cate_Search($search_fld,$search,$table)
- 	{
- 		$this->db->select('cate.cate_slug,cate.cate_name,scate.scate_slug,scate.scate_name,child.child_slug,child.child_name,tp.p_id,tp.p_vnd_id,tp.p_cate,tp.p_scate,tp.p_child,tp.p_reference_no,tp.p_name,tp.p_model,tp.p_selling_price,sp.sp_special_price,sp.sp_end_date,sp.sp_start_date,pimg.pg_image,pimg.pg_img,int.int_stock,vndr.vnd_status');	
+  function Product_Cate_Search($search_fld,$search,$table)
+ {
+ 	
+ 	$this->db->select('cate.cate_slug,cate.cate_name,scate.scate_slug,scate.scate_name,child.child_slug,child.child_name,tp.p_id,tp.p_cate,tp.p_scate,tp.p_child,tp.p_reference_no,tp.p_name,tp.p_model,tp.p_selling_price,sp.sp_special_price,sp.sp_end_date,sp.sp_start_date,pimg.pg_image,pimg.pg_img,int.int_stock');	
 		$this->db->order_by('tp.p_id',"DESC");		
 		$this->db->join('tbl_special_price sp','sp.sp_pid=tp.p_id','LEFT');	
 		$this->db->join('tbl_product_img pimg','pimg.pg_pid=tp.p_id','LEFT');
@@ -827,23 +831,20 @@ function make_query($url_slug,$url_slug_sub,$url_slug_child,$url_slug_brand,$bra
 		$this->db->join('tbl_sub_category scate','scate.scate_id=tp.p_scate','LEFT');		
 		$this->db->join('tbl_child_category child','child.child_id=tp.p_child','LEFT');
 		$this->db->join('tbl_inventory int','int.int_pid=tp.p_id','LEFT');
-
-		$this->db->join('tbl_vendor vndr','vndr.vnd_id=tp.p_vnd_id','LEFT');
-
 		$this->db->from($table.' tp');	  			
 		$this->db->where('tp.p_status','1');		
 		$this->db->where('tp.p_approval_status','0');
-		$this->db->where('vndr.vnd_status','1');
 		$this->db->like('cate.cate_name', $search, 'both');		
 		$this->db->limit('10','0');	
 		$query=$this->db->get();	
+	 //echo $this->db->last_query($query);
 		if($query->num_rows() != 0) return $query->result();
 		else return false;
- 	}
-
- 	function Product_Scate_Search($search_fld,$search,$table)
- 	{
- 		$this->db->select('cate.cate_slug,cate.cate_name,scate.scate_slug,scate.scate_name,child.child_slug,child.child_name,tp.p_id,tp.p_vnd_id,tp.p_cate,tp.p_scate,tp.p_child,tp.p_reference_no,tp.p_name,tp.p_model,tp.p_selling_price,sp.sp_special_price,sp.sp_end_date,sp.sp_start_date,pimg.pg_image,pimg.pg_img,int.int_stock,vndr.vnd_status');	
+ }
+ function Product_Scate_Search($search_fld,$search,$table)
+ {
+ 	
+ 	$this->db->select('cate.cate_slug,cate.cate_name,scate.scate_slug,scate.scate_name,child.child_slug,child.child_name,tp.p_id,tp.p_cate,tp.p_scate,tp.p_child,tp.p_reference_no,tp.p_name,tp.p_model,tp.p_selling_price,sp.sp_special_price,sp.sp_end_date,sp.sp_start_date,pimg.pg_image,pimg.pg_img,int.int_stock');	
 		$this->db->order_by('tp.p_id',"DESC");		
 		$this->db->join('tbl_special_price sp','sp.sp_pid=tp.p_id','LEFT');	
 		$this->db->join('tbl_product_img pimg','pimg.pg_pid=tp.p_id','LEFT');
@@ -851,23 +852,20 @@ function make_query($url_slug,$url_slug_sub,$url_slug_child,$url_slug_brand,$bra
 		$this->db->join('tbl_sub_category scate','scate.scate_id=tp.p_scate','LEFT');		
 		$this->db->join('tbl_child_category child','child.child_id=tp.p_child','LEFT');
 		$this->db->join('tbl_inventory int','int.int_pid=tp.p_id','LEFT');
-
-		$this->db->join('tbl_vendor vndr','vndr.vnd_id=tp.p_vnd_id','LEFT');
-
 		$this->db->from($table.' tp');	  			
 		$this->db->where('tp.p_status','1');		
 		$this->db->where('tp.p_approval_status','0');
-		$this->db->where('vndr.vnd_status','1');
 		$this->db->like('scate.scate_name', $search, 'both');		
 		$this->db->limit('10','0');	
 		$query=$this->db->get();	
+	 //echo $this->db->last_query($query);
 		if($query->num_rows() != 0) return $query->result();
 		else return false;
- 	}
-
- 	function Product_Child_Search($search_fld,$search,$table)
- 	{
- 		$this->db->select('cate.cate_slug,cate.cate_name,scate.scate_slug,scate.scate_name,child.child_slug,child.child_name,tp.p_id,tp.p_vnd_id,tp.p_cate,tp.p_scate,tp.p_child,tp.p_reference_no,tp.p_name,tp.p_model,tp.p_selling_price,sp.sp_special_price,sp.sp_end_date,sp.sp_start_date,pimg.pg_image,pimg.pg_img,int.int_stock,vndr.vnd_status');	
+ }
+ function Product_Child_Search($search_fld,$search,$table)
+ {
+ 	
+ 	$this->db->select('cate.cate_slug,cate.cate_name,scate.scate_slug,scate.scate_name,child.child_slug,child.child_name,tp.p_id,tp.p_cate,tp.p_scate,tp.p_child,tp.p_reference_no,tp.p_name,tp.p_model,tp.p_selling_price,sp.sp_special_price,sp.sp_end_date,sp.sp_start_date,pimg.pg_image,pimg.pg_img,int.int_stock');	
 		$this->db->order_by('tp.p_id',"DESC");		
 		$this->db->join('tbl_special_price sp','sp.sp_pid=tp.p_id','LEFT');	
 		$this->db->join('tbl_product_img pimg','pimg.pg_pid=tp.p_id','LEFT');
@@ -875,19 +873,16 @@ function make_query($url_slug,$url_slug_sub,$url_slug_child,$url_slug_brand,$bra
 		$this->db->join('tbl_sub_category scate','scate.scate_id=tp.p_scate','LEFT');		
 		$this->db->join('tbl_child_category child','child.child_id=tp.p_child','LEFT');
 		$this->db->join('tbl_inventory int','int.int_pid=tp.p_id','LEFT');
-
-		$this->db->join('tbl_vendor vndr','vndr.vnd_id=tp.p_vnd_id','LEFT');
-
 		$this->db->from($table.' tp');	  			
 		$this->db->where('tp.p_status','1');		
 		$this->db->where('tp.p_approval_status','0');
-		$this->db->where('vndr.vnd_status','1');
 		$this->db->like('child.child_name', $search, 'both');		
 		$this->db->limit('10','0');	
 		$query=$this->db->get();	
+	 //echo $this->db->last_query($query);
 		if($query->num_rows() != 0) return $query->result();
 		else return false;
- 	}
+ }
 	
 
 	function reviews_cmnts($id,$table){

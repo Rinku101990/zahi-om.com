@@ -21,11 +21,7 @@ if($this->website->web_lang=='en'){
 }else{
   $this->load->view('include/topbar_ar');
 }?>
-
-
-
-
-
+<?php $date=date('Y-m-d');?>
 <div class="breadcrumb-area mt-10">
         <div class="container">
             <div class="row">
@@ -85,21 +81,25 @@ if($this->website->web_lang=='en'){
                                   
                                     <div class="mt-2">
                                         <div class="price-box">
-                                            <?php if(!empty($wishvalue->sp_special_price)){?>
-                         <div class="price-box ">
-                           <del class="old-product-price strong-400"><?=currency($this->website->web_currency);?><?=number_format($wishvalue->p_selling_price);?></del><br/>
-                                <span class="product-price strong-600">
-                                                      <?=currency($this->website->web_currency);?><?=number_format($wishvalue->sp_special_price);?>
-                                                    </span>
-                               </div>
-                                <?php }else{?>
-                                 <div class="price-box " >                           
-                                <span class="product-price strong-600">
-                                  <?=currency($this->website->web_currency);?><?=number_format($wishvalue->p_selling_price);?>
-                                                    </span><br/><del class="old-product-price strong-400">&nbsp;
-                                                    </del>
-                               </div>
-                            <?php }?>
+                                            <?php if(!empty($wishvalue->sp_special_price) && $wishvalue->sp_start_date <= $date && $wishvalue->sp_end_date >= $date){?>
+                                            <div class="price-box ">
+                                                <del class="old-product-price strong-400"><?=currency($this->website->web_currency);?><?=number_format($wishvalue->p_selling_price);?></del><br/>
+                                                <span class="product-price strong-600">
+                                                <?php if($wishvalue->sp_price_type=='0'){ $specialPrice = $wishvalue->sp_special_price;?>
+                                                    <?=currency($this->website->web_currency);?><?=$specialPrice;?>
+                                                <?php }else if($wishvalue->sp_price_type=='1'){ $specialPriceAdjust = $wishvalue->sp_special_price*$wishvalue->p_selling_price/100;$specialPrice=$wishvalue->p_selling_price-$specialPriceAdjust;?>
+                                                    <?=currency($this->website->web_currency);?><?=$this->cart->format_number($specialPrice);?>
+                                                <?php } ?>
+                                                </span>
+                                            </div>
+                                            <?php }else{?>
+                                            <div class="price-box " >                           
+                                                <span class="product-price strong-600">
+                                                    <?=currency($this->website->web_currency);?><?=number_format($wishvalue->p_selling_price);?>
+                                                </span><br/>
+                                                <del class="old-product-price strong-400">&nbsp;</del>
+                                            </div>
+                                            <?php }?>
                                         </div>
                                     </div>
                                 </div>

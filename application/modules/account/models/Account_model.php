@@ -32,7 +32,7 @@ class Account_model extends MY_Model{
 
 	function get_wishlist($cust_id,$table){
 		$date=date('Y-m-d');
-		$this->db->select('wh.id,cate.cate_slug,scate.scate_slug,child.child_slug,cate.cate_name,cate.cate_name_ar,scate.scate_name,scate.scate_name_ar,child.child_name,child.child_name_ar,tp.p_id,tp.p_vnd_id,tp.p_reference_no,tp.p_name,tp.p_name_ar,tp.p_selling_price,sp.sp_special_price,sp.sp_end_date,sp.sp_start_date,pimg.pg_img');	
+		$this->db->select('wh.id,cate.cate_slug,scate.scate_slug,child.child_slug,cate.cate_name,cate.cate_name_ar,scate.scate_name,scate.scate_name_ar,child.child_name,child.child_name_ar,tp.p_id,tp.p_vnd_id,tp.p_reference_no,tp.p_name,tp.p_name_ar,tp.p_selling_price,sp.sp_price_type,sp.sp_special_price,sp.sp_end_date,sp.sp_start_date,pimg.pg_img');	
 		$this->db->order_by('wh.id',"DESC");
 		$this->db->join('tbl_product tp','tp.p_id=wh.pid','LEFT');
 		$this->db->join('tbl_category cate','cate.cate_id=tp.p_cate','LEFT');		

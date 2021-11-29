@@ -110,13 +110,8 @@
                                                         </ul>
                                                     </div>
                                                 </div>
-                                    <?php
-                                    if($this->login->mst_role=='0' || !empty($permission['hot_products_view'])){?>
-                                       <a href="<?=base_url('catalog/hot-product');?>" class="slide-item">Hot Products</a>
-                                    <?php } else if(empty($permission['hot_products_view']) && $page2=='hot-product'){
-                                        redirect('dashboard');
-                                    }
-                                    if($this->login->mst_role=='0' || !empty($permission['featured_products_view'])){?>
+                                    
+                                    <?php if($this->login->mst_role=='0' || !empty($permission['featured_products_view'])){?>
                                      <a href="<?=base_url('catalog/featured ');?>" class="slide-item">Featured Products</a>
                                     <?php }else if(empty($permission['featured_products_view']) && $page2=='featured'){
                                         redirect('dashboard');
@@ -273,7 +268,7 @@
                                                     redirect('dashboard');
                                                      }
                                               if($this->login->mst_role=='0' || !empty($permission['cancellation_requests'])){?>
-                                            <a href="<?=base_url('orders/cancellation');?>" class="slide-item">Cancellation Requests  </a> 
+                                            <!--<a href="<?=base_url('orders/cancellation');?>" class="slide-item">Cancellation Requests  </a> -->
                                              <?php } else if(empty($permission['cancellation_requests']) && $page2=='cancellation'){
                                                     redirect('dashboard');
                                                      }

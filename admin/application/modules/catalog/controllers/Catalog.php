@@ -3,100 +3,98 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Catalog extends MY_Controller {
 	 
 	public function __construct() {
-            parent::__construct(); 
-			$this->load->helper("common");	
-			$this->login = $this->session->userdata('logged_in_admin');			
-			  if(empty($this->login)){
-				redirect('login','refresh');
-			  } 
-          
-           		
-            $this->load->model("Catalog_model",'Catalog_Model');
-           /* ========FOR MASTER TABEL=========== */ 			
-            $this->fld_email="mst_email";	
-            $this->fld_password="mst_password";	
-            $this->table_master="tbl_master";	 
+		parent::__construct(); 
+		$this->load->helper("common");	
+		$this->login = $this->session->userdata('logged_in_admin');			
+		if(empty($this->login)){
+			redirect('login','refresh');
+		} 
+		$this->load->model("Catalog_model",'Catalog_Model');
+		/* ========FOR MASTER TABEL=========== */ 			
+		$this->fld_email="mst_email";	
+		$this->fld_password="mst_password";	
+		$this->table_master="tbl_master";	 
 
-             /* ========FOR Vendor TABEL=========== */
-            $this->fld_vnd_id="vnd_id";	
-            $this->table_vendor="tbl_vendor";	 
-             /* ========FOR COUNTRY SETTING===== */
-			$this->fld_cnt_id="cnt_id";	 			
-		    $this->table_country="tbl_country";
-            /* ========FOR STATE SETTING===== */
-			$this->fld_st_id="st_id";	 			
-		    $this->table_state="tbl_state";	
-            /* ========FOR CITY SETTING===== */
-			$this->fld_ct_id="ct_id";	 			
-		    $this->table_city="tbl_city";
-            /* ========FOR ZIPCODE SETTING===== */
-			$this->fld_zc_id="zc_id";	 			
-		    $this->table_zipcode="tbl_zipcode";	
-            /* ========FOR PRODUCT SETTING=== */
-            $this->fld_p_id="p_id";	 			
-		    $this->table_product="tbl_product";	
-		      /* ========FOR Product Image  SETTING===== */
-			$this->fld_pg_id="pg_id";	 			
-		    $this->table_product_img="tbl_product_img";	
-		         /* ========FOR Inventory  SETTING===== */
-			$this->fld_int_id="int_id";	 			
-		    $this->table_inventory="tbl_inventory";
-		    /* ========FOR Special Price  SETTING===== */
-			$this->fld_sp_id="sp_id";	 			
-		    $this->table_special_price="tbl_special_price";	
-		     /* ========FOR Volume Discount  SETTING===== */
-			$this->fld_vd_id="vd_id";	 			
-		    $this->table_discount="tbl_volume_discount";		
-		    /* ========FOR CATEGORY  SETTING===== */
-		    $this->fld_cate_id="cate_id";	 			
-		    $this->table_category="tbl_category";	
-		     /* ========FOR SUB CATEGORY  SETTING===== */
-		    $this->fld_scate_id="scate_id";	 			
-		    $this->table_sub_category="tbl_sub_category";
-		     /* ========FOR CHILD CATEGORY  SETTING===== */
-		    $this->fld_child_id="child_id";	 			
-		    $this->table_child_category="tbl_child_category";	
-		     /* ========FOR BRAND SETTING===== */
-			$this->fld_brd_id="brd_id";	 			
-		    $this->table_brand="tbl_brand";			
-		     /* ========FOR UNIT SETTING===== */
-			$this->fld_ut_id="ut_id";	 			
-		    $this->table_unit="tbl_unit";	
-		       /* ========FOR PRODUCT LINK SETTING===== */
-			$this->fld_pl_id="id";	 			
-		    $this->table_product_link="tbl_product_link";
-              /* ========FOR OPTION GROUP SETTING===== */
-			$this->fld_opt_id="opt_id";	 			
-		    $this->table_option="tbl_option";	
-		      /* ========FOR POLICY POINT TABEL=========== */ 			
-            $this->fld_pp_id="pp_id";	
-            $this->table_policy="tbl_policy";	
-             /* ========FOR SLEEVE  TABEL=========== */ 			
-            $this->fld_sl_id="sl_id";	
-            $this->table_sleeve="tbl_sleeve";
-             /* ========FOR FABRIC  TABEL=========== */ 			
-            $this->fld_fb_id="fb_id";	
-            $this->table_fabric="tbl_fabric";
-             /* ========FOR Color  TABEL=========== */ 			
-            $this->fld_cl_id="cl_id";	
-            $this->table_color="tbl_color";	 
-            /* ========FOR SIZE  TABEL=========== */ 			
-            $this->fld_sz_id="sz_id";	
-            $this->table_size="tbl_size";
-		 
-
+			/* ========FOR Vendor TABEL=========== */
+		$this->fld_vnd_id="vnd_id";	
+		$this->table_vendor="tbl_vendor";	 
+			/* ========FOR COUNTRY SETTING===== */
+		$this->fld_cnt_id="cnt_id";	 			
+		$this->table_country="tbl_country";
+		/* ========FOR STATE SETTING===== */
+		$this->fld_st_id="st_id";	 			
+		$this->table_state="tbl_state";	
+		/* ========FOR CITY SETTING===== */
+		$this->fld_ct_id="ct_id";	 			
+		$this->table_city="tbl_city";
+		/* ========FOR ZIPCODE SETTING===== */
+		$this->fld_zc_id="zc_id";	 			
+		$this->table_zipcode="tbl_zipcode";	
+		/* ========FOR PRODUCT SETTING=== */
+		$this->fld_p_id="p_id";	 			
+		$this->table_product="tbl_product";	
+			/* ========FOR Product Image  SETTING===== */
+		$this->fld_pg_id="pg_id";	 			
+		$this->table_product_img="tbl_product_img";	
+				/* ========FOR Inventory  SETTING===== */
+		$this->fld_int_id="int_id";	 			
+		$this->table_inventory="tbl_inventory";
+		/* ========FOR Special Price  SETTING===== */
+		$this->fld_sp_id="sp_id";	 			
+		$this->table_special_price="tbl_special_price";	
+			/* ========FOR Volume Discount  SETTING===== */
+		$this->fld_vd_id="vd_id";	 			
+		$this->table_discount="tbl_volume_discount";		
+		/* ========FOR CATEGORY  SETTING===== */
+		$this->fld_cate_id="cate_id";	 			
+		$this->table_category="tbl_category";	
+			/* ========FOR SUB CATEGORY  SETTING===== */
+		$this->fld_scate_id="scate_id";	 			
+		$this->table_sub_category="tbl_sub_category";
+			/* ========FOR CHILD CATEGORY  SETTING===== */
+		$this->fld_child_id="child_id";	 			
+		$this->table_child_category="tbl_child_category";	
+			/* ========FOR BRAND SETTING===== */
+		$this->fld_brd_id="brd_id";	 			
+		$this->table_brand="tbl_brand";			
+			/* ========FOR UNIT SETTING===== */
+		$this->fld_ut_id="ut_id";	 			
+		$this->table_unit="tbl_unit";	
+			/* ========FOR PRODUCT LINK SETTING===== */
+		$this->fld_pl_id="id";	 			
+		$this->table_product_link="tbl_product_link";
+			/* ========FOR OPTION GROUP SETTING===== */
+		$this->fld_opt_id="opt_id";	 			
+		$this->table_option="tbl_option";	
+			/* ========FOR POLICY POINT TABEL=========== */ 			
+		$this->fld_pp_id="pp_id";	
+		$this->table_policy="tbl_policy";	
+			/* ========FOR SLEEVE  TABEL=========== */ 			
+		$this->fld_sl_id="sl_id";	
+		$this->table_sleeve="tbl_sleeve";
+			/* ========FOR FABRIC  TABEL=========== */ 			
+		$this->fld_fb_id="fb_id";	
+		$this->table_fabric="tbl_fabric";
+			/* ========FOR Color  TABEL=========== */ 			
+		$this->fld_cl_id="cl_id";	
+		$this->table_color="tbl_color";	 
+		/* ========FOR SIZE  TABEL=========== */ 			
+		$this->fld_sz_id="sz_id";	
+		$this->table_size="tbl_size";
     }
  
-    function shop() { 
-         $permission=unserialize($this->login->mst_permission);
-		 if($this->login->mst_role=='0' || !empty($permission['shops_view'])){	   	
-    	 $content['permission']=unserialize($this->login->mst_permission);
-         $content['admin']=admin_profile($this->login->mst_email);	     
-         $content['vendor']= $this->Catalog_Model->getlist($this->fld_vnd_id,$this->table_vendor);       
-		 $content['subview']="shop";
-		  $this->load->view('layout', $content);
-		  }else{ redirect('dashboard'); 
-         }
+    function shop() 
+	{ 
+		$permission=unserialize($this->login->mst_permission);
+		if($this->login->mst_role=='0' || !empty($permission['shops_view'])){	   	
+			$content['permission']=unserialize($this->login->mst_permission);
+			$content['admin']=admin_profile($this->login->mst_email);	     
+			$content['vendor']= $this->Catalog_Model->getlist($this->fld_vnd_id,$this->table_vendor);       
+			$content['subview']="shop";
+			$this->load->view('layout', $content);
+		}else{ 
+			redirect('dashboard'); 
+		}
          
 	}	
 
@@ -155,7 +153,7 @@ class Catalog extends MY_Controller {
 	     if($this->login->mst_role=='0' || !empty($permission['products_view'])){	
 	     $content['permission']=$permission;	 	 
          $content['admin']=admin_profile($this->login->mst_email);	     
-         $content['product']= $this->Catalog_Model->getlist($this->fld_p_id,$this->table_product);
+         $content['product']= $this->Catalog_Model->productlist($this->fld_p_id,$this->table_product);
           $content['subview']="products";
 		  $this->load->view('layout', $content);
 		}else{
@@ -188,6 +186,50 @@ class Catalog extends MY_Controller {
 			redirect('dashboard'); 
 		}
 	}	
+
+	public function featured_add() {   
+	 	
+         $content['admin']=admin_profile($this->login->mst_email);	     
+         $content['product']= $this->Catalog_Model->getfeatured($this->fld_p_id,$this->table_product);
+         $RequestMethod = $this->input->server('REQUEST_METHOD'); 
+	        if($RequestMethod == "POST") { 	
+	        	foreach($this->input->post('product') as $valpro){
+		   	$data=array('p_feature' =>'1');  
+		   $result = $this->Catalog_Model->update($this->fld_p_id,$valpro,$data,$this->table_product);
+		     }
+		   if($result){
+			   $this->session->set_flashdata('msg',array('message' => 'Featured has been successfully added.','class' => 'success','type'=>'Ok!','icon'=>'thumbs-up'));
+			   redirect('catalog/featured-add'); 
+		   }else{
+			   $this->session->set_flashdata('msg',array('message' => "Unable to Profile .Some error occurred.",'class' => 'danger','type'=>'Oops!','icon'=>'slash'));
+			   redirect('catalog/featured-add');  
+		   }
+		}
+
+		 $content['subview']="featured_add";
+		  $this->load->view('layout', $content);
+		
+	}	
+
+	public function featured_delete($id=null)
+	{					
+				$data = array(
+					'p_feature' =>'0', 				
+				); 
+				
+				$result = $this->Catalog_Model->update($this->fld_p_id,$id,$data,$this->table_product);
+				if($result){
+					$this->session->set_flashdata('msg',array('message' => 'featured has been successfully removed.','class' => 'success','type'=>'Ok!'));
+					redirect('catalog/featured');
+				}else{
+						$this->session->set_flashdata('msg',array('message' => 'Unable to Added.Some error occurred.','class' => 'danger','type'=>'Oops!'));
+					redirect('catalog/featured');
+				}
+			
+		
+	    
+	}
+
 	 function trending() {    	
 	  $permission=unserialize($this->login->mst_permission);  
 	   if($this->login->mst_role=='0' || !empty($permission['trending_products_view'])){
@@ -211,6 +253,7 @@ class Catalog extends MY_Controller {
 	     $content['unit'] = $this->Catalog_Model->unit_list($this->fld_ut_id,'ut_status',$this->table_unit);
 	     //$content['brand'] = $this->Catalog_Model->brd_list($this->table_brand);
 		 $content['option'] = $this->Catalog_Model->option_list($this->table_option);
+
 		 $content['policy']=  $this->Catalog_Model->policy_list($this->table_policy);
 		  $content['seller']=  $this->Catalog_Model->seller_list();
 		 $content['subview']="products-add";
@@ -221,62 +264,174 @@ class Catalog extends MY_Controller {
          
 	}	
 
-	  public function General_Product_save()
+	public function General_Product_save()
      {  
         if(empty($this->input->post('p_id'))){ 
-     	$checkName = $this->Catalog_Model->check('p_name',$this->input->post('p_name'),$this->table_product); 
-     	$reference = $this->Catalog_Model->check('p_reference_no',$this->input->post('p_reference_no'),$this->table_product); 
-     	if(empty($checkName) && empty($reference)){
-     	  $scate_id=scate($this->input->post('p_child'));
-	     // $_POST['p_vnd_id']='0';
-	      $_POST['p_cate']=cate($scate_id);
-	      $_POST['p_scate']=$scate_id;
-	      $_POST['p_status']='3';
-	      $_POST['p_created']=date('Y-m-d H:i:s') ;
-	      $data=$_POST;	
-	      //Product save      
-	      $result = $this->Catalog_Model->save($data,$this->table_product);
-	      // Product Link
-	      $data1= array('p_id' =>$result,'p_child'=>$this->input->post('p_child') );
-	       $result_link = $this->Catalog_Model->save($data1,$this->table_product_link);
-	      if($result){
-			  $result1['response'] ='success';
-			  $result1['pid'] =$result;
-	      }else{ $result1['response'] ='Failed';}
-	  }else{
-	  	$result1['response'] ='Used';
-	  }
-	}else{  
-		$p_id=$this->input->post('p_id');	     
-	       $data=$_POST;	
-		$result = $this->Catalog_Model->update('p_id',$p_id,$data,$this->table_product);
-	      if($result){
-			  $result1['response'] ='success';			
-	      }else{ $result1['response'] ='Failed';}}
-		  
-		  echo json_encode($result1);
+     		$checkName = $this->Catalog_Model->check('p_name',$this->input->post('p_name'),$this->table_product); 
+     		$reference = $this->Catalog_Model->check('p_reference_no',$this->input->post('p_reference_no'),$this->table_product); 
+     		if(empty($checkName) && empty($reference)){
+				$scate_id=scate($this->input->post('p_child'));
+				// $_POST['p_vnd_id']='0';
+				// $_POST['p_cate']=cate($scate_id);
+				// $_POST['p_scate']=$scate_id;
+				// $_POST['p_status']='3';
+				// $_POST['p_created']=date('Y-m-d H:i:s') ;
+				$data=array(
+					'p_child'=>$this->input->post('p_child'),
+					'p_reference_no'=>$this->input->post('p_reference_no'),
+					'p_name'=>$this->input->post('p_name'),
+					'p_model'=>$this->input->post('p_model'),
+					'p_vnd_id'=>$this->input->post('p_vnd_id'),
+					'p_brand'=>$this->input->post('p_brand'),
+					'p_selling_price'=>$this->input->post('p_selling_price'),
+					'p_fabric'=>$this->input->post('p_fabric'),
+					'p_sarf'=>$this->input->post('p_sarf'),
+					'p_belt'=>$this->input->post('p_belt'),
+					'p_dimensions'=>$this->input->post('p_dimensions'),
+					'p_lenght'=>$this->input->post('p_lenght'),
+					'p_height'=>$this->input->post('p_height'),
+					'p_weight'=>$this->input->post('p_weight'),
+					'p_weigth_unit'=>$this->input->post('p_weigth_unit'),
+					'p_barcode'=>$this->input->post('p_barcode'),
+					'p_cod'=>$this->input->post('p_cod'),
+					'p_feature'=>$this->input->post('p_feature'),
+					'p_trending'=>$this->input->post('p_trending'),
+					'p_eid'=>$this->input->post('p_eid'),
+					'p_short_description'=>$this->input->post('p_short_description'),
+					'p_description'=>$this->input->post('p_description'),
+					'p_name_ar'=>$this->input->post('p_name_ar'),
+					'p_model_ar'=>$this->input->post('p_model_ar'),
+					'p_short_description_ar'=>$this->input->post('p_short_description_ar'),
+					'p_description_ar'=>$this->input->post('p_description_ar'),
+					'p_meta_title'=>$this->input->post('p_meta_title'),
+					'p_meta_keyword'=>$this->input->post('p_meta_keyword'),
+					'p_meta_description'=>$this->input->post('p_meta_description'),
+					'p_cate'=>cate($scate_id),
+					'p_scate'=>$scate_id,
+					'p_status'=>'1',
+					'p_created'=>date('Y-m-d H:i:s')
+				);	
+	      		//Product save      
+	      		$result = $this->Catalog_Model->save($data,$this->table_product);
+	      		//special price
+	      		if(!empty($this->input->post('p_sp_special_price1'))){ 
+	       			$data= array(
+						'sp_pid' =>$result,
+	     	           	'sp_vnd_id' =>vendor($result),
+						'sp_price_type'=>$this->input->post('price_type'),
+	                   	'sp_special_price' =>$this->input->post('p_sp_special_price1'),
+	                   	'sp_start_date' =>$this->input->post('p_from'),
+	                   	'sp_end_date' =>$this->input->post('p_to'),
+	                   	'sp_status' =>'1',
+						'sp_updated'=>date('Y-m-d H:i:s'),
+	                   	'sp_created' =>date('Y-m-d H:i:s')
+	               	); 
+	      			$result_special= $this->Catalog_Model->save($data,$this->table_special_price);
+	   			}
+	      		// Product Link
+	      		$data1= array('p_id' =>$result,'p_child'=>$this->input->post('p_child') );
+	       		$result_link = $this->Catalog_Model->save($data1,$this->table_product_link);
+	      		if($result){
+			  		$result1['response'] ='success';
+			  		$result1['pid'] =$result;
+	      		}else{ 
+					$result1['response'] ='Failed';
+				}
+	  		}else{
+	  			$result1['response'] ='Used';
+	  		}
+		}else{  
+			$p_id=$this->input->post('p_id');	     
+	       	$data=$_POST;	
+			$result = $this->Catalog_Model->update('p_id',$p_id,$data,$this->table_product);
+	      	if($result){
+			  	$result1['response'] ='success';			
+	      	}else{ 
+				$result1['response'] ='Failed';
+			}
+		}
+		echo json_encode($result1);
      }
 
-     public function General_Product_Update()
-     {
+    public function General_Product_Update()
+    {
      	// echo"<pre>";
      	// print_r($_POST);
      	// die;
-     	  $p_id=$this->input->post('p_id');
-	      $_POST['p_updated']=date('Y-m-d H:i:s') ;
-	      $data=$_POST;	
-	      /* start inventory 1st row update*/
-	      $get_int=get_int($p_id);
-	      $data_int=array('int_selleing_price' => $this->input->post('p_selling_price'));
-	      $update_int = $this->Catalog_Model->update('int_id',$get_int,$data_int,$this->table_inventory);
-	       /* last inventory 1st row update*/
-	      //Product update      
-	     $result = $this->Catalog_Model->update('p_id',$p_id,$data,$this->table_product);
-	      if($result){
-			  $result1['response'] ='success';			
-	      }else{ $result1['response'] ='Failed';}
-		  
-		  echo json_encode($result1);
+     	$p_id=$this->input->post('p_id');
+	    //$data=$_POST;	
+		$data=array(
+			'p_reference_no'=>$this->input->post('p_reference_no'),
+			'p_name'=>$this->input->post('p_name'),
+			'p_model'=>$this->input->post('p_model'),
+			'p_vnd_id'=>$this->input->post('p_vnd_id'),
+			'p_brand'=>$this->input->post('p_brand'),
+			'p_selling_price'=>$this->input->post('p_selling_price'),
+			'p_fabric'=>$this->input->post('p_fabric'),
+			'p_sarf'=>$this->input->post('p_sarf'),
+			'p_belt'=>$this->input->post('p_belt'),
+			'p_dimensions'=>$this->input->post('p_dimensions'),
+			'p_lenght'=>$this->input->post('p_lenght'),
+			'p_height'=>$this->input->post('p_height'),
+			'p_weight'=>$this->input->post('p_weight'),
+			'p_weigth_unit'=>$this->input->post('p_weigth_unit'),
+			'p_barcode'=>$this->input->post('p_barcode'),
+			'p_cod'=>$this->input->post('p_cod'),
+			'p_feature'=>$this->input->post('p_feature'),
+			'p_trending'=>$this->input->post('p_trending'),
+			'p_eid'=>$this->input->post('p_eid'),
+			'p_short_description'=>$this->input->post('p_short_description'),
+			'p_description'=>$this->input->post('p_description'),
+			'p_name_ar'=>$this->input->post('p_name_ar'),
+			'p_model_ar'=>$this->input->post('p_model_ar'),
+			'p_short_description_ar'=>$this->input->post('p_short_description_ar'),
+			'p_description_ar'=>$this->input->post('p_description_ar'),
+			'p_meta_title'=>$this->input->post('p_meta_title'),
+			'p_meta_keyword'=>$this->input->post('p_meta_keyword'),
+			'p_meta_description'=>$this->input->post('p_meta_description'),
+			'p_updated'=>date('Y-m-d H:i:s')
+		);	
+		//specail price 
+	    if(!empty($this->input->post('p_sp_special_price1'))){ 
+	        $special_check=$this->Catalog_Model->single_record('sp_pid',$p_id,$this->table_special_price);
+	        if(empty($special_check)){
+				$data_spacial= array(
+					'sp_pid' =>$p_id,
+					'sp_vnd_id' =>vendor($p_id),
+					'sp_price_type'=>$this->input->post('price_type'),
+					'sp_special_price' =>$this->input->post('p_sp_special_price1'),
+					'sp_start_date' =>$this->input->post('p_from'),
+					'sp_end_date' =>$this->input->post('p_to'),
+					'sp_status' =>'1',
+					'sp_updated'=>date('Y-m-d H:i:s'),
+					'sp_created' =>date('Y-m-d H:i:s')
+				); 
+				$result_special= $this->Catalog_Model->save($data_spacial,$this->table_special_price);
+			}else{
+				$data_spacial= array(
+					'sp_price_type'=>$this->input->post('price_type'),
+					'sp_special_price' =>$this->input->post('p_sp_special_price1'),
+					'sp_start_date' =>$this->input->post('p_from'),
+					'sp_end_date' =>$this->input->post('p_to'),
+					'sp_updated' =>date('Y-m-d H:i:s')
+				); 
+	      		$result_special= $this->Catalog_Model->update('sp_pid',$p_id,$data_spacial,$this->table_special_price);
+	   		}
+		}
+
+	    /* start inventory 1st row update*/
+	    $get_int=get_int($p_id);
+	    $data_int=array('int_selleing_price' => $this->input->post('p_selling_price'));
+	    $update_int = $this->Catalog_Model->update('int_id',$get_int,$data_int,$this->table_inventory);
+	    /* last inventory 1st row update*/
+	    //Product update      
+	    $result = $this->Catalog_Model->update('p_id',$p_id,$data,$this->table_product);
+		if($result){
+			$result1['response'] ='success';			
+		}else{ 
+			$result1['response'] ='Failed';
+		}  
+		echo json_encode($result1);
      }
 
      public function category_add()
@@ -384,14 +539,25 @@ class Catalog extends MY_Controller {
      public function Category_Product_save()
      {
 	     $PID=$this->input->post('p_id');
-         $p_tag=$this->input->post('p_tag');		  
+         $p_tag=$this->input->post('p_tag');	
+
 	     $data= array('p_tag' =>$p_tag); 
 	      $result = $this->Catalog_Model->update('p_id',$PID,$data,$this->table_product_link);
-	      if($result){
-	      	echo'success';
-	      }else{ echo'Failed';}
+	  	      if($result){
+          $result1['response']='success';
+          $result1['option']=$this->option($PID);
+           $result1['option_name']=$this->option_name($PID); 
+            $result1['option_field']=$this->option_field($PID);         
+	      	//echo'success';
+	      }else{ /*echo'Failed';*/ $result1['response']='Failed';}
+	      //  print_r($getproduct->p_child);
+	      // die;
+
+	     
+	      echo json_encode($result1);
      }
 
+    
     public function Category_Product_Update()
      {
 	      $PID=$this->input->post('p_id');
@@ -399,8 +565,13 @@ class Catalog extends MY_Controller {
 	     $data= array('p_tag' =>$p_tag); 
 	      $result = $this->Catalog_Model->update('p_id',$PID,$data,$this->table_product_link);
 	      if($result){
-	      	echo'success';
-	      }else{ echo'Failed';}
+	      	  $result1['response']='success';
+          $result1['option']=$this->option($PID);
+           $result1['option_name']=$this->option_name($PID); 
+            $result1['option_field']=$this->option_field($PID);   
+	      }else{ $result1['response']='Failed';}
+	      echo json_encode($result1);
+
      }
 
      public function Option_Product_save()
@@ -697,6 +868,90 @@ $arr.='<div class="col-sm-3 col-md-3"><label>Product Condition</label>	<select n
      }
 
 
+      public function dimensions_filed()
+     {
+	     
+	      $option_result = $this->Catalog_Model->option_gorup_list();
+		      
+		      	$arr='';
+		      	if($option_result){
+		      		      		
+		      		$get_opt_value='';
+		      			foreach (explode(', ', $option_result[0]->opt_value) as $getvalue) {
+		      				$get_opt_value.='<option value="'.$getvalue.'">'.$getvalue.'</option>';
+		      			}      	
+		      	 
+
+		      	
+                $arr.='<div class="col-sm-3 col-md-3"><label>Selling Price [OMR]</label>		      		
+		      		<input type="number" name="cust_selleing_price[]" class="form-control int_selleing_price"  ></div>';
+		      	$arr.='<div class="col-sm-3 col-md-3"><label>Available Quantity</label>		<input type="text" name="cust_available_qty[]"  value="1" onkeypress="return available(event);"  class="form-control int_available_qty"   ></div>';
+		      	$arr.='<div class="col-sm-3 col-md-3"><label>Color </label>		      		
+		      		<select name="cust_color[]" class="form-control  option_grop" >
+		      		<option value="">Select Color</option>
+		      		'.$get_opt_value.'
+		      		</select></div>';		      	
+
+		      	
+		      }else{$arr='';}
+
+	      if($option_result){
+			  $result1['response'] ='success';
+			  $result1['option'] =$arr;
+	      }else{ $result1['response'] ='Failed';}
+	      echo json_encode($result1);
+     }
+
+     public function getsize_filed()
+     {
+	     $PID=$this->input->post('p_id');
+	      $option_result = $this->Catalog_Model->option_gorup_list();
+	       //$getproduct = $this->Catalog_Model->check('p_id',$PID,$this->table_product);
+	      
+		      
+		      	$arr='';
+		      	if($option_result){
+		      		      		
+		      		$get_opt_value='';
+		      		$get_opt_value_size='';
+		      			foreach (explode(', ', $option_result[0]->opt_value) as $getvalue) {
+		      				$get_opt_value.='<option value="'.$getvalue.'">'.$getvalue.'</option>';
+		      			}      	
+
+		      			foreach (explode(', ', $option_result[1]->opt_value) as $getvalue) {
+		      				$get_opt_value_size.='<option value="'.$getvalue.'">'.$getvalue.'</option>';
+		      			}    
+		      	 $option_field=$this->option_field($PID);
+
+		      	
+                $arr.='<div class="col-sm-2 col-md-2"><label>Selling Price [OMR]</label>		      		
+		      		<input type="number" name="int_selleing_price[]" class="form-control int_selleing_price"  ></div>';
+		      	$arr.='<div class="col-sm-2 col-md-2"><label>Available Quantity</label>		<input type="text" name="int_available_qty[]"  value="1" onkeypress="return available(event);"  class="form-control int_available_qty"   ></div>';
+		      	if(!empty($option_field)){
+		      		$arr.=$option_field;
+		      	}
+		      	$arr.='<div class="col-sm-2 col-md-2"><label>Size </label>		      		
+		      		<select name="int_size[]" class="form-control  " >
+		      		<option value="">Select Size</option>
+		      		'.$get_opt_value_size.'
+		      		</select></div>';		
+		      	$arr.='<div class="col-sm-2 col-md-2"><label>Color </label>		      		
+		      		<select name="color[]" class="form-control  option_grop" >
+		      		<option value="">Select Color</option>
+		      		'.$get_opt_value.'
+		      		</select></div>';		      	
+
+		      	
+		      }else{$arr='';}
+
+	      if($option_result){
+			  $result1['response'] ='success';
+			  $result1['option'] =$arr;
+	      }else{ $result1['response'] ='Failed';}
+	      echo json_encode($result1);
+     }
+
+
      public function Inventory_Product_Save()
      {
 	     $PID=$this->input->post('p_id');	      
@@ -719,7 +974,7 @@ $arr.='<div class="col-sm-3 col-md-3"><label>Product Condition</label>	<select n
          $option_grop=implode(', ',$this->input->post('option_grop')).', ';  
          }else{ $option_grop='';} 
          $get_option_grop=$option_grop.''.implode(', ',$int_size).', '.implode(', ',$int_color);
-         $data1= array('option_grop_add' =>$option_grop_add,'option_grop' =>$$get_option_grop); 
+         $data1= array('option_grop_add' =>$option_grop_add,'option_grop' =>$get_option_grop); 
 	     $result_link = $this->Catalog_Model->update('p_id',$PID,$data1,$this->table_product_link);
 	     $inventory= $this->Catalog_Model->single_product('int_pid',$PID,$this->table_inventory); 
 	     
@@ -779,6 +1034,224 @@ $arr.='<div class="col-sm-3 col-md-3"><label>Product Condition</label>	<select n
 	      }else{  echo 'Failed';}
 	     
      }
+
+     public function Inventory_Product_Cloth_Save()
+     {
+     	
+     	 $PID=$this->input->post('p_id');
+     	  $custom=$this->input->post('custom');	
+     	  if($custom=='1'){
+     	  $get_option_grop=implode(', ',$this->input->post('cust_color'));
+         $data1= array('p_option_group' =>'1','option_grop_add' =>'1','option_grop' =>$get_option_grop); 
+	     $result_link = $this->Catalog_Model->update('p_id',$PID,$data1,$this->table_product_link);
+     	 $inventory= $this->Catalog_Model->single_product('int_pid',$PID,$this->table_inventory); 
+     	 	   $int_selleing_price_array=$this->input->post('cust_selleing_price');
+	   $cust_color=$this->input->post('cust_color'); 
+     	  if(empty($inventory->int_pid)){
+	   $data=array();
+	    foreach ($int_selleing_price_array as $key => $value) {	   
+	     $data[]= array('int_pid' =>$PID,
+	     	        'int_vnd_id' =>vendor($PID),
+	                'int_size' =>'',
+	                'size' =>'',
+	                 'int_color' =>$cust_color[$key],
+	                  'int_custom' =>'1',
+	                   'length' =>$this->input->post('length'),
+	                   'waist' =>$this->input->post('waist'),
+	                   'shoulder' =>$this->input->post('shoulder'),
+	                   'hips' =>$this->input->post('hips'),
+	                   'sleeve_length' =>$this->input->post('sleeve_length'),
+	                   'neck' =>$this->input->post('neck'),
+	                   'chest' =>$this->input->post('chest'),	                   
+	                'int_selleing_price' =>$value,
+	                'int_available_qty' =>$this->input->post('cust_available_qty')[$key],
+	                'int_total_qty' =>$this->input->post('cust_available_qty')[$key],
+	                'int_min_purchase_qty'=>'1',
+	                'ready_collection' =>$this->input->post('ready_collection'),
+	                'int_stock' =>$this->input->post('int_stock')[0],
+	                'int_condition' =>$this->input->post('int_condition')[0],
+	                'int_created' =>date('Y-m-d H:i:s')
+	               ); 
+	           }
+	      $result = $this->Catalog_Model->inventry_save($data,$this->table_inventory);
+	  }else{
+	  	$delete = $this->Catalog_Model->delete('int_pid',$PID,$this->table_inventory);
+
+	  		   $data=array();
+	    foreach ($int_selleing_price_array as $key => $value) {	   
+	     $data[]= array('int_pid' =>$PID,
+	     	        'int_vnd_id' =>vendor($PID),
+	                'int_size' =>'',
+	                'size' =>'',
+	                 'int_color' =>$cust_color[$key],
+	                  'int_custom' =>'1',
+	                   'length' =>$this->input->post('length'),
+	                   'waist' =>$this->input->post('waist'),
+	                   'shoulder' =>$this->input->post('shoulder'),
+	                   'hips' =>$this->input->post('hips'),
+	                   'sleeve_length' =>$this->input->post('sleeve_length'),
+	                   'neck' =>$this->input->post('neck'),
+	                   'chest' =>$this->input->post('chest'),	                   
+	                'int_selleing_price' =>$value,
+	                'int_available_qty' =>$this->input->post('cust_available_qty')[$key],
+	                'int_total_qty' =>$this->input->post('cust_available_qty')[$key],
+	                'int_min_purchase_qty'=>'1',
+	                'ready_collection' =>$this->input->post('ready_collection'),
+	                'int_stock' =>$this->input->post('int_stock')[0],
+	                'int_condition' =>$this->input->post('int_condition')[0],
+	                'int_created' =>date('Y-m-d H:i:s')
+	               ); 
+	           }
+	      $result = $this->Catalog_Model->inventry_save($data,$this->table_inventory);
+
+	  }
+     
+     }else{
+
+     	 $get_option_grop=implode(', ',$this->input->post('size')).', '.implode(', ',$this->input->post('color'));
+         $data1= array('p_option_group' =>'1, 5','option_grop_add' =>'1, 5','option_grop' =>$get_option_grop); 
+	     $result_link = $this->Catalog_Model->update('p_id',$PID,$data1,$this->table_product_link);
+     	 $inventory= $this->Catalog_Model->single_product('int_pid',$PID,$this->table_inventory); 
+     	 	   $int_selleing_price_array=$this->input->post('int_selleing_price');
+	   $cust_color=$this->input->post('color'); 
+     	  if(empty($inventory->int_pid)){
+	   $data=array();
+	    foreach ($int_selleing_price_array as $key => $value) {	   
+	     $data[]= array('int_pid' =>$PID,
+	     	        'int_vnd_id' =>vendor($PID),
+	                'int_size' =>$this->input->post('size')[$key],
+	                'size' =>$this->input->post('int_size')[$key],
+	                 'int_color' =>$cust_color[$key],
+	                  'int_custom' =>'0',	                                     
+	                'int_selleing_price' =>$value,
+	                'int_available_qty' =>$this->input->post('int_available_qty')[$key],
+	                'int_total_qty' =>$this->input->post('int_available_qty')[$key],
+	                'int_min_purchase_qty'=>'1',
+	                'ready_collection' =>$this->input->post('ready_collection'),
+	                'int_stock' =>$this->input->post('int_stock')[0],
+	                'int_condition' =>$this->input->post('int_condition')[0],
+	                'int_created' =>date('Y-m-d H:i:s')
+	               ); 
+	           }
+	      $result = $this->Catalog_Model->inventry_save($data,$this->table_inventory);
+	  }else{
+	  	$delete = $this->Catalog_Model->delete('int_pid',$PID,$this->table_inventory);
+
+	  		   $data=array();
+	    foreach ($int_selleing_price_array as $key => $value) {	   
+	     $data[]= array('int_pid' =>$PID,
+	     	        'int_vnd_id' =>vendor($PID),
+	                'int_size' =>$this->input->post('size')[$key],
+	                'size' =>$this->input->post('int_size')[$key],
+	                 'int_color' =>$cust_color[$key],
+	                  'int_custom' =>'0',	                                     
+	                'int_selleing_price' =>$value,
+	                'int_available_qty' =>$this->input->post('int_available_qty')[$key],
+	                'int_total_qty' =>$this->input->post('int_available_qty')[$key],
+	                'int_min_purchase_qty'=>'1',
+	                'ready_collection' =>$this->input->post('ready_collection'),
+	                'int_stock' =>$this->input->post('int_stock')[0],
+	                'int_condition' =>$this->input->post('int_condition')[0],
+	                'int_created' =>date('Y-m-d H:i:s')
+	               );  
+	           }
+	      $result = $this->Catalog_Model->inventry_save($data,$this->table_inventory);
+
+	  }
+
+
+     }
+      if($result){
+			 echo 'success';			
+	      }else{  echo 'Failed';}
+
+  }
+
+  public function Inventory_cloth_update()
+     {
+     	
+     	 $PID=$this->input->post('p_id');
+     	  $custom=$this->input->post('custom');	
+     	  if($custom=='1'){
+     	  $get_option_grop=implode(', ',$this->input->post('cust_color'));
+         $data1= array('p_option_group' =>'1','option_grop_add' =>'1','option_grop' =>$get_option_grop); 
+	     $result_link = $this->Catalog_Model->update('p_id',$PID,$data1,$this->table_product_link);
+     	 $inventory= $this->Catalog_Model->single_product('int_pid',$PID,$this->table_inventory); 
+     	 	   $int_selleing_price_array=$this->input->post('cust_selleing_price');
+	   $cust_color=$this->input->post('cust_color'); 
+	  	$delete = $this->Catalog_Model->delete('int_pid',$PID,$this->table_inventory);
+
+	  		   $data=array();
+	    foreach ($int_selleing_price_array as $key => $value) {	   
+	     $data[]= array('int_pid' =>$PID,
+	     	        'int_vnd_id' =>vendor($PID),
+	                'int_size' =>'',
+	                'size' =>'',
+	                 'int_color' =>$cust_color[$key],
+	                  'int_custom' =>'1',
+	                   'length' =>$this->input->post('length'),
+	                   'waist' =>$this->input->post('waist'),
+	                   'shoulder' =>$this->input->post('shoulder'),
+	                   'hips' =>$this->input->post('hips'),
+	                   'sleeve_length' =>$this->input->post('sleeve_length'),
+	                   'neck' =>$this->input->post('neck'),
+	                   'chest' =>$this->input->post('chest'),	                   
+	                'int_selleing_price' =>$value,
+	                'int_available_qty' =>$this->input->post('cust_available_qty')[$key],
+	                'int_total_qty' =>$this->input->post('cust_available_qty')[$key],
+	                'int_min_purchase_qty'=>'1',
+	                'ready_collection' =>$this->input->post('ready_collection'),
+	                'int_stock' =>$this->input->post('int_stock')[0],
+	                'int_condition' =>$this->input->post('int_condition')[0],
+	                'int_created' =>date('Y-m-d H:i:s')
+	               ); 
+	           }
+	      $result = $this->Catalog_Model->inventry_save($data,$this->table_inventory);
+
+	  
+     
+     }else{
+
+     	 $get_option_grop=implode(', ',$this->input->post('size')).', '.implode(', ',$this->input->post('color'));
+         $data1= array('p_option_group' =>'1, 5','option_grop_add' =>'1, 5','option_grop' =>$get_option_grop); 
+	     $result_link = $this->Catalog_Model->update('p_id',$PID,$data1,$this->table_product_link);
+     	 $inventory= $this->Catalog_Model->single_product('int_pid',$PID,$this->table_inventory); 
+     	 	   $int_selleing_price_array=$this->input->post('int_selleing_price');
+	   $cust_color=$this->input->post('color'); 
+     	
+	  	$delete = $this->Catalog_Model->delete('int_pid',$PID,$this->table_inventory);
+
+	  		   $data=array();
+	    foreach ($int_selleing_price_array as $key => $value) {	   
+	     $data[]= array('int_pid' =>$PID,
+	     	        'int_vnd_id' =>vendor($PID),
+	                'int_size' =>$this->input->post('size')[$key],
+	                'size' =>$this->input->post('int_size')[$key],
+	                 'int_color' =>$cust_color[$key],
+	                  'int_custom' =>'0',	                                     
+	                'int_selleing_price' =>$value,
+	                'int_available_qty' =>$this->input->post('int_available_qty')[$key],
+	                'int_total_qty' =>$this->input->post('int_available_qty')[$key],
+	                'int_min_purchase_qty'=>'1',
+	                'ready_collection' =>$this->input->post('ready_collection'),
+	                'int_stock' =>$this->input->post('int_stock')[0],
+	                'int_condition' =>$this->input->post('int_condition')[0],
+	                'int_created' =>date('Y-m-d H:i:s')
+	               );  
+	           }
+	      $result = $this->Catalog_Model->inventry_save($data,$this->table_inventory);
+
+	 
+
+
+     }
+      if($result){
+			 echo 'success';			
+	      }else{  echo 'Failed';}
+
+  }
+
+
 
 
     public function Inventory_Product_update()
@@ -1156,6 +1629,8 @@ $arr.='<div class="col-sm-3 col-md-3"><label>Product Condition</label>	<select n
 	                   'pg_image' =>$get_images
 	               ); 
 	      $result = $this->Catalog_Model->save($data_img,$this->table_product_img);
+	       $data_status= array('p_status' =>'1'); 
+          $product_status = $this->Catalog_Model->update('p_id',$PID,$data_status,$this->table_product);
            }
 	      if($result){
 			 echo 'success';			
@@ -1192,33 +1667,140 @@ $arr.='<div class="col-sm-3 col-md-3"><label>Product Condition</label>	<select n
     }
 
     function product_edit()
-	   {
+	{
 	    $permission=unserialize($this->login->mst_permission);  
-	   if($this->login->mst_role=='0' || !empty($permission['products_edit'])){		  
-	   $content['admin']=admin_profile($this->login->mst_email);	       
-	   $pid=decode($this->uri->segment(3)); 
-	   $content['unit'] = $this->Catalog_Model->unit_list($this->fld_ut_id,'ut_status',$this->table_unit);
+	   	if($this->login->mst_role=='0' || !empty($permission['products_edit'])){		  
+			$content['admin']=admin_profile($this->login->mst_email);	       
+			$pid=decode($this->uri->segment(3)); 
+			$content['unit'] = $this->Catalog_Model->unit_list($this->fld_ut_id,'ut_status',$this->table_unit);
 
-	   $content['policy']=  $this->Catalog_Model->policy_list($this->table_policy);
-	    $content['brand'] = $this->Catalog_Model->brd_list($this->table_brand);
-	     $content['seller']=  $this->Catalog_Model->seller_list();
-		$content['option'] = $this->Catalog_Model->option_list($this->table_option);
-		$content['product'] = $this->Catalog_Model->single_product('p_id',$pid,$this->table_product);
-		$content['product_link']= $this->Catalog_Model->single_product('p_id',$pid,$this->table_product_link);
-		$content['inventory']= $this->Catalog_Model->get_inventry('int_pid',$pid,$this->table_inventory);
-	
-		$content['special_price']= $this->Catalog_Model->single_product('sp_pid',$pid,$this->table_special_price);
-		$content['discount']= $this->Catalog_Model->single_product('vd_pid',$pid,$this->table_discount);
-		$content['product_img']= $this->Catalog_Model->single_product('pg_pid',$pid,$this->table_product_img);
-		 //$content['category'] = $this->Catalog_Model->cate_list('cate_name','cate_remove','cate_status',$this->table_category);
-	   // $content['sub_category'] = $this->Catalog_Model->getCateList('cate_id',$content['product']->p_cate,'scate_name','scate_remove','scate_status',$this->table_sub_category);
-	    //$content['child_category'] = $this->Catalog_Model->getCateList('scate_id',$content['product']->p_scate,'child_name','child_remove','child_status',$this->table_child_category);
-        $content['subview']="product_edit";
-		 $this->load->view('layout', $content);
+			$content['policy']=  $this->Catalog_Model->policy_list($this->table_policy);
+			$content['brand'] = $this->Catalog_Model->brd_list($this->table_brand);
+			$content['seller']=  $this->Catalog_Model->seller_list();
+			$content['option1'] = $this->option($pid);
+			$content['option'] = $this->Catalog_Model->option_list($this->table_option);
+			$content['product'] = $this->Catalog_Model->single_product('p_id',$pid,$this->table_product);
+			$content['product_link']= $this->Catalog_Model->single_product('p_id',$pid,$this->table_product_link);
+			$content['inventory']= $this->Catalog_Model->get_inventry('int_pid',$pid,$this->table_inventory);
+		
+			$content['special_price']= $this->Catalog_Model->single_product('sp_pid',$pid,$this->table_special_price);
+			$content['discount']= $this->Catalog_Model->single_product('vd_pid',$pid,$this->table_discount);
+			$content['product_img']= $this->Catalog_Model->single_product('pg_pid',$pid,$this->table_product_img);
+			$content['subview']="product_edit";
+			$this->load->view('layout', $content);
 		}else{
 			redirect('dashboard');
 		}
-     }	
+    }	
+
+       function option($PID){
+
+       	$option_array = $this->Catalog_Model->option_list($this->table_option);
+	      $getproduct = $this->Catalog_Model->check('p_id',$PID,$this->table_product);
+	      $getchild=$getproduct->p_child;	      
+          
+          $getoption=array();
+         
+          foreach($option_array as $val){    
+
+          	 if($getproduct->p_scate=='18' && $val->opt_id=='1' || $getproduct->p_scate=='18' && $val->opt_id=='3' || $getproduct->p_scate=='18' && $val->opt_id=='5'){
+          	  $getoption[]=array('opt_id'=>$val->opt_id,
+          	 	                          'opt_name'=>$val->opt_name,
+          	                                );
+          }else  if($getproduct->p_scate=='19' && $val->opt_id=='1' || $getproduct->p_scate=='19' && $val->opt_id=='3' || $getproduct->p_scate=='19' && $val->opt_id=='6'){
+          	  $getoption[]=array('opt_id'=>$val->opt_id,
+          	 	                          'opt_name'=>$val->opt_name,
+          	                                );          	  
+          	  }else  if($getproduct->p_scate=='11' && $val->opt_id=='1' || $getproduct->p_scate=='11' && $val->opt_id=='4'){
+          	  $getoption[]=array('opt_id'=>$val->opt_id,
+          	 	                          'opt_name'=>$val->opt_name,
+          	                                );
+            }else if($getchild=='117' && $val->opt_id=='7' || $getchild=='128' && $val->opt_id=='7' || $getchild=='158' && $val->opt_id=='7' || $getchild=='168' && $val->opt_id=='7'){
+          	 $getoption[]=array('opt_id'=>$val->opt_id,
+          	 	                          'opt_name'=>$val->opt_name,
+          	                                );
+          	  }else if($getchild=='169' && $val->opt_id=='10'){
+          	  $getoption[]=array('opt_id'=>$val->opt_id,
+          	 	                          'opt_name'=>$val->opt_name,
+          	                                );
+          	 // }else  if($getproduct->p_cate=='6' && $val->opt_id=='1' || $getproduct->p_cate=='6' && $val->opt_id=='3' || $getproduct->p_cate=='6' && $val->opt_id=='2'){
+          	 //  $getoption[]=array('opt_id'=>$val->opt_id,
+          	 // 	                          'opt_name'=>$val->opt_name,
+          	 //                                );
+          	  }else if($getproduct->p_cate=='2' && $val->opt_id=='9' ){
+          	  $getoption[]=array('opt_id'=>$val->opt_id,
+          	 	                          'opt_name'=>$val->opt_name,
+          	                                );
+          }
+         }
+
+         return  $getoption;
+     }
+
+     function option_name($PID){
+       	$option_array = $this->Catalog_Model->option_list($this->table_option);
+	      $getproduct = $this->Catalog_Model->check('p_id',$PID,$this->table_product);
+	      $getchild=$getproduct->p_child;
+
+          
+          //$getoption=array();
+	      $getoption='';
+         
+          foreach($option_array as $val){    
+
+          	 if($getproduct->p_scate=='18' && $val->opt_id=='5'){
+          	  $getoption=$val->opt_name;
+          }else if($getproduct->p_scate=='19' && $val->opt_id=='6'){
+          	  $getoption=$val->opt_name;        	  
+          	  
+          }
+         }
+
+         return  $getoption;
+     }
+
+
+function option_field($PID){
+       	$option_array = $this->Catalog_Model->option_list($this->table_option);
+	      $getproduct = $this->Catalog_Model->check('p_id',$PID,$this->table_product);
+	      
+          $getoption=0;
+         $option_arra1y=0;
+          foreach($option_array as $val){    
+            //$option_arra1y=array();
+          	 if($getproduct->p_scate=='18' && $val->opt_id=='5'){
+          	    $getoption =$val->opt_name;
+          	    $option_arra1y =$val->opt_value;
+          	 
+          	  
+          }elseif($getproduct->p_scate=='19' && $val->opt_id=='6'){
+          	   $getoption =$val->opt_name; 
+          	   $option_arra1y =$val->opt_value;
+          	 
+
+          	  
+          }
+         
+         
+         }
+       
+          $option_arra1y2='';
+           foreach(explode(', ',$option_arra1y) as $val1){
+           	
+          	  	$option_arra1y2.=$ggoption='<option value="'.$val1.'">'.$val1.'</option>';;
+          	  }
+
+
+         $arr=' <div class="col-sm-2 col-md-2" style="    max-width: 100%;">
+		 <label>'.$getoption.'<span class="red">*</span></label>
+		 <select name="size[]" class="form-control size">
+		    <option value="">Select '.$getoption.'</option>
+		  '.$option_arra1y2.'
+		 </select>		
+		 </div>';
+
+         return  $arr;
+     }
 
        function Image_Delete()
       {
@@ -1266,6 +1848,23 @@ $arr.='<div class="col-sm-3 col-md-3"><label>Product Condition</label>	<select n
 		 $product_sprice=$this->Catalog_Model->delete('sp_pid',$p_id,$this->table_special_price);
 		 $product_inventory=$this->Catalog_Model->delete('int_pid',$p_id,$this->table_inventory);
 		 $product_discount=$this->Catalog_Model->delete('vd_pid',$p_id,$this->table_discount);		   
+		$this->session->set_flashdata('msg',array('message' => 'Product Data has been successfully Delete.','class' => 'success','type'=>'Ok!','icon'=>'thumbs-up'));
+				   redirect('catalog/products');
+
+	   }else{
+			redirect('dashboard');
+		}
+			
+	  }	
+
+
+function products_delete() { 
+	   $permission=unserialize($this->login->mst_permission);  
+	   if($this->login->mst_role=='0' || !empty($permission['products_delete'])){		
+		foreach($this->input->post('product') as $vlpid){		
+		$data = array('status' => '0','p_status' => '2');
+		$result = $this->Catalog_Model->update($this->fld_p_id,$vlpid,$data,$this->table_product);
+		}		   
 		$this->session->set_flashdata('msg',array('message' => 'Product Data has been successfully Delete.','class' => 'success','type'=>'Ok!','icon'=>'thumbs-up'));
 				   redirect('catalog/products');
 
@@ -1359,75 +1958,90 @@ $arr.='<div class="col-sm-3 col-md-3"><label>Product Condition</label>	<select n
 		redirect('catalog/special-price');
 	}
 
-    function special_price_add(){
-        $content['admin']=admin_profile($this->login->mst_email);	    
-	  
+    function special_price_add()
+	{
+        $content['admin']=admin_profile($this->login->mst_email);	
 	    $content['product'] = $this->Catalog_Model->getlist($this->fld_p_id,$this->table_product);	
-	   
+	    $content['vendor']= $this->Catalog_Model->vendor_list($this->fld_vnd_id,$this->table_vendor);  
 	    $RequestMethod = $this->input->server('REQUEST_METHOD'); 
-	        if($RequestMethod == "POST") { 		
+	    if($RequestMethod == "POST") { 		
 	         $sp_pid=$this->input->post('sp_pid');
-              $check=$this->Catalog_Model->check('sp_pid',$sp_pid,$this->table_special_price);
-              if(empty($check)){		
-		   	$data=array(
-		   	   'sp_pid'=>$this->input->post('sp_pid'),
-               'sp_special_price'=>$this->input->post('sp_special_price'),
-			   'sp_start_date'=>$this->input->post('sp_start_date'),			   
-			   'sp_end_date'=>$this->input->post('sp_end_date'),	
-			   'sp_status'=>$this->input->post('sp_status'),							
-			   'sp_created'=>date('Y-m-d H:i:s') 
-		   	);  
-		   $result = $this->Catalog_Model->save($data,$this->table_special_price);
-		   if($result){
-			   $this->session->set_flashdata('msg',array('message' => 'Special Price has been successfully Save.','class' => 'success','type'=>'Ok!','icon'=>'thumbs-up'));
-			   redirect('catalog/special-price-add'); 
-		   }else{
-			   $this->session->set_flashdata('msg',array('message' => "Unable to Profile .Some error occurred.",'class' => 'danger','type'=>'Oops!','icon'=>'slash'));
-			   redirect('catalog/special-price-add');  
-		   }
-		   }else{
-			 $this->session->set_flashdata('msg',array('message' => "Special Price For This Date Already Added.",'class' => 'danger','type'=>'Oops!','icon'=>'slash'));
-			 redirect('catalog/special-price-add');  
+	         // print_r($sp_pid);
+	         // die;
+	         foreach($sp_pid as $val){
+				$check=$this->Catalog_Model->check('sp_pid',$val,$this->table_special_price);
+				if(empty($check)){		
+					$data=array(
+						'sp_pid'=>$val,
+						'sp_vnd_id'=>$this->input->post('sp_vnd_id'),
+						'sp_price_type'=>$this->input->post('price_type'),
+						'sp_special_price'=>$this->input->post('sp_special_price'),
+						'sp_start_date'=>$this->input->post('sp_start_date'),			   
+						'sp_end_date'=>$this->input->post('sp_end_date'),	
+						'sp_status'=>$this->input->post('sp_status'),
+						'sp_updated'=>date('Y-m-d H:i:s'), 							
+						'sp_created'=>date('Y-m-d H:i:s') 
+					);  
+					//print("<pre>".print_r($data,true)."</pre>");die;
+					$result = $this->Catalog_Model->save($data,$this->table_special_price);
 				}
+			}
+			if($result){
+				$this->session->set_flashdata('msg',array('message' => 'Special Price has been successfully Save.','class' => 'success','type'=>'Ok!','icon'=>'thumbs-up'));
+				redirect('catalog/special-price'); 
+			}else{
+				$this->session->set_flashdata('msg',array('message' => "Unable to Profile .Some error occurred.",'class' => 'danger','type'=>'Oops!','icon'=>'slash'));
+				redirect('catalog/special-price-add');  
+			}
+		  //  }else{
+			 // $this->session->set_flashdata('msg',array('message' => "Special Price For This Date Already Added.",'class' => 'danger','type'=>'Oops!','icon'=>'slash'));
+			 // redirect('catalog/special-price-add');  
+				// }
 		    
 		}    
-	     $content['subview']="special-price-add";
-		  $this->load->view('layout', $content);
-		
+		$content['subview']="special-price-add";
+		$this->load->view('layout', $content);
 	}
 
   
-	function special_price_edit(){
-	$permission=unserialize($this->login->mst_permission);  
-     if($this->login->mst_role=='0' || !empty($permission['hot_products_edit']) || !empty($permission['special_price_edit'])){
-        $content['admin']=admin_profile($this->login->mst_email);	     
-	    $sp_id=decode($this->uri->segment(3));	
-	    $content['special_price'] = $this->Catalog_Model->single_record($this->fld_sp_id,$sp_id,$this->table_special_price);	
-	    $RequestMethod = $this->input->server('REQUEST_METHOD'); 
+	function special_price_edit()
+	{
+		$permission=unserialize($this->login->mst_permission);  
+     	if($this->login->mst_role=='0' || !empty($permission['hot_products_edit']) || !empty($permission['special_price_edit'])){
+			$content['admin']=admin_profile($this->login->mst_email);	     
+			$sp_id=decode($this->uri->segment(3));	
+			$content['special_price'] = $this->Catalog_Model->single_record($this->fld_sp_id,$sp_id,$this->table_special_price);	
+			$vendorName= getVnd_name($content['special_price']->sp_vnd_id);
+			if(!empty($content['vendorInfo'])){
+				$content['vendorInfo']=$vendorName;
+			}else{
+				$content['vendorInfo']="Admin";
+			}
+			$RequestMethod = $this->input->server('REQUEST_METHOD'); 
 	        if($RequestMethod == "POST") { 			
-		   	$data=array(
-               'sp_special_price'=>$this->input->post('sp_special_price'),
-			   'sp_start_date'=>$this->input->post('sp_start_date'),			   
-			   'sp_end_date'=>$this->input->post('sp_end_date'),	
-			   'sp_status'=>$this->input->post('sp_status'),							
-				'sp_updated'=>date('Y-m-d H:i:s') 
-		   	);  
-		   $result = $this->Catalog_Model->update($this->fld_sp_id,$sp_id,$data,$this->table_special_price);
-		   if($result){
-			   $this->session->set_flashdata('msg',array('message' => 'Special Price has been successfully Update.','class' => 'success','type'=>'Ok!','icon'=>'thumbs-up'));
-			   redirect('catalog/special-price-edit/'.$this->uri->segment(3)); 
-		   }else{
-			   $this->session->set_flashdata('msg',array('message' => "Unable to Profile .Some error occurred.",'class' => 'danger','type'=>'Oops!','icon'=>'slash'));
-			   redirect('catalog/special-price-edit/'.$this->uri->segment(3));  
-		   }
-		    
-		}    
-	     $content['subview']="special-price-edit";
-		  $this->load->view('layout', $content);
+				$data=array(
+					'sp_price_type'=>$this->input->post('price_type'),
+					'sp_special_price'=>$this->input->post('sp_special_price'),
+					'sp_start_date'=>$this->input->post('sp_start_date'),			   
+					'sp_end_date'=>$this->input->post('sp_end_date'),	
+					'sp_status'=>$this->input->post('sp_status'),							
+					'sp_updated'=>date('Y-m-d H:i:s') 
+				);  
+				
+				$result = $this->Catalog_Model->update($this->fld_sp_id,$sp_id,$data,$this->table_special_price);
+				if($result){
+					$this->session->set_flashdata('msg',array('message' => 'Special Price has been successfully Update.','class' => 'success','type'=>'Ok!','icon'=>'thumbs-up'));
+					redirect('catalog/special-price-edit/'.$this->uri->segment(3)); 
+				}else{
+					$this->session->set_flashdata('msg',array('message' => "Unable to Profile .Some error occurred.",'class' => 'danger','type'=>'Oops!','icon'=>'slash'));
+					redirect('catalog/special-price-edit/'.$this->uri->segment(3));  
+				}
+			}    
+	     	$content['subview']="special-price-edit";
+		  	$this->load->view('layout', $content);
 		}else{
 			 redirect('dashboard'); 
 		}
-		
 	}
 
 	public function special_price_delete() {  
